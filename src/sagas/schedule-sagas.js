@@ -1,4 +1,4 @@
-import{call,put, takeLatest, all} from 'redux-saga/effects'
+import {call, put, takeLatest, all} from 'redux-saga/effects'
 import {
     initScheduleSucceededType,
     initScheduleFailedType,
@@ -7,7 +7,7 @@ import {
     editScheduleSubmitType, initScheduleType
 } from "../store/scheduleReducer";
 
-const url='http://7a1b344f.ngrok.io';
+const url = 'http://7a1b344f.ngrok.io';
 
 //GET
 
@@ -18,9 +18,9 @@ export function* getSchedule() {
 function* callGetSchedule({id}) {
     try {
         console.log('saga-get-schedule');
-        const schedule = yield fetch(url + "/schedule/" + id.toString() + "?from=",
+        const schedule = yield call(() => fetch(url + "/schedule/" + id.toString() + "?from=",
             {method: "GET"}).then(res => res.json())
-            .catch(err => console.log(err));
+            .catch(err => console.log(err)));
         yield put({type: initScheduleSucceededType, schedule})
     } catch (e) {
         yield put({type: initScheduleFailedType});
@@ -46,12 +46,12 @@ export function* editSchedule() {
     yield takeLatest(editScheduleSubmitType, callEditSchedule)
 }
 
-function* callEditSchedule ({data}, {id}) {
+function* callEditSchedule({data}, {id}) {
     try {
         let headers = new Headers();
         console.log("saga-edit-schedule");
         headers.append('Content-Type', "application/json");//
-        const newSchedule = yield call(fetch(url + "/schedule/" + id.toString(),
+        const newSchedule = yield call(() => fetch(url + "/schedule/" + id.toString(),
             {
                 method: 'PUT',
                 headers: headers,

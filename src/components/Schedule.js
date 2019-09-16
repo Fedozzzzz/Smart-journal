@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {actionCreators} from "../store/scheduleReducer";
-import {Switch, Route} from "react-router-dom"
+import {Route} from "react-router-dom"
 import {Link} from "react-router-dom";
 import "../css/Schedule.css"
 
@@ -277,35 +277,13 @@ class Schedule extends Component {
         // console.log(this.props.isEdit);
         return (
             <div>
-                {/*<Switch>*/}
-                    <Route exact path='/schedule' render={this.renderScheduleMenu}/>
-                    <Route path='/schedule/true_schedule' render={this.renderTrueSchedule}/>
-                    <Route path='/schedule/week_schedule' render={this.renderWeekSchedule}/>
-                {/*</Switch>*/}
+                <Route exact path='/schedule' render={this.renderScheduleMenu}/>
+                <Route path='/schedule/true_schedule' render={this.renderTrueSchedule}/>
+                <Route path='/schedule/week_schedule' render={this.renderWeekSchedule}/>
             </div>
         );
     }
 }
-
-// function renderSchedule(props) {
-//     let size = props.groups.length;
-//     console.log(size);
-//     let out = [];
-//     for (let i = 0; i < size; i++) {
-//         console.log(props.groups.get(i).weekSchedule.days);
-//         out.push(<tr>
-//             <td>{props.groups.get(i).id}</td>
-//             {props.groups.get(i).weekSchedule.days.map(day => (
-//                 day ? <td>+</td> : <td>-</td>
-//             ))}
-//         </tr>);
-//     }
-//     return (
-//         <tbody>
-//         {out}
-//         </tbody>
-//     );
-// }
 
 export default connect(
     state => state.schedule,

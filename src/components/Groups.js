@@ -1,21 +1,16 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import {actionCreators} from "../store/groupReducer";
-import {Switch,Route} from "react-router-dom"
+import {Route} from "react-router-dom"
 import {Link} from "react-router-dom";
 import '../css/Groups.css'
-import {Redirect} from "react-router";
 
 
 class Groups extends Component {
 
     constructor(props, ctx) {
         super(props, ctx);
-        // this.state = {
-        //     guid:''
-        // };
-        //const guid="";
 
         //functions
         this.addGroup = this.addGroup.bind(this);
@@ -35,6 +30,7 @@ class Groups extends Component {
         this.renderGroupListPage = this.renderGroupListPage.bind(this);
         this.renderEditGroup = this.renderEditGroup.bind(this);
         this.renderGroupPage = this.renderGroupPage.bind(this);
+        this.renderUserListPage = this.renderUserListPage.bind(this);
     }
 
     UNSAFE_componentWillMount() {
@@ -93,8 +89,8 @@ class Groups extends Component {
         cash.patronymic = document.getElementById('userPatronymic').value;
         cash.email = document.getElementById("email-input").value;
         cash.phoneNumber = document.getElementById("tel-input").value;
-        console.log(cash);
-        this.props.createUserSubmit();
+        console.log("user-data: ", cash);
+        this.props.createUserSubmit(cash);
     }
 
     // onChose(id){
@@ -126,9 +122,9 @@ class Groups extends Component {
         }
         //console.log("checkbox", document.getElementById("blankCheckbox").checked);
         cash.duration = 0;
-        console.log(cash);
+        console.log("group-data: ", cash);
         this.props.editGroupSubmit(id, cash);
-        let users;//add user to group
+        // let users;//add user to group
         //this.props.addUserToGroup();
     }
 
@@ -328,7 +324,7 @@ class Groups extends Component {
                     </div>
                 </form>
                 <div>
-                    <button className='btn btn-success' onClick={this.onSaveUser}>Сохранить</button>
+                    <Link to="/groups/user_list" className='btn btn-success' onClick={this.onSaveUser}>Сохранить</Link>
                 </div>
             </div>
         )
@@ -358,10 +354,10 @@ class Groups extends Component {
         return (
             <div>
                 <h3>{group.name}</h3>
-                <Link to='/groups/group_list' className="btn btn-outline-danger"
-                      onClick={() => this.deleteGroup(group.guid)}>Delete</Link>
-                <Link to={`/groups/edit_group/${group.guid}`} className="btn btn-outline-warning"
-                      onClick={() => this.editGroup(group.guid)}>Edit</Link>
+                {/*<Link to='/groups/group_list' className="btn btn-outline-danger"*/}
+                {/*      onClick={() => this.deleteGroup(group.guid)}>Delete</Link>*/}
+                {/*<Link to={`/groups/edit_group/${group.guid}`} className="btn btn-outline-warning"*/}
+                {/*      onClick={() => this.editGroup(group.guid)}>Edit</Link>*/}
             </div>
         )
     }
@@ -492,11 +488,35 @@ class Groups extends Component {
             </div>)
     }
 
+    // @bind
+    renderUserListPage() {
+        if (this.props.users.length === 0) {
+            this.props.getAllUsers();
+        }
+        console.log("user-list:", this.props.users);
+        return (
+            <div>
+                <h3>Студенты</h3>
+                {this.props.users ?
+                    this.props.users.map(user => (
+                        <div>
+                            <h5><Link to={`/groups/${user.guid}`}>{user.name}</Link></h5>
+                        </div>
+                    )) : null}
+                <Link to='/groups/creating_user' className='btn btn-primary' onClick={this.addUser}>+Добавить
+                    ученика</Link>
+            </div>
+        )
+    }
+
     renderGroupMenuPage() {
         return (
             <form>
                 <Link to='/groups/group_list' className='btn btn-outline-primary'>
                     Список групп
+                </Link>
+                <Link to='groups/user_list' className="btn btn-outline-primary">
+                    Список учеников
                 </Link>
                 {/*<button className='btn btn-outline-primary' onClick={this.addGroup}>*/}
                 {/*    <Link to='/groups/creating_group'>*/}
@@ -514,13 +534,13 @@ class Groups extends Component {
 
     renderGroupListPage() {
         console.log('render-group-list-page');
-        console.log("loaded: ", this.props.isLoaded);
+        // console.log("loaded: ", this.props.isLoaded);
         if (!this.props.isLoaded) {
             this.props.getAllGroups();
         }
         return (
             <div>
-                <h3>Groups</h3>
+                <h3>Группы</h3>
                 {this.props.groups ?
                     this.props.groups.map(group => (
                         <div>
@@ -528,46 +548,26 @@ class Groups extends Component {
                         </div>
                     )) : null}
                 <div>
-                    <Link to='/groups/creating_group' className='btn btn-primary' onClick={this.addGroup}>+Add
-                        group</Link>
+                    <Link to='/groups/creating_group' className='btn btn-primary' onClick={this.addGroup}>+Добавить
+                        группу</Link>
                 </div>
             </div>)
-        //     )
-        // } else {
-        //     return (
-        //         <div>
-        //             Loading...
-        //         </div>
-        //     )
-        //}
     }
-
-    // choose() {
-    //     let onCreatingGroup = this.props.onCreatingGroup;
-    //     let onCreatingUser = this.props.onCreatingUser;
-    //     if (onCreatingGroup) {
-    //         this.renderCreatingGroupPage()
-    //     } else if (onCreatingUser) {
-    //         this.renderCreatingUserPage()
-    //     } else {
-    //         this.renderCreatingMenuPage()
-    //     }
-    // }
 
     render() {
         console.log('render');
         return (
             <div>
                 {/*<Switch>*/}
-                    <Route exact path='/groups' render={this.renderGroupMenuPage}/>
-                    <Route path='/groups/group_list' render={this.renderGroupListPage}/>
-                    <Route path='/groups/creating_group' render={this.renderCreatingGroupPage}/>
-                    <Route path='/groups/creating_user' render={this.renderCreatingUserPage}/>
-                    {/*<Redirect from='/groups/group_list' to='`/groups/group_list/:id`' render={this.renderCreatingGroupPage}/>*/}
-                    {/*(props)=><ProjectPage projects={this.props.projects}{...props}*/}
-                    <Route exact path='/groups/:id' render={({match}) => (this.renderGroupPage(match.params.id))}/>
-                    <Route path='/groups/edit_group/:id' render={({match}) => (this.renderEditGroup(match.params.id))}/>
-                {/*</Switch>*/}
+                <Route exact path='/groups' render={this.renderGroupMenuPage}/>
+                <Route path='/groups/group_list' render={this.renderGroupListPage}/>
+                <Route path='/groups/creating_group' render={this.renderCreatingGroupPage}/>
+                <Route path='/groups/creating_user' render={this.renderCreatingUserPage}/>
+                <Route path="/groups/user_list" render={this.renderUserListPage}/>
+                {/*<Redirect from='/groups/group_list' to='`/groups/group_list/:id`' render={this.renderCreatingGroupPage}/>*/}
+                {/*(props)=><ProjectPage projects={this.props.projects}{...props}*/}
+                <Route exact path='/groups/:id' render={({match}) => (this.renderGroupPage(match.params.id))}/>
+                <Route path='/groups/edit_group/:id' render={({match}) => (this.renderEditGroup(match.params.id))}/>
             </div>
         );
     }
@@ -575,6 +575,6 @@ class Groups extends Component {
 
 
 export default connect(
-    state=>state.group,
-    dispatch=>bindActionCreators(actionCreators,dispatch)
+    state => state.group,
+    dispatch => bindActionCreators(actionCreators, dispatch)
 )(Groups);

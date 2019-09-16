@@ -1,61 +1,66 @@
 //first init
-export const firstInitGroupType='GET_GROUPS';
-export const firstInitGroupSucceededType='GET_GROUPS_SUCCEEDED';
-export const firstInitGroupFailedType='GET_GROUPS_SUCCEEDED';
+export const firstInitGroupType = 'GET_GROUPS';
+export const firstInitGroupSucceededType = 'GET_GROUPS_SUCCEEDED';
+export const firstInitGroupFailedType = 'GET_GROUPS_SUCCEEDED';
 
 //creating group
-export const createGroupType='CREATE_GROUP';
-export const createGroupSubmitType='CREATE_GROUP_SUBMIT';
-export const createGroupSucceededType='CREATE_GROUP_SUCCEEDED';
-export const createGroupFailedType='CREATE_GROUP_FAILED';
+export const createGroupType = 'CREATE_GROUP';
+export const createGroupSubmitType = 'CREATE_GROUP_SUBMIT';
+export const createGroupSucceededType = 'CREATE_GROUP_SUCCEEDED';
+export const createGroupFailedType = 'CREATE_GROUP_FAILED';
 
 //editing group
-export const editGroupType='EDIT_GROUP';
-export const editGroupSubmitType='EDIT_GROUP_SUBMIT';
-export const editGroupSucceededType='EDIT_GROUP_SUCCEEDED';
-export const editGroupFailedType='EDIT_GROUP_FAILED';
+export const editGroupType = 'EDIT_GROUP';
+export const editGroupSubmitType = 'EDIT_GROUP_SUBMIT';
+export const editGroupSucceededType = 'EDIT_GROUP_SUCCEEDED';
+export const editGroupFailedType = 'EDIT_GROUP_FAILED';
 
 //delete group
-export const deleteGroupType='DELETE_GROUP';
-export const deleteGroupSucceededType='DELETE_GROUP_SUCCEEDED';
-export const deleteGroupFailedType='DELETE_GROUP_FAILED';
+export const deleteGroupType = 'DELETE_GROUP';
+export const deleteGroupSucceededType = 'DELETE_GROUP_SUCCEEDED';
+export const deleteGroupFailedType = 'DELETE_GROUP_FAILED';
 
 //get group by id
-export const getGroupByIdType='GET_GROUPS_BY_ID';
-export const getGroupByIdSucceededType='GET_GROUPS_BY_ID_SUCCEEDED';
-export const getGroupByIdFailedType='GET_GROUPS_BY_ID_SUCCEEDED';
+export const getGroupByIdType = 'GET_GROUPS_BY_ID';
+export const getGroupByIdSucceededType = 'GET_GROUPS_BY_ID_SUCCEEDED';
+export const getGroupByIdFailedType = 'GET_GROUPS_BY_ID_SUCCEEDED';
 
 //get users from group
-export const getUsersType='GET_USERS';
-export const getUsersSucceededType='GET_USERS_SUCCEEDED';
-export const getUsersFailedType='GET_USERS_FAILED';
+export const getUsersFromGroupType = 'GET_USERS';
+export const getUsersFromGroupSucceededType = 'GET_USERS_SUCCEEDED';
+export const getUsersFromGroupFailedType = 'GET_USERS_FAILED';
 
 //creating user
-export const createUserType="CREATE_USER";
-export const createUserSubmitType="CREATE_USER_SUBMIT";
-export const createUserSucceededType="CREATE_USER_SUCCEEDED";
-export const createUserFailedType="CREATE_USER_FAILED";
+export const createUserType = "CREATE_USER";
+export const createUserSubmitType = "CREATE_USER_SUBMIT";
+export const createUserSucceededType = "CREATE_USER_SUCCEEDED";
+export const createUserFailedType = "CREATE_USER_FAILED";
 
 //get user
-export const getUserType='GET_USER';
-export const getUserSucceededType='GET_USER_SUCCEEDED';
-export const getUserFailedType='GET_USER_FAILED';
+export const getUserType = 'GET_USER';
+export const getUserSucceededType = 'GET_USER_SUCCEEDED';
+export const getUserFailedType = 'GET_USER_FAILED';
+
+//get all users
+export const getAllUsersType = 'GET_ALL_USERS';
+export const getAllUsersSucceededType = 'GET_ALL_USERS_SUCCEEDED';
+export const getAllUsersFailedType = 'GET_ALL_USERS_FAILED';
 
 //add user to group
-export const addUserToGroupType='ADD_USER_TO_GROUP';
-export const addUserToGroupSucceededType='ADD_USER_TO_GROUP_SUCCEEDED';
-export const addUserToGroupFailedType='ADD_USER_TO_GROUP_FAILED';
+export const addUserToGroupType = 'ADD_USER_TO_GROUP';
+export const addUserToGroupSucceededType = 'ADD_USER_TO_GROUP_SUCCEEDED';
+export const addUserToGroupFailedType = 'ADD_USER_TO_GROUP_FAILED';
 
-const initialState={
-    groups:[],
-    users:[], //??????
-    isLoaded:false,
-    onCreatingGroup:false,
-    onCreatingUser:false,
-    error:''
+const initialState = {
+    groups: [],
+    users: [], //??????
+    isLoaded: false,
+    onCreatingGroup: false,
+    onCreatingUser: false,
+    error: ''
 };
 
-export const actionCreators= {
+export const actionCreators = {
     getAllGroups: () => ({
         type: firstInitGroupType
     }),
@@ -65,6 +70,9 @@ export const actionCreators= {
     createGroupSubmit: (data) => ({
         type: createGroupSubmitType,
         data
+    }),
+    getAllUsers: () => ({
+        type: getAllUsersType
     }),
     getGroupById: () => ({
         type: getGroupByIdType
@@ -81,21 +89,22 @@ export const actionCreators= {
         groupId,
         data
     }),
-    getUsers: () => ({
-        type: getUsersType
+    getUsersFromGroup: () => ({
+        type: getUsersFromGroupType
     }),
     createUser: () => ({
-        type: createUserType
+        type: createUserType,
     }),
-    createUserSubmit: () => ({
-        type: createUserSubmitType
+    createUserSubmit: (data) => ({
+        type: createUserSubmitType,
+        data
     }),
     addUserToGroup: () => ({
         type: addUserToGroupType
     })
 };
 
-export const groupReducer=(state,action)=> {
+export const groupReducer = (state, action) => {
 
     state = state || initialState;
 
@@ -103,7 +112,7 @@ export const groupReducer=(state,action)=> {
         case firstInitGroupSucceededType:
             return {
                 ...state,
-                isLoaded:true,
+                isLoaded: true,
                 groups: action.groups
             };
         case firstInitGroupFailedType:
@@ -119,7 +128,7 @@ export const groupReducer=(state,action)=> {
         case createGroupSubmitType:
             return {
                 ...state,
-                isLoaded:false,
+                isLoaded: false,
                 onCreatingGroup: false,
             };
         case createGroupSucceededType:
@@ -127,7 +136,7 @@ export const groupReducer=(state,action)=> {
             temp.push(action.group);
             return {
                 ...state,
-                isLoaded:false,
+                isLoaded: false,
                 groups: temp
             };
         case createGroupFailedType:
@@ -146,12 +155,12 @@ export const groupReducer=(state,action)=> {
         case deleteGroupSucceededType:
             return {
                 ...state,
-                isLoaded:false
+                isLoaded: false
             };
         case deleteGroupFailedType:
             return {
                 ...state,
-                isLoaded:false
+                isLoaded: false
             };
         case createUserType:
             return {
@@ -164,11 +173,23 @@ export const groupReducer=(state,action)=> {
                 onCreatingUser: false
             };
         case createUserSucceededType:
+            console.log(action.user);
             let temp1 = state.users;
             temp1.push(action.user);
             return {
                 ...state,
                 users: temp1
+            };
+        case getAllUsersSucceededType:
+            return {
+                ...state,
+                users: action.users
+            };
+        case getAllUsersFailedType:
+            console.log(action.payload);
+            return {
+                ...state,
+                error: action.payload
             };
         default :
             return state;

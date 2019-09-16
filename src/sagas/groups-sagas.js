@@ -1,46 +1,30 @@
 import {call, put, takeLatest, all} from 'redux-saga/effects'
-import * as api from "../fakeApi"
+// import * as api from "../fakeApi"
 import {
-    initGroupsType,
-    initGroupsSucceededType,
-    initGroupsFailedType
-} from "../store/tableReducer";
-import {
-    firstInitGroupType,
-    firstInitGroupSucceededType,
-    firstInitGroupFailedType,
-    createGroupType,
-    createGroupSubmitType,
-    createGroupSucceededType,
-    createGroupFailedType,
-    editGroupType,
-    editGroupSucceededType,
-    editGroupFailedType,
-    deleteGroupType,
-    deleteGroupSucceededType,
-    deleteGroupFailedType,
-    getUsersType,
-    getUsersSucceededType,
-    getUsersFailedType,
-    getGroupByIdType,
-    getGroupByIdSucceededType,
-    getGroupByIdFailedType,
-    createUserSubmitType,
-    createUserSucceededType,
-    createUserFailedType,
-    getUserType,
+    firstInitGroupType, firstInitGroupSucceededType,
+    firstInitGroupFailedType, createGroupType,
+    createGroupSubmitType, createGroupSucceededType,
+    createGroupFailedType, editGroupType,
+    editGroupSucceededType, editGroupFailedType,
+    deleteGroupType, deleteGroupSucceededType,
+    deleteGroupFailedType, getGroupByIdType,
+    getGroupByIdSucceededType, getGroupByIdFailedType,
+    createUserSubmitType, createUserSucceededType,
+    createUserFailedType, getUserType,
     getUserSucceededType,
-    getUserFailedType,
-    addUserToGroupType,
-    addUserToGroupSucceededType,
-    addUserToGroupFailedType,
-    editGroupSubmitType
+    getUserFailedType, addUserToGroupType,
+    addUserToGroupSucceededType, addUserToGroupFailedType,
+    editGroupSubmitType, getAllUsersFailedType,
+    getAllUsersSucceededType,
+    getAllUsersType,
+    getUsersFromGroupFailedType,
+    getUsersFromGroupSucceededType,
+    getUsersFromGroupType
 } from "../store/groupReducer";
 
 //MAIN TABLE COMPONENT
 
 //GROUPS COMPONENT
-
 const url = 'http://localhost:8200';
 
 export function* getGroups() {
@@ -53,19 +37,20 @@ function* callGetGroups() {
         let headers = new Headers();
         // headers.append("Content-type", "text/html");
         // headers.append("Access-Control-Allow-Origin", "*");
-        const groups = yield fetch(url + '/groups',
+        const groups = yield call(() => fetch(url + '/groups',
             {
                 method: 'GET',
                 headers: headers,
                 // mode: "no-cors",
                 // body: null
             }).then(response => response.json())
-            .catch(error => console.error(error));
+            .catch(error => console.error(error)));
         // console.log('saga-get-groups-groups');
         console.log('saga groups: ', groups);
         //yield dispatch();
         yield put({type: firstInitGroupSucceededType, groups});
     } catch (error) {
+        console.log(error);
         yield put({type: firstInitGroupFailedType});
     }
 }
@@ -85,7 +70,7 @@ function* callCreateGroup({data}) {
         headers.append('Content-Type', "application/json");
         // headers.append("Content-type", "text/html");
         // headers.append("Access-Control-Allow-Origin", "*");
-        const group = yield fetch(url + '/groups',
+        const group = yield call(() => fetch(url + '/groups',
             {
                 method: 'POST',
                 headers: headers,
@@ -95,7 +80,7 @@ function* callCreateGroup({data}) {
                 // mode: "no-cors",
                 body: JSON.stringify(data)
             }).then(response => response.json())
-            .catch(error => console.log(error));
+            .catch(error => console.log(error)));
         console.log('saga-create-group', group);
         yield put({type: createGroupSucceededType, group})
     } catch (error) {
@@ -113,7 +98,7 @@ function* callEditGroup({groupId, data}) {
         console.log("saga-edit ", groupId, data);
         let headers = new Headers();
         headers.append('Content-Type', "application/json");
-        const group = yield call(fetch(url + '/groups/' + groupId.toString(),
+        const group = yield call(() => fetch(url + '/groups/' + groupId.toString(),
             {
                 method: 'PUT',
                 headers: headers,
@@ -123,6 +108,7 @@ function* callEditGroup({groupId, data}) {
             .catch(error => console.log(error)));
         yield put({type: editGroupSucceededType, group})
     } catch (error) {
+        console.log(error);
         yield put({type: editGroupFailedType})
     }
 }
@@ -136,7 +122,7 @@ function* callDeleteGroup({groupId}) {
         let headers = new Headers();
         console.log("saga-delete ", groupId);
         headers.append('Content-Type', "application/json");
-        yield call(fetch(url + '/groups/' + groupId.toString(),
+        yield call(() => fetch(url + '/groups/' + groupId.toString(),
             {
                 method: 'DELETE',
                 headers: headers
@@ -144,6 +130,7 @@ function* callDeleteGroup({groupId}) {
             .catch(error => console.log(error)));
         yield put({type: deleteGroupSucceededType})
     } catch (error) {
+        console.log(error);
         yield put({type: deleteGroupFailedType})
     }
 }
@@ -153,12 +140,13 @@ export function* getGroupById() {
     yield takeLatest(getGroupByIdType, callGetGroupById)
 }
 
-
 function* callGetGroupById({groupId}) {
     try {
-        const group = yield call(fetch(url + '/groups/' + groupId.toString(),
+        let headers = new Headers();
+        const group = yield call(() => fetch(url + '/groups/' + groupId.toString(),
             {
                 method: 'GET',
+                headers: headers
             }).then(response => response.json())
             .then(data => {
                 console.log(data)
@@ -166,19 +154,20 @@ function* callGetGroupById({groupId}) {
             .catch(error => console.error(error)));
         yield put({type: getGroupByIdSucceededType, group});
     } catch (error) {
+        console.log(error);
         yield put({type: getGroupByIdFailedType});
     }
 }
 
-//users
+//USERS
 
-export function* getUsers() {
-    yield takeLatest(getUsersType, callGetUsers)
+export function* getUsersFromGroup() {
+    yield takeLatest(getUsersFromGroupType, callGetUsersFromGroup)
 }
 
-function* callGetUsers({groupId}) {
+function* callGetUsersFromGroup({groupId}) {
     try {
-        const users = yield call(fetch(url + '/groups/' + groupId.toString() + '/users',
+        const users = yield call(() => fetch(url + '/groups/' + groupId.toString() + '/users',
             {
                 method: 'GET',
             }).then(response => response.json())
@@ -186,9 +175,10 @@ function* callGetUsers({groupId}) {
                 console.log(data)
             })
             .catch(error => console.error(error)));
-        yield put({type: getUsersSucceededType, users});
+        yield put({type: getUsersFromGroupSucceededType, users});
     } catch (error) {
-        yield put({type: getUsersFailedType});
+        console.log(error);
+        yield put({type: getUsersFromGroupFailedType});
     }
 }
 
@@ -199,8 +189,9 @@ export function* createUser() {
 function* callCreateUser({data}) {
     try {
         let headers = new Headers();
+        console.log("saga-create-user: ", data);
         headers.append('Content-Type', "application/json");
-        const user = yield call(fetch(url + '/students',
+        const user = yield call(() => fetch(url + '/users',
             {
                 method: 'POST',
                 headers: headers,
@@ -209,6 +200,7 @@ function* callCreateUser({data}) {
             .catch(error => console.log(error)));
         yield put({type: createUserSucceededType, user})
     } catch (error) {
+        console.log(error);
         yield put({type: createUserFailedType})
     }
 }
@@ -219,7 +211,7 @@ export function* getUser() {
 
 function* callGetUser({userId}) {
     try {
-        const user = yield call(fetch(url + '/students/' + userId.toString(),
+        const user = yield call(() => fetch(url + '/users/' + userId.toString(),
             {
                 method: 'GET',
             }).then(response => response.json())
@@ -229,10 +221,32 @@ function* callGetUser({userId}) {
             .catch(error => console.error(error)));
         yield put({type: getUserSucceededType, user});
     } catch (error) {
+        console.log(error);
         yield put({type: getUserFailedType});
     }
 }
 
+export function* getAllUsers() {
+    yield takeLatest(getAllUsersType, callGetAllUsers)
+}
+
+function* callGetAllUsers() {
+    try {
+        console.log("hello from saga get users!!");
+        let headers = new Headers();
+        const users = yield call(() => fetch(url + '/users',
+            {
+                method: 'GET',
+                headers: headers
+            }).then(response => response.json())
+            .catch(error => console.error(error)));
+        console.log("saga-get-user:", users);
+        yield put({type: getAllUsersSucceededType, users});
+    } catch (error) {
+        console.log(error);
+        yield put({type: getAllUsersFailedType});
+    }
+}
 
 //add user to group
 export function* addUserToGroup() {
@@ -247,7 +261,7 @@ function* callAddUserToGroup({userId, groupId}) {
             "GroupId": groupId
         };
         headers.append('Content-Type', "application/json");
-        yield call(fetch(url + '/students/assign',
+        yield call(() => fetch(url + '/users/assign',
             {
                 method: 'POST',
                 headers: headers,
@@ -255,6 +269,7 @@ function* callAddUserToGroup({userId, groupId}) {
             }).catch(error => console.log(error)));
         yield put({type: addUserToGroupSucceededType})
     } catch (error) {
+        console.log(error);
         yield put({type: addUserToGroupFailedType})
     }
 }
