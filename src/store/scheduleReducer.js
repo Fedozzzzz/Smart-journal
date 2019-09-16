@@ -1,27 +1,27 @@
 //init
-export const initScheduleType='INIT_SCHEDULE';
-export const initScheduleSucceededType='INIT_SCHEDULE_SUCCEEDED';
-export const initScheduleFailedType='INIT_SCHEDULE_FAILED';
+export const initScheduleType = 'INIT_SCHEDULE';
+export const initScheduleSucceededType = 'INIT_SCHEDULE_SUCCEEDED';
+export const initScheduleFailedType = 'INIT_SCHEDULE_FAILED';
 
 //edit
-export const editScheduleType='EDIT_SCHEDULE_TYPE';
-export const editScheduleSucceededType='EDIT_SCHEDULE_SUCCEEDED';
-export const editScheduleFailedType='EDIT_SCHEDULE_FAILED';
+export const editScheduleType = 'EDIT_SCHEDULE_TYPE';
+export const editScheduleSucceededType = 'EDIT_SCHEDULE_SUCCEEDED';
+export const editScheduleFailedType = 'EDIT_SCHEDULE_FAILED';
 
-export const editScheduleSubmitType='EDIT_SCHEDULE_SUBMIT';
+export const editScheduleSubmitType = 'EDIT_SCHEDULE_SUBMIT';
 
 // export const editUserSubmitedType='EDIT_SCHEDULE_SUBMITED'; //save
 //add
 
-const initialState={
-    schedule:[],
-    error:'',
-    isEdit:false,
+const initialState = {
+    schedule: [],
+    error: '',
+    isEdit: false,
     isEdited: false,
-    isLoaded:false
+    isLoaded: false
 };
 
-export const actionCreators= {
+export const actionCreators = {
     initSchedule: () => ({
         type: initScheduleType
     }),
@@ -36,7 +36,7 @@ export const actionCreators= {
     })
 };
 
-export const scheduleReducer=(state,action)=> {//action.type===????
+export const scheduleReducer = (state, action) => {//action.type===????
     console.log('scheduleReducer');
     state = state || initialState;
 

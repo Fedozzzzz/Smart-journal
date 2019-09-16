@@ -1,6 +1,7 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga'
-import { routerReducer, routerMiddleware } from 'react-router-redux';
+import {connectRouter, routerMiddleware} from "connected-react-router";
+// import { routerReducer, routerMiddleware } from 'react-router-redux';
 //import * as reducerForSaga from './reducerForSaga'
 import * as scheduleReducer from './scheduleReducer'
 import * as groupsReducer from './tableReducer'
@@ -35,7 +36,7 @@ export default function configureStore (history, initialState) {
 
   const rootReducer = combineReducers({
     ...reducers,
-    routing: routerReducer
+    router: connectRouter(history)
   });
 
   const store = createStore(

@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import {actionCreators} from "../store/scheduleReducer";
-import {Link,Switch,Route} from "react-router-dom"
+import {Switch, Route} from "react-router-dom"
+import {Link} from "react-router-dom";
 import "../css/Schedule.css"
 
 // eslint-disable-next-line no-extend-native
-Date.prototype.daysInMonth = function() {
+Date.prototype.daysInMonth = function () {
     return 32 - new Date(this.getFullYear(), this.getMonth(), 32).getDate();
 };
 
@@ -15,15 +16,16 @@ class Schedule extends Component {
     constructor(props, ctx) {
         super(props, ctx);
         this.state = {
-            date: '',
-            groupId: '',
+            date: "",
+            groupId: null,
             isSelected: false,
             newSchedule: []
         };
-        this.renderWeekSchedule = this.renderWeekSchedule.bind(this);
+        // this.renderWeekSchedule = this.renderWeekSchedule.bind(this);
         this.renderScheduleMenu = this.renderScheduleMenu.bind(this);
         this.renderWeekSchedule = this.renderWeekSchedule.bind(this);
         this.renderTableSchedule = this.renderTableSchedule.bind(this);
+        this.renderTrueSchedule = this.renderTrueSchedule.bind(this);
         this.onDateChange = this.onDateChange.bind(this);
         this.onGroupChange = this.onGroupChange.bind(this);
         this.onEdit = this.onEdit.bind(this);
@@ -202,6 +204,7 @@ class Schedule extends Component {
     }
 
     renderTrueSchedule() {
+        console.log("schedule props", this.props);
         let tableBody = [];
         let day = 1;
         let week = [];
@@ -274,11 +277,11 @@ class Schedule extends Component {
         // console.log(this.props.isEdit);
         return (
             <div>
-                <Switch>
+                {/*<Switch>*/}
                     <Route exact path='/schedule' render={this.renderScheduleMenu}/>
                     <Route path='/schedule/true_schedule' render={this.renderTrueSchedule}/>
                     <Route path='/schedule/week_schedule' render={this.renderWeekSchedule}/>
-                </Switch>
+                {/*</Switch>*/}
             </div>
         );
     }
@@ -305,6 +308,6 @@ class Schedule extends Component {
 // }
 
 export default connect(
-    state=> state.schedule,
-    dispatch=>bindActionCreators(actionCreators,dispatch)
+    state => state.schedule,
+    dispatch => bindActionCreators(actionCreators, dispatch)
 )(Schedule);

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { Collapse,
+import {
+    Collapse,
     Container,
     Navbar,
     NavbarBrand,
@@ -11,12 +12,13 @@ import { Collapse,
     DropdownMenu,
     DropdownItem
 } from 'reactstrap';
-import {Link, Route} from 'react-router-dom';
+// import {Link, Route} from 'react-router';
+import {Link} from "react-router-dom";
 import '../css/NavMenu.css';
 
 
 export default class NavMenu extends Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
 
         this.toggle = this.toggle.bind(this);
@@ -24,18 +26,20 @@ export default class NavMenu extends Component {
             isOpen: false
         };
     }
-    toggle () {
+
+    toggle() {
         this.setState({
             isOpen: !this.state.isOpen
         });
     }
-    render () {
+
+    render() {
         return (
             <header>
-                <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light >
+                <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light>
                     <Container>
                         <NavbarBrand tag={Link} to="/">UsersPaymentManager</NavbarBrand>
-                        <NavbarToggler onClick={this.toggle} className="mr-2" />
+                        <NavbarToggler onClick={this.toggle} className="mr-2"/>
                         <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={this.state.isOpen} navbar>
                             <ul className="navbar-nav flex-grow">
                                 <NavItem>
@@ -52,7 +56,7 @@ export default class NavMenu extends Component {
                                         <DropdownItem tag={Link} className="text-dark" to='/schedule/week_schedule'>
                                             Week Schedule
                                         </DropdownItem>
-                                        <DropdownItem divider />
+                                        <DropdownItem divider/>
                                         <DropdownItem tag={Link} className="text-dark" to="/schedule">
                                             Schedules
                                         </DropdownItem>

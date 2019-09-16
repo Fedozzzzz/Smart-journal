@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {actionCreators} from "../store/groupReducer";
-import {Link,Switch,Route} from "react-router-dom"
-
+import {Switch,Route} from "react-router-dom"
+import {Link} from "react-router-dom";
 import '../css/Groups.css'
 import {Redirect} from "react-router";
 
@@ -558,7 +558,7 @@ class Groups extends Component {
         console.log('render');
         return (
             <div>
-                <Switch>
+                {/*<Switch>*/}
                     <Route exact path='/groups' render={this.renderGroupMenuPage}/>
                     <Route path='/groups/group_list' render={this.renderGroupListPage}/>
                     <Route path='/groups/creating_group' render={this.renderCreatingGroupPage}/>
@@ -567,7 +567,7 @@ class Groups extends Component {
                     {/*(props)=><ProjectPage projects={this.props.projects}{...props}*/}
                     <Route exact path='/groups/:id' render={({match}) => (this.renderGroupPage(match.params.id))}/>
                     <Route path='/groups/edit_group/:id' render={({match}) => (this.renderEditGroup(match.params.id))}/>
-                </Switch>
+                {/*</Switch>*/}
             </div>
         );
     }
