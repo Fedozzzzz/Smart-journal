@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../store/groupReducer";
+import {actionCreators} from "../../store/groupReducer";
 import {Link} from "react-router-dom";
 
-class UserList extends Component {
+class UsersList extends Component {
 
     componentDidMount() {
         console.log("user-list-did-mount");
@@ -31,4 +31,4 @@ class UserList extends Component {
 export default connect(
     state => state.group,
     dispatch => bindActionCreators(actionCreators, dispatch)
-)(UserList)
+)(UsersList)

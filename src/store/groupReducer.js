@@ -87,19 +87,20 @@ export const actionCreators = {
     getAllUsers: () => ({
         type: getAllUsersType
     }),
-    getGroupById: () => ({
-        type: getGroupByIdType
+    getGroupById: (guid) => ({
+        type: getGroupByIdType,
+        guid
     }),
-    deleteGroup: (groupId) => ({
+    deleteGroup: (guid) => ({
         type: deleteGroupType,
-        groupId
+        guid
     }),
     editGroup: () => ({
         type: editGroupType,
     }),
-    editGroupSubmit: (groupId, data) => ({
+    editGroupSubmit: (guid, data) => ({
         type: editGroupSubmitType,
-        groupId,
+        guid,
         data
     }),
     getUsersFromGroup: () => ({
@@ -115,16 +116,16 @@ export const actionCreators = {
     addUserToGroup: () => ({
         type: addUserToGroupType
     }),
-    deleteUser: (id) => ({
+    deleteUser: (guid) => ({
         type: deleteUserType,
-        guid: id
+        guid
     }),
     editUser: () => ({
         type: editUserType,
     }),
-    editUserSubmit: (id, data) => ({
+    editUserSubmit: (guid, data) => ({
         type: editUserSubmitType,
-        guid: id,
+        guid,
         data
     }),
     getUserById: (id) => ({
@@ -227,6 +228,17 @@ export const groupReducer = (state, action) => {
                 ...state,
                 error: action.payload
             };
+        case getGroupByIdSucceededType:
+            return {
+                ...state,
+                groupById: action.groupById
+            };
+        case getGroupByIdFailedType: {
+            return {
+                ...state,
+                error: action.payload
+            }
+        }
         default :
             return state;
     }

@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../store/groupReducer";
+import {actionCreators} from "../../store/groupReducer";
 
-class EditUser extends Component {
+class UserEdit extends Component {
 
     constructor(props) {
         super(props);
@@ -111,4 +111,4 @@ class EditUser extends Component {
 export default connect(
     state => state.group,
     dispatch => bindActionCreators(actionCreators, dispatch)
-)(EditUser)
+)(UserEdit)
