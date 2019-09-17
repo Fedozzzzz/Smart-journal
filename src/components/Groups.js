@@ -5,6 +5,8 @@ import {actionCreators} from "../store/groupReducer";
 import {Route, Link} from "react-router-dom"
 import '../css/Groups.css'
 import User from "./User";
+import UserList from "./UserList";
+import EditUser from "./EditUser";
 
 
 class Groups extends Component {
@@ -98,6 +100,10 @@ class Groups extends Component {
     //     this.guid=id;
     //     //console.log("onchoose");
     // }
+
+    componentDidMount() {
+        this.props.getAllUsers();
+    }
 
     editGroup() {
         this.props.editGroup();
@@ -355,39 +361,39 @@ class Groups extends Component {
         )
     }
 
-    renderUserPage(id) {
-        console.log("render-user-page");
-        let user = {
-            "guid": id,
-            "amount": null,
-            "dept": null,
-            "updatedAt": null,
-            "name": null,
-            "surname": null,
-            "patronymic": null,
-            "phoneNumber": null,
-            "email": null
-        };
-        this.props.users.forEach(g => {
-            if (g.guid === id) {
-                user = g;
-               return g;
-            }
-        });
-        //const group = props;
-        //console.log(this.state.guid);
-        console.log(user);
-        return (
-            <div>
-                {/*<h3>{user.name}</h3>*/}
-                <User user={user}/>
-                {/*<Link to='/groups/user_list' className="btn btn-outline-danger"*/}
-                {/*      onClick={() => this.props.deleteUser(user.guid)}>Удалить</Link>*/}
-                {/*<Link to={`/groups/users/edit_user/${user.guid}`} className="btn btn-outline-warning"*/}
-                {/*      onClick={() => this.editUser(user.guid)}>Edit</Link>*/}
-            </div>
-        )
-    }
+    // renderUserPage(id) {
+    //     console.log("render-user-page");
+    //     let user = {
+    //         "guid": id,
+    //         "amount": null,
+    //         "dept": null,
+    //         "updatedAt": null,
+    //         "name": null,
+    //         "surname": null,
+    //         "patronymic": null,
+    //         "phoneNumber": null,
+    //         "email": null
+    //     };
+    //     this.props.users.forEach(g => {
+    //         if (g.guid === id) {
+    //             user = g;
+    //             return g;
+    //         }
+    //     });
+    //     //const group = props;
+    //     //console.log(this.state.guid);
+    //     console.log(user);
+    //     return (
+    //         <div>
+    //             {/*<h3>{user.name}</h3>*/}
+    //             <User user={user}/>
+    //             {/*<Link to='/groups/user_list' className="btn btn-outline-danger"*/}
+    //             {/*      onClick={() => this.props.deleteUser(user.guid)}>Удалить</Link>*/}
+    //             {/*<Link to={`/groups/users/edit_user/${user.guid}`} className="btn btn-outline-warning"*/}
+    //             {/*      onClick={() => this.editUser(user.guid)}>Edit</Link>*/}
+    //         </div>
+    //     )
+    // }
 
     renderGroupPage(id) {
         console.log("render-group-page");
@@ -619,9 +625,11 @@ class Groups extends Component {
                 <Route path='/groups/group_list' render={this.renderGroupListPage}/>
                 <Route path='/groups/creating_group' render={this.renderCreatingGroupPage}/>
                 <Route path='/groups/creating_user' render={this.renderCreatingUserPage}/>
-                <Route path="/groups/user_list" render={this.renderUserListPage}/>
+                <Route path="/groups/user_list" render={() => <UserList/>}/>
                 {/*<Route exact path='/groups/users/user_:id' render={({match}) => (this.renderUserPage(match.params.id))}/>*/}
                 <Route exact path='/groups/users/user_:id' render={({match}) => (<User userId={(match.params.id)}/>)}/>
+                <Route exact path='/groups/users/edit_user/user_:id'
+                       render={({match}) => (<EditUser userId={(match.params.id)}/>)}/>
                 {/*<Redirect from='/groups/group_list' to='`/groups/group_list/:id`' render={this.renderCreatingGroupPage}/>*/}
                 {/*(props)=><ProjectPage projects={this.props.projects}{...props}*/}
                 <Route exact path='/groups/:id' render={({match}) => (this.renderGroupPage(match.params.id))}/>

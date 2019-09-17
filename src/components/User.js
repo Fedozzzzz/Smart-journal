@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {actionCreators} from "../store/groupReducer";
+import {Link,Route} from "react-router-dom";
+import EditUser from "./EditUser";
+
 
 class User extends Component {
 
@@ -12,7 +15,6 @@ class User extends Component {
             userById: null
         }
     }
-
 
     componentDidMount() {
         console.log("props user:", this.props.userById);
@@ -31,7 +33,10 @@ class User extends Component {
                         <div>Номер телефона: {this.props.userById.phoneNumber}</div>
                         <div>Email : {this.props.userById.email}</div>
                     </div>) : null}
-
+                    <Link to='/groups/user_list' className="btn btn-outline-danger"
+                          onClick={() => this.props.deleteUser(this.props.userId)}>Удалить</Link>
+                    <Link to={`/groups/users/edit_user/user_${this.props.userId}`} className="btn btn-outline-warning"
+                          onClick={() => this.props.editUser(this.props.userId)}>Редактировать</Link>
                 </div>
             </div>
         )

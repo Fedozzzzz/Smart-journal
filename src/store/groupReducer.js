@@ -115,19 +115,19 @@ export const actionCreators = {
     addUserToGroup: () => ({
         type: addUserToGroupType
     }),
-    deleteUser: (id)=>({
+    deleteUser: (id) => ({
         type: deleteUserType,
         guid: id
     }),
     editUser: () => ({
         type: editUserType,
     }),
-    editUserSubmit: (guid, data) => ({
+    editUserSubmit: (id, data) => ({
         type: editUserSubmitType,
-        guid,
+        guid: id,
         data
     }),
-    getUserById: (id)=>({
+    getUserById: (id) => ({
         type: getUserType,
         guid: id
     })
@@ -180,7 +180,7 @@ export const groupReducer = (state, action) => {
         case editGroupFailedType:
             return {
                 ...state,
-                error:action.payload
+                error: action.payload
             };
         case deleteGroupSucceededType:
             return {
@@ -192,7 +192,7 @@ export const groupReducer = (state, action) => {
                 ...state,
                 isLoaded: false
             };
-        case getUserSucceededType:{
+        case getUserSucceededType: {
             return {
                 ...state,
                 userById: action.userById
