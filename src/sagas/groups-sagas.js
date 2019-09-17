@@ -19,7 +19,10 @@ import {
     getAllUsersType,
     getUsersFromGroupFailedType,
     getUsersFromGroupSucceededType,
-    getUsersFromGroupType
+    getUsersFromGroupType, deleteUserType,
+    deleteUserFailedType, deleteUserSucceededType,
+    editUserFailedType, editUserSubmitType,
+    editUserType, editUserSucceededType
 } from "../store/groupReducer";
 
 //MAIN TABLE COMPONENT
@@ -90,7 +93,7 @@ function* callCreateGroup({data}) {
 }
 
 export function* editGroup() {
-    yield takeLatest(editGroupSubmitType, callEditGroup)
+    yield takeLatest(editUserSubmitType, callEditGroup)
 }
 
 function* callEditGroup({groupId, data}) {
@@ -98,7 +101,7 @@ function* callEditGroup({groupId, data}) {
         console.log("saga-edit ", groupId, data);
         let headers = new Headers();
         headers.append('Content-Type', "application/json");
-        const group = yield call(() => fetch(url + '/groups/' + groupId.toString(),
+        const user = yield call(() => fetch(url + '/groups/' + groupId.toString(),
             {
                 method: 'PUT',
                 headers: headers,
@@ -106,10 +109,10 @@ function* callEditGroup({groupId, data}) {
                 body: JSON.stringify(data)
             }).then(response => response.json())
             .catch(error => console.log(error)));
-        yield put({type: editGroupSucceededType, group})
+        yield put({type: editUserSucceededType, user})
     } catch (error) {
         console.log(error);
-        yield put({type: editGroupFailedType})
+        yield put({type: editUserFailedType})
     }
 }
 
@@ -209,17 +212,17 @@ export function* getUser() {
     yield takeLatest(getUserType, callGetUser)
 }
 
-function* callGetUser({userId}) {
+function* callGetUser({guid}) {
     try {
-        const user = yield call(() => fetch(url + '/users/' + userId.toString(),
+        const userById = yield call(() => fetch(url + '/users/' + guid.toString(),
             {
                 method: 'GET',
             }).then(response => response.json())
-            .then(data => {
-                console.log(data)
-            })
+            // .then(data => {
+            //     console.log(data)
+            // })
             .catch(error => console.error(error)));
-        yield put({type: getUserSucceededType, user});
+        yield put({type: getUserSucceededType, userById});
     } catch (error) {
         console.log(error);
         yield put({type: getUserFailedType});
@@ -245,6 +248,52 @@ function* callGetAllUsers() {
     } catch (error) {
         console.log(error);
         yield put({type: getAllUsersFailedType});
+    }
+}
+
+export function* deleteUser() {
+    yield takeLatest(deleteUserType, callDeleteUser)
+}
+
+function* callDeleteUser({guid}) {
+    try {
+        let headers = new Headers();
+        console.log("saga-delete-user ", guid);
+        headers.append('Content-Type', "application/json");
+        yield call(() => fetch(url + '/users/' + guid.toString(),
+            {
+                method: 'DELETE',
+                headers: headers
+            }).then(response => response.json())
+            .catch(error => console.log(error)));
+        yield put({type: deleteUserSucceededType})
+    } catch (error) {
+        console.log(error);
+        yield put({type: deleteUserFailedType})
+    }
+}
+
+export function* editUser() {
+    yield takeLatest(editGroupSubmitType, callEditUser)
+}
+
+function* callEditUser({guid, data}) {
+    try {
+        console.log("saga-edit-user", guid, data);
+        let headers = new Headers();
+        headers.append('Content-Type', "application/json");
+        const group = yield call(() => fetch(url + '/groups/' + guid.toString(),
+            {
+                method: 'PUT',
+                headers: headers,
+                // mode: "no-cors",
+                body: JSON.stringify(data)
+            }).then(response => response.json())
+            .catch(error => console.log(error)));
+        yield put({type: editGroupSucceededType, group})
+    } catch (error) {
+        console.log(error);
+        yield put({type: editGroupFailedType})
     }
 }
 

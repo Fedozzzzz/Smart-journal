@@ -2,7 +2,7 @@ import {all} from "redux-saga/effects"
 import {initGroups, editUser, editUserSubmit} from "./table-sagas";
 import {
     createGroup, getGroups, addUserToGroup, createUser, deleteGroup
-    , editGroup, getGroupById, getUser, getUsersFromGroup, getAllUsers
+    , editGroup, getGroupById, getUser, getUsersFromGroup, getAllUsers, deleteUser
 } from "./groups-sagas";
 import {editSchedule, getSchedule} from "./schedule-sagas";
 
@@ -23,6 +23,7 @@ export default function* rootSaga() {
         addUserToGroup(),
         getSchedule(),
         editSchedule(),
-        getAllUsers()
+        getAllUsers(),
+        deleteUser()
     ])
 }

@@ -36,10 +36,23 @@ export const createUserSubmitType = "CREATE_USER_SUBMIT";
 export const createUserSucceededType = "CREATE_USER_SUCCEEDED";
 export const createUserFailedType = "CREATE_USER_FAILED";
 
-//get user
+//delete user
+export const deleteUserType = "DELETE_USER";
+export const deleteUserSucceededType = "DELETE_USER_SUCCEEDED";
+export const deleteUserFailedType = "DELETE_USER_FAILED";
+
+//get user by id
 export const getUserType = 'GET_USER';
 export const getUserSucceededType = 'GET_USER_SUCCEEDED';
 export const getUserFailedType = 'GET_USER_FAILED';
+
+
+//edit user
+export const editUserType = 'EDIT_USER';
+export const editUserSubmitType = 'EDIT_USER_SUBMIT';
+export const editUserSucceededType = 'EDIT_USER_SUCCEEDED';
+export const editUserFailedType = 'EDIT_USER_FAILED';
+
 
 //get all users
 export const getAllUsersType = 'GET_ALL_USERS';
@@ -101,6 +114,22 @@ export const actionCreators = {
     }),
     addUserToGroup: () => ({
         type: addUserToGroupType
+    }),
+    deleteUser: (id)=>({
+        type: deleteUserType,
+        guid: id
+    }),
+    editUser: () => ({
+        type: editUserType,
+    }),
+    editUserSubmit: (guid, data) => ({
+        type: editUserSubmitType,
+        guid,
+        data
+    }),
+    getUserById: (id)=>({
+        type: getUserType,
+        guid: id
     })
 };
 
@@ -151,6 +180,7 @@ export const groupReducer = (state, action) => {
         case editGroupFailedType:
             return {
                 ...state,
+                error:action.payload
             };
         case deleteGroupSucceededType:
             return {
@@ -162,6 +192,12 @@ export const groupReducer = (state, action) => {
                 ...state,
                 isLoaded: false
             };
+        case getUserSucceededType:{
+            return {
+                ...state,
+                userById: action.userById
+            }
+        }
         case createUserType:
             return {
                 ...state,
