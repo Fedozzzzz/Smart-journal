@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-//import{actionCreators} from "../store/reducerForSaga";
 import * as actionCreators1 from "../store/tableReducer";
 // import * as actionCreators from "../store/tableReducer"
 

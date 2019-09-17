@@ -6,8 +6,6 @@ import * as api from '../fakeApi'
 import {initGroupsFailedType, initGroupsSucceededType, initGroupsType , editGroupsFailedType, editGroupsType,editUserSubmitedType,editGroupsSucceededType} from "../store/tableReducer";
 
 
-
-
 export function* initGroups() {
     yield takeLatest(initGroupsType, callInitGroups)
 }
