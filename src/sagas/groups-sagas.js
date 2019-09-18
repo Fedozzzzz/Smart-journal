@@ -51,7 +51,7 @@ export function* createGroup() {
 
 function* callCreateGroup({data}) {
     try {
-        console.log("data-from-saga", data.startTimes = [false, false]);
+        console.log("data-from-saga", data);
         let headers = new Headers();
         headers.append('Content-Type', "application/json");
         const group = yield call(() => fetch(url + '/groups',

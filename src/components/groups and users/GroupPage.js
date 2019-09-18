@@ -4,6 +4,8 @@ import {bindActionCreators} from "redux";
 import {actionCreators} from "../../store/groupReducer";
 import {Link} from "react-router-dom";
 
+import "../../css/GroupPage.css"
+
 class GroupPage extends Component {
 
     constructor(props) {
@@ -19,6 +21,17 @@ class GroupPage extends Component {
         this.props.getGroupById(this.props.groupId);
     }
 
+    renderSchedule() {
+        let res = [];
+        for (let i = 0; i < 7; i++) {
+            res.push(<td key={i}
+                className={this.props.groupById.days[i] ? "cell_active" : "cell"}>
+                {this.props.groupById.startTimes[i]}
+            </td>)
+        }
+        return res;
+    }
+
     render() {
         console.log("render of group page ", this.props.groupById);//should add redirect
         return (
@@ -31,6 +44,24 @@ class GroupPage extends Component {
                             <div>Цена за занятие: {this.props.groupById.cost}</div>
                             <div>Продолжительность занятия: {this.props.groupById.duration}</div>
                             <div>Расписание:</div>
+                            <table className='table table-striped table-bordered'>
+                                <thead>
+                                <tr>
+                                    <td>ПН</td>
+                                    <td>ВТ</td>
+                                    <td>СР</td>
+                                    <td>ЧТ</td>
+                                    <td>ПТ</td>
+                                    <td>СБ</td>
+                                    <td>ВС</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    {this.renderSchedule()}
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div>
                             <Link to='/groups/group_list' className="btn btn-outline-danger"

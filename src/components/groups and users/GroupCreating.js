@@ -9,7 +9,19 @@ class GroupCreating extends Component {
 
     constructor(props) {
         super(props);
+        let tempMap = new Map();
+        for (let i = 0; i < 7; i++) {
+            tempMap.set(i + "cb", false);
+        }
+        this.state = {
+            checkboxes: tempMap
+        };
         this.onSaveGroup = this.onSaveGroup.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    componentDidMount() {
+        this.props.getAllUsers();
     }
 
     onSaveGroup() {
@@ -23,24 +35,59 @@ class GroupCreating extends Component {
         };
         cash.name = document.getElementById('groupName').value;
         cash.cost = document.getElementById('cost').value;
-        let size = document.getElementsByName("cbName").length;
-        //console.log(document.getElementsByName("cbName")[0].checked);
-        for (let i = 0; i < size; i++) {
-            //console.log(document.getElementsByName("cbName")[i].checked);
+        cash.duration = document.getElementById("duration").value;
+        for (let i = 0; i < document.getElementsByName("startTimes").length; i++) {
+            cash.startTimes.push(document.getElementsByName("startTimes")[i].value)
+        }
+        for (let i = 0; i < document.getElementsByName("cbName").length; i++) {
             cash.days.push(document.getElementsByName("cbName")[i].checked)
         }
-        //console.log("checkbox", document.getElementById("blankCheckbox").checked);
-        cash.duration = 0;
-        console.log(cash);
-        //this.setState({group:cash});
         this.props.createGroupSubmit(cash);
     }
 
+    handleChange(e) {
+        this.setState({checkboxes: this.state.checkboxes.set(e.target.id, e.target.checked)});
+    }
+
+    renderCheckBoxes() {
+        let result = [];
+        for (let i = 0; i < 7; i++) {
+            result.push(<td>
+                <form>
+                    <input className="form-check-input"
+                           type="checkbox"
+                           onChange={this.handleChange}
+                           id={i + "cb"}
+                           name="cbName"
+                           aria-label="..."/>
+                </form>
+            </td>)
+        }
+        return result;
+    }
+
+    renderStartTimeInputs() {
+        let result = [];
+        for (let i = 0; i < 7; i++) {
+            result.push(<td>
+                <input
+                    className="form-control cell"
+                    type="time"
+                    id={i + "stForm"}
+                    name="startTimes"
+                    disabled={!this.state.checkboxes.get(i + "cb")}
+                />
+            </td>)
+        }
+        return result;
+    }
+
     render() {
-        return (<div>
+        return (<div className="container-fluid">
                 <div>
                     <form className="form-inline">
-                        <label htmlFor="example-text-input" className="col-xs-2 col-form-label">Название</label>
+                        <label htmlFor="example-text-input"
+                               className="col-xs-4 col-form-label">Название</label>
                         <div className="col-xs-10">
                             <input className="form-control"
                                    type="text"
@@ -61,97 +108,46 @@ class GroupCreating extends Component {
                             />
                         </div>
                     </form>
+                    <form className="form-inline">
+                        <label htmlFor="example-text-input"
+                               className="col-xs-4 col-form-label">Продолжительность
+                            занятия</label>
+                        <div className="col-xs-10">
+                            <input className="form-control"
+                                   type="number"
+                                   placeholder="Продолжительность (в мин.)"
+                                   id='duration'
+                            />
+                        </div>
+                    </form>
                 </div>
                 < label
                     htmlFor="example-text-input"
                     className="col-xs-2 col-form-label"> Расписание
                     :</label>
-                <table className='table table-striped'>
-                    <thead>
-                    <tr>
-                        <td>ПН</td>
-                        <td>ВТ</td>
-                        <td>СР</td>
-                        <td>ЧТ</td>
-                        <td>ПТ</td>
-                        <td>СБ</td>
-                        <td>ВС</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <form>
-                                <input className="form-check-input"
-                                       type="checkbox"
-                                       id="blankCheckbox"
-                                       name="cbName"
-                                       aria-label="..."/>
-                            </form>
-                        </td>
-                        <td>
-                            <form>
-                                <input className="form-check-input"
-                                       type="checkbox"
-                                       id="blankCheckbox"
-                                       name="cbName"
-                                       aria-label="..."/>
-                            </form>
-                        </td>
-                        <td>
-                            <form>
-                                <input className="form-check-input"
-                                       type="checkbox"
-                                       id="blankCheckbox"
-                                       name="cbName"
-                                       aria-label="..."/>
-                            </form>
-                        </td>
-                        <td>
-                            <form>
-                                <input className="form-check-input"
-                                       type="checkbox"
-                                       id="blankCheckbox"
-                                       name="cbName"
-                                       aria-label="..."/>
-                            </form>
-                        </td>
-                        <td>
-                            <form>
-                                <input className="form-check-input"
-                                       type="checkbox"
-                                       id="blankCheckbox"
-                                       name="cbName"
-                                       aria-label="..."/>
-                            </form>
-                        </td>
-                        <td>
-                            <form>
-                                <input className="form-check-input"
-                                       type="checkbox"
-                                       id="blankCheckbox"
-                                       name="cbName"
-                                       aria-label="..."/>
-                            </form>
-                        </td>
-                        <td>
-                            <form>
-                                <input className="form-check-input"
-                                       type="checkbox"
-                                       id="blankCheckbox"
-                                       name="cbName"
-                                       aria-label="..."/>
-                            </form>
-                        </td>
-                    </tr>
-                    {/*<tr>
-<td>
-<input className="form-control" id="disabledInput" type="text"
-placeholder="Disabled input here..." disabled/>
-</td>
-</tr>*/}
-                    </tbody>
-                </table>
+                <div className="create-group__schedule-table">
+                    <table className='table table-striped table-bordered'>
+                        <thead>
+                        <tr>
+                            <th>ПН</th>
+                            <th>ВТ</th>
+                            <th>СР</th>
+                            <th>ЧТ</th>
+                            <th>ПТ</th>
+                            <th>СБ</th>
+                            <th>ВС</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            {this.renderCheckBoxes()}
+                        </tr>
+                        <tr>
+                            {this.renderStartTimeInputs()}
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <div>
                     <Link className='btn btn-success' onClick={this.onSaveGroup}
                           to='/groups/group_list'>Сохранить</Link>

@@ -18,7 +18,7 @@ class GroupsList extends Component {
                 <h3>Группы</h3>
                 {this.props.groups ?
                     this.props.groups.map(group => (
-                        <div key={group.name}>
+                        <div>
                             <h5><Link to={`/groups/group_list/group_${group.guid}`}>{group.name}</Link></h5>
                         </div>
                     )) : null}
