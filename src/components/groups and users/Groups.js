@@ -13,6 +13,7 @@ import GroupsCreating from "./GroupCreating";
 import GroupsEdit from "./GroupEdit";
 import GroupPage from "./GroupPage";
 import UserCreating from "./UserCreating";
+import AddUserToGroup from "./AddUserToGroup";
 
 
 class Groups extends Component {
@@ -34,6 +35,8 @@ class Groups extends Component {
                        render={({match}) => (<GroupPage groupId={match.params.id}/>)}/>
                 <Route path='/groups/edit_group/group_:id'
                        render={({match}) => (<GroupsEdit groupId={match.params.id}/>)}/>
+                <Route path='/groups/edit_group/add_users_to_group/group_:id'
+                       render={({match}) => (<AddUserToGroup groupId={match.params.id}/>)}/>
             </div>
         );
     }

@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {actionCreators} from "../../store/groupReducer";
 import {Link} from "react-router-dom";
+import Loading from "../Loading";
 
 class GroupsList extends Component {
 
@@ -21,7 +22,7 @@ class GroupsList extends Component {
                         <div>
                             <h5><Link to={`/groups/group_list/group_${group.guid}`}>{group.name}</Link></h5>
                         </div>
-                    )) : null}
+                    )) : <Loading/>}
                 <div>
                     <Link to='/groups/creating_group' className='btn btn-primary' onClick={this.props.createGroup}>+Добавить
                         группу</Link>

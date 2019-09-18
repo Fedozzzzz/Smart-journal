@@ -61,6 +61,7 @@ export const getAllUsersFailedType = 'GET_ALL_USERS_FAILED';
 
 //add user to group
 export const addUserToGroupType = 'ADD_USER_TO_GROUP';
+export const addUserToGroupSubmitType = 'ADD_USER_TO_GROUP_SUBMIT';
 export const addUserToGroupSucceededType = 'ADD_USER_TO_GROUP_SUCCEEDED';
 export const addUserToGroupFailedType = 'ADD_USER_TO_GROUP_FAILED';
 
@@ -103,8 +104,9 @@ export const actionCreators = {
         guid,
         data
     }),
-    getUsersFromGroup: () => ({
-        type: getUsersFromGroupType
+    getUsersFromGroup: (groupId) => ({
+        type: getUsersFromGroupType,
+        groupId
     }),
     createUser: () => ({
         type: createUserType,
@@ -113,8 +115,13 @@ export const actionCreators = {
         type: createUserSubmitType,
         data
     }),
-    addUserToGroup: () => ({
+    addUsersToGroup: () => ({
         type: addUserToGroupType
+    }),
+    addUsersToGroupSubmit: (groupId, userId) => ({
+        type: addUserToGroupSubmitType,
+        groupId,
+        userId
     }),
     deleteUser: (guid) => ({
         type: deleteUserType,
@@ -234,6 +241,18 @@ export const groupReducer = (state, action) => {
                 groupById: action.groupById
             };
         case getGroupByIdFailedType: {
+            return {
+                ...state,
+                error: action.payload
+            }
+        }
+        case getUsersFromGroupSucceededType: {
+            return {
+                ...state,
+                usersFromGroup: action.usersFromGroup
+        }
+        }
+        case getUsersFromGroupFailedType: {
             return {
                 ...state,
                 error: action.payload

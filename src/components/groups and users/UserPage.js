@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {actionCreators} from "../../store/groupReducer";
 import {Link} from "react-router-dom";
+import Loading from "../Loading";
 
 
 class UserPage extends Component {
@@ -33,9 +34,10 @@ class UserPage extends Component {
                         <div>Email : {this.props.userById.email}</div>
                         <Link to='/groups/user_list' className="btn btn-outline-danger"
                               onClick={() => this.props.deleteUser(this.props.userId)}>Удалить</Link>
-                        <Link to={`/groups/users/edit_user/user_${this.props.userId}`} className="btn btn-outline-warning"
+                        <Link to={`/groups/users/edit_user/user_${this.props.userId}`}
+                              className="btn btn-outline-warning"
                               onClick={() => this.props.editUser(this.props.userId)}>Редактировать</Link>
-                    </div>) : null}
+                    </div>) : <Loading/>}
 
                 </div>
             </div>

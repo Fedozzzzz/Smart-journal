@@ -5,6 +5,7 @@ import {actionCreators} from "../../store/groupReducer";
 import {Link} from "react-router-dom";
 
 import "../../css/GroupPage.css"
+import Loading from "../Loading";
 
 class GroupPage extends Component {
 
@@ -19,13 +20,14 @@ class GroupPage extends Component {
     componentDidMount() {
         // console.log("props user:", this.props.userById);
         this.props.getGroupById(this.props.groupId);
+        this.props.getUsersFromGroup(this.props.groupId);
     }
 
     renderSchedule() {
         let res = [];
         for (let i = 0; i < 7; i++) {
             res.push(<td key={i}
-                className={this.props.groupById.days[i] ? "cell_active" : "cell"}>
+                         className={this.props.groupById.days[i] ? "cell_active" : "cell"}>
                 {this.props.groupById.startTimes[i]}
             </td>)
         }
@@ -33,7 +35,8 @@ class GroupPage extends Component {
     }
 
     render() {
-        console.log("render of group page ", this.props.groupById);//should add redirect
+        // console.log("render of group page ", this.props.groupById);//should add redirect
+        console.log("props", this.props);
         return (
             <div className="container">
                 <div className="group-page__info">
@@ -64,13 +67,28 @@ class GroupPage extends Component {
                             </table>
                         </div>
                         <div>
-                            <Link to='/groups/group_list' className="btn btn-outline-danger"
+                            <h5>Студенты этой группы:</h5>{
+                            this.props.usersFromGroup ?
+                                this.props.usersFromGroup.map(user => (
+                                    <div>
+                                        <Link
+                                            to={`/groups/users/user_${user.guid}`}>{user.name} {user.surname} {user.patronymic}</Link>
+                                    </div>
+                                )) : <Loading/>
+                        }
+                        </div>
+                        <div>
+                            <Link to='/groups/group_list'
+                                  className="btn btn-outline-danger"
                                   onClick={() => this.props.deleteGroup(this.props.groupId)}>Удалить</Link>
                             <Link to={`/groups/edit_group/group_${this.props.groupId}`}
                                   className="btn btn-outline-warning"
-                                  onClick={() => this.props.editGroup(this.props.groupById.guid)}>Редактировать</Link>
+                                  onClick={() => this.props.editGroup(this.props.groupId.guid)}>Редактировать</Link>
+                            <Link to={`/groups/edit_group/add_users_to_group/group_${this.props.groupId}`}
+                                  className="btn btn-outline-primary"
+                                  onClick={() => this.props.addUsersToGroup()}>Добавить учеников</Link>
                         </div>
-                    </div> : null}
+                    </div> : <Loading/>}
                 </div>
             </div>
         )

@@ -30,24 +30,6 @@ class GroupEdit extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         console.log("did-update");
-        // let promise = new Promise(() =>
-        //     this.props.getGroupById(this.props.groupId)
-        // );
-        // promise.then(res => {
-        //     console.log("promise:");
-        //     // console.log(this.state);
-        //     let tempMap = new Map();
-        //     // for (let i = 0; i < 7; i++) {
-        //     //     tempMap.set(i + "cbEdit", false);
-        //     // }
-        //     for (let i = 0; i < 7; i++) {
-        //         tempMap.set(i + "cbEdit", this.props.groupId.days[i]);
-        //     }
-        //     this.setState({
-        //         checkboxes: tempMap
-        //     })
-        // })
-
         if (this.props.groupById !== prevProps.groupById) {
             // console.log(this.props.groupById);
             // console.log()
@@ -209,6 +191,9 @@ class GroupEdit extends Component {
                 <div>
                     <Link to='/groups/group_list' className='btn btn-success'
                           onClick={this.onSaveEditGroup}>Сохранить</Link>
+                    <Link to={`/groups/edit_group/add_users_to_group/group_${this.props.groupById.guid}`}
+                          className="btn btn-outline-primary"
+                          onClick={() => this.props.deleteGroup(this.props.groupId)}>Добавить учеников</Link>
                 </div>
             </div>
         )

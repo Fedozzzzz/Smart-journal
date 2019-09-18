@@ -14,7 +14,7 @@ import {
     getUsersFromGroupType, deleteUserType,
     deleteUserFailedType, deleteUserSucceededType,
     editUserFailedType, editUserSubmitType,
-    editUserSucceededType
+    editUserSucceededType, addUserToGroupSubmitType
 } from "../store/groupReducer";
 
 //MAIN TABLE COMPONENT
@@ -31,15 +31,12 @@ export function* getUsersFromGroup() {
 
 function* callGetUsersFromGroup({groupId}) {
     try {
-        const users = yield call(() => fetch(url + '/groups/' + groupId.toString() + '/users',
+        const usersFromGroup = yield call(() => fetch(url + '/groups/' + groupId.toString() + '/users',
             {
                 method: 'GET',
             }).then(response => response.json())
-            .then(data => {
-                console.log(data)
-            })
             .catch(error => console.error(error)));
-        yield put({type: getUsersFromGroupSucceededType, users});
+        yield put({type: getUsersFromGroupSucceededType, usersFromGroup});
     } catch (error) {
         console.log(error);
         yield put({type: getUsersFromGroupFailedType});
@@ -160,10 +157,10 @@ function* callEditUser({guid, data}) {
 
 //add user to group
 export function* addUserToGroup() {
-    yield takeLatest(addUserToGroupType, callAddUserToGroup)
+    yield takeLatest(addUserToGroupSubmitType, callAddUserToGroup)
 }
 
-function* callAddUserToGroup({userId, groupId}) {
+function* callAddUserToGroup({groupId, userId}) {
     try {
         let headers = new Headers();
         const data = {
