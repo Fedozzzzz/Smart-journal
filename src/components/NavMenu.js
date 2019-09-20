@@ -12,7 +12,6 @@ import {
     DropdownMenu,
     DropdownItem
 } from 'reactstrap';
-// import {Link, Route} from 'react-router';
 import {Link} from "react-router-dom";
 import '../css/NavMenu.css';
 
@@ -38,32 +37,38 @@ export default class NavMenu extends Component {
             <header>
                 <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light>
                     <Container>
-                        <NavbarBrand tag={Link} to="/">UsersPaymentManager</NavbarBrand>
+                        <NavbarBrand tag={Link} to="/">SMART JOURNAL</NavbarBrand>
                         <NavbarToggler onClick={this.toggle} className="mr-2"/>
                         <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={this.state.isOpen} navbar>
                             <ul className="navbar-nav flex-grow">
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/payment">Payment</NavLink>
+                                    <NavLink tag={Link} className="text-dark" to="/payment">Управление платежами</NavLink>
                                 </NavItem>
-                                <UncontrolledDropdown nav inNavbar>
-                                    <DropdownToggle nav caret>
-                                        Schedule
-                                    </DropdownToggle>
-                                    <DropdownMenu right>
-                                        <DropdownItem tag={Link} className="text-dark" to='/schedule/true_schedule'>
-                                            True Schedule
-                                        </DropdownItem>
-                                        <DropdownItem tag={Link} className="text-dark" to='/schedule/week_schedule'>
-                                            Week Schedule
-                                        </DropdownItem>
-                                        <DropdownItem divider/>
-                                        <DropdownItem tag={Link} className="text-dark" to="/schedule">
-                                            Schedules
-                                        </DropdownItem>
-                                    </DropdownMenu>
-                                </UncontrolledDropdown>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/groups">Groups</NavLink>
+                                    <NavLink tag={Link} className="text-dark" to="/schedule">Расписание</NavLink>
+                                </NavItem>
+                                {/*<UncontrolledDropdown nav inNavbar>*/}
+                                {/*    <DropdownToggle nav caret>*/}
+                                {/*        Schedule*/}
+                                {/*    </DropdownToggle>*/}
+                                {/*    <DropdownMenu right>*/}
+                                {/*        <DropdownItem tag={Link} className="text-dark" to='/schedule/true_schedule'>*/}
+                                {/*            True Schedule*/}
+                                {/*        </DropdownItem>*/}
+                                {/*        <DropdownItem tag={Link} className="text-dark" to='/schedule/week_schedule'>*/}
+                                {/*            Week Schedule*/}
+                                {/*        </DropdownItem>*/}
+                                {/*        <DropdownItem divider/>*/}
+                                {/*        <DropdownItem tag={Link} className="text-dark" to="/schedule">*/}
+                                {/*            Schedules*/}
+                                {/*        </DropdownItem>*/}
+                                {/*    </DropdownMenu>*/}
+                                {/*</UncontrolledDropdown>*/}
+                                <NavItem>
+                                    <NavLink tag={Link} className="text-dark" to="/groups">Группы</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink tag={Link} className="text-dark" to="/users">Студенты</NavLink>
                                 </NavItem>
                             </ul>
                         </Collapse>

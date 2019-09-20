@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 
 export default () => (
     <div>
-        <Link to='/groups/group_list' className='btn btn-outline-primary'>
+        <Link to='/groups/' className='btn btn-outline-primary'>
             Список групп
         </Link>
         <Link to='groups/user_list' className="btn btn-outline-primary">

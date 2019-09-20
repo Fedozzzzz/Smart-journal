@@ -1,32 +1,14 @@
 import {call, put, takeLatest, all} from 'redux-saga/effects'
 // import * as api from "../fakeApi"
-import {
-    createUserSubmitType, createUserSucceededType,
-    createUserFailedType, getUserType,
-    getUserSucceededType,
-    getUserFailedType, addUserToGroupType,
-    addUserToGroupSucceededType, addUserToGroupFailedType,
-    getAllUsersFailedType,
-    getAllUsersSucceededType,
-    getAllUsersType,
-    getUsersFromGroupFailedType,
-    getUsersFromGroupSucceededType,
-    getUsersFromGroupType, deleteUserType,
-    deleteUserFailedType, deleteUserSucceededType,
-    editUserFailedType, editUserSubmitType,
-    editUserSucceededType, addUserToGroupSubmitType
-} from "../store/groupReducer";
+import {actionTypes} from "../store/groupReducer";
 
-//MAIN TABLE COMPONENT
-
-//GROUPS COMPONENT
+//url
 const url = 'http://localhost:8200';
-
 
 //USERS
 
 export function* getUsersFromGroup() {
-    yield takeLatest(getUsersFromGroupType, callGetUsersFromGroup)
+    yield takeLatest(actionTypes.getUsersFromGroupType, callGetUsersFromGroup)
 }
 
 function* callGetUsersFromGroup({groupId}) {
@@ -36,15 +18,15 @@ function* callGetUsersFromGroup({groupId}) {
                 method: 'GET',
             }).then(response => response.json())
             .catch(error => console.error(error)));
-        yield put({type: getUsersFromGroupSucceededType, usersFromGroup});
+        yield put({type: actionTypes.getUsersFromGroupSucceededType, usersFromGroup});
     } catch (error) {
         console.log(error);
-        yield put({type: getUsersFromGroupFailedType});
+        yield put({type: actionTypes.getUsersFromGroupFailedType});
     }
 }
 
 export function* createUser() {
-    yield takeLatest(createUserSubmitType, callCreateUser)
+    yield takeLatest(actionTypes.createUserSubmitType, callCreateUser)
 }
 
 function* callCreateUser({data}) {
@@ -59,15 +41,15 @@ function* callCreateUser({data}) {
                 body: JSON.stringify(data)
             }).then(response => response.json())
             .catch(error => console.log(error)));
-        yield put({type: createUserSucceededType, user})
+        yield put({type: actionTypes.createUserSucceededType, user})
     } catch (error) {
         console.log(error);
-        yield put({type: createUserFailedType})
+        yield put({type: actionTypes.createUserFailedType})
     }
 }
 
 export function* getUser() {
-    yield takeLatest(getUserType, callGetUser)
+    yield takeLatest(actionTypes.getUserType, callGetUser)
 }
 
 function* callGetUser({guid}) {
@@ -80,15 +62,15 @@ function* callGetUser({guid}) {
         //     console.log(data)
         // })
             .catch(error => console.error(error)));
-        yield put({type: getUserSucceededType, userById});
+        yield put({type: actionTypes.getUserSucceededType, userById});
     } catch (error) {
         console.log(error);
-        yield put({type: getUserFailedType});
+        yield put({type: actionTypes.getUserFailedType});
     }
 }
 
 export function* getAllUsers() {
-    yield takeLatest(getAllUsersType, callGetAllUsers)
+    yield takeLatest(actionTypes.getAllUsersType, callGetAllUsers)
 }
 
 function* callGetAllUsers() {
@@ -102,15 +84,15 @@ function* callGetAllUsers() {
             }).then(response => response.json())
             .catch(error => console.error(error)));
         console.log("saga-get-user:", users);
-        yield put({type: getAllUsersSucceededType, users});
+        yield put({type: actionTypes.getAllUsersSucceededType, users});
     } catch (error) {
         console.log(error);
-        yield put({type: getAllUsersFailedType});
+        yield put({type: actionTypes.getAllUsersFailedType});
     }
 }
 
 export function* deleteUser() {
-    yield takeLatest(deleteUserType, callDeleteUser)
+    yield takeLatest(actionTypes.deleteUserType, callDeleteUser)
 }
 
 function* callDeleteUser({guid}) {
@@ -124,15 +106,15 @@ function* callDeleteUser({guid}) {
                 headers: headers
             }).then(response => response.json())
             .catch(error => console.log(error)));
-        yield put({type: deleteUserSucceededType})
+        yield put({type: actionTypes.deleteUserSucceededType})
     } catch (error) {
         console.log(error);
-        yield put({type: deleteUserFailedType})
+        yield put({type: actionTypes.deleteUserFailedType})
     }
 }
 
 export function* editUser() {
-    yield takeLatest(editUserSubmitType, callEditUser)
+    yield takeLatest(actionTypes.editUserSubmitType, callEditUser)
 }
 
 function* callEditUser({guid, data}) {
@@ -148,20 +130,21 @@ function* callEditUser({guid, data}) {
                 // mode: "no-cors",
                 body: JSON.stringify(data)
             }).catch(error => console.log(error)));
-        yield put({type: editUserSucceededType})
+        yield put({type: actionTypes.editUserSucceededType})
     } catch (error) {
         console.log(error);
-        yield put({type: editUserFailedType})
+        yield put({type: actionTypes.editUserFailedType})
     }
 }
 
 //add user to group
 export function* addUserToGroup() {
-    yield takeLatest(addUserToGroupSubmitType, callAddUserToGroup)
+    yield takeLatest(actionTypes.addUserToGroupSubmitType, callAddUserToGroup)
 }
 
 function* callAddUserToGroup({groupId, userId}) {
     try {
+        console.log("saga-add-user-to-group", groupId, userId);
         let headers = new Headers();
         const data = {
             "UserId": userId,
@@ -172,11 +155,12 @@ function* callAddUserToGroup({groupId, userId}) {
             {
                 method: 'POST',
                 headers: headers,
+                // mode: "no-cors",
                 body: JSON.stringify(data)
             }).catch(error => console.log(error)));
-        yield put({type: addUserToGroupSucceededType})
+        yield put({type: actionTypes.addUserToGroupSucceededType})
     } catch (error) {
         console.log(error);
-        yield put({type: addUserToGroupFailedType})
+        yield put({type: actionTypes.addUserToGroupFailedType})
     }
 }

@@ -13,7 +13,6 @@ class UserCreating extends Component {
     }
 
     onSaveUser() {
-        //e.preventDefault();
         let cash = {
             "name": "",
             "surname": "",
@@ -29,6 +28,7 @@ class UserCreating extends Component {
         cash.phoneNumber = document.getElementById("tel-input").value;
         console.log("user-data: ", cash);
         this.props.createUserSubmit(cash);
+        this.props.history.goBack();
     }
 
 
@@ -95,7 +95,10 @@ class UserCreating extends Component {
                     </div>
                 </form>
                 <div>
-                    <Link to="/groups/user_list" className='btn btn-success' onClick={this.onSaveUser}>Сохранить</Link>
+                    <button
+                        // to="/groups/user_list"
+                        className='btn btn-success'
+                        onClick={this.onSaveUser}>Сохранить</button>
                 </div>
             </div>
         )

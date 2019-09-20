@@ -1,15 +1,5 @@
 import {call, put, takeLatest} from 'redux-saga/effects';
-import {
-    firstInitGroupType, firstInitGroupSucceededType,
-    firstInitGroupFailedType,
-    createGroupSubmitType, createGroupSucceededType,
-    createGroupFailedType,
-    editGroupSucceededType, editGroupFailedType,
-    deleteGroupType, deleteGroupSucceededType,
-    deleteGroupFailedType, getGroupByIdType,
-    getGroupByIdSucceededType, getGroupByIdFailedType,
-    editGroupSubmitType
-} from "../store/groupReducer";
+import {actionTypes} from "../store/groupReducer";
 
 //MAIN TABLE COMPONENT
 
@@ -17,7 +7,7 @@ import {
 const url = 'http://localhost:8200';
 
 export function* getGroups() {
-    yield takeLatest(firstInitGroupType, callGetGroups)
+    yield takeLatest(actionTypes.firstInitGroupType, callGetGroups)
 }
 
 function* callGetGroups() {
@@ -38,15 +28,15 @@ function* callGetGroups() {
         // console.log('saga-get-groups-groups');
         console.log('saga groups: ', groups);
         //yield dispatch();
-        yield put({type: firstInitGroupSucceededType, groups});
+        yield put({type: actionTypes.firstInitGroupSucceededType, groups});
     } catch (error) {
         console.log(error);
-        yield put({type: firstInitGroupFailedType});
+        yield put({type: actionTypes.firstInitGroupFailedType});
     }
 }
 
 export function* createGroup() {
-    yield takeLatest(createGroupSubmitType, callCreateGroup);
+    yield takeLatest(actionTypes.createGroupSubmitType, callCreateGroup);
 }
 
 function* callCreateGroup({data}) {
@@ -62,15 +52,15 @@ function* callCreateGroup({data}) {
             }).then(response => response.json())
             .catch(error => console.log(error)));
         console.log('saga-create-group', group);
-        yield put({type: createGroupSucceededType, group})
+        yield put({type: actionTypes.createGroupSucceededType, group})
     } catch (error) {
         console.log(error);
-        yield put({type: createGroupFailedType})
+        yield put({type: actionTypes.createGroupFailedType})
     }
 }
 
 export function* editGroup() {
-    yield takeLatest(editGroupSubmitType, callEditGroup)
+    yield takeLatest(actionTypes.editGroupSubmitType, callEditGroup)
 }
 
 function* callEditGroup({guid, data}) {
@@ -84,15 +74,15 @@ function* callEditGroup({guid, data}) {
                 headers: headers,
                 body: JSON.stringify(data)
             }).catch(error => console.log(error)));
-        yield put({type: editGroupSucceededType})
+        yield put({type: actionTypes.editGroupSucceededType})
     } catch (error) {
         console.log(error);
-        yield put({type: editGroupFailedType})
+        yield put({type: actionTypes.editGroupFailedType})
     }
 }
 
 export function* deleteGroup() {
-    yield takeLatest(deleteGroupType, callDeleteGroup)
+    yield takeLatest(actionTypes.deleteGroupType, callDeleteGroup)
 }
 
 function* callDeleteGroup({guid}) {
@@ -105,16 +95,16 @@ function* callDeleteGroup({guid}) {
                 method: 'DELETE',
                 headers: headers
             }).catch(error => console.log(error)));
-        yield put({type: deleteGroupSucceededType})
+        yield put({type: actionTypes.deleteGroupSucceededType})
     } catch (error) {
         console.log(error);
-        yield put({type: deleteGroupFailedType})
+        yield put({type: actionTypes.deleteGroupFailedType})
     }
 }
 
 
 export function* getGroupById() {
-    yield takeLatest(getGroupByIdType, callGetGroupById)
+    yield takeLatest(actionTypes.getGroupByIdType, callGetGroupById)
 }
 
 function* callGetGroupById({guid}) {
@@ -128,10 +118,10 @@ function* callGetGroupById({guid}) {
             }).then(response => response.json())
             .catch(error => console.error(error)));
         // console.log("group data fom saga:", groupById);
-        yield put({type: getGroupByIdSucceededType, groupById});
+        yield put({type: actionTypes.getGroupByIdSucceededType, groupById});
     } catch (error) {
         console.log(error);
-        yield put({type: getGroupByIdFailedType});
+        yield put({type: actionTypes.getGroupByIdFailedType});
     }
 }
 

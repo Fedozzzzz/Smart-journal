@@ -78,15 +78,12 @@ class GroupPage extends Component {
                         }
                         </div>
                         <div>
-                            <Link to='/groups/group_list'
+                            <Link to='/groups/'
                                   className="btn btn-outline-danger"
                                   onClick={() => this.props.deleteGroup(this.props.groupId)}>Удалить</Link>
                             <Link to={`/groups/edit_group/group_${this.props.groupId}`}
                                   className="btn btn-outline-warning"
                                   onClick={() => this.props.editGroup(this.props.groupId.guid)}>Редактировать</Link>
-                            <Link to={`/groups/edit_group/add_users_to_group/group_${this.props.groupId}`}
-                                  className="btn btn-outline-primary"
-                                  onClick={() => this.props.addUsersToGroup()}>Добавить учеников</Link>
                         </div>
                     </div> : <Loading/>}
                 </div>

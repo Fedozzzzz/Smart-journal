@@ -32,9 +32,9 @@ class UserPage extends Component {
                         <div>Отчество: {this.props.userById.patronymic}</div>
                         <div>Номер телефона: {this.props.userById.phoneNumber}</div>
                         <div>Email : {this.props.userById.email}</div>
-                        <Link to='/groups/user_list' className="btn btn-outline-danger"
+                        <Link to='/users/user_list' className="btn btn-outline-danger"
                               onClick={() => this.props.deleteUser(this.props.userId)}>Удалить</Link>
-                        <Link to={`/groups/users/edit_user/user_${this.props.userId}`}
+                        <Link to={`/users/edit_user/user_${this.props.userId}`}
                               className="btn btn-outline-warning"
                               onClick={() => this.props.editUser(this.props.userId)}>Редактировать</Link>
                     </div>) : <Loading/>}

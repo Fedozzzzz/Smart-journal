@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {actionCreators} from "../../store/groupReducer";
+import AddUserToGroup from "./AddUserToGroup";
 
 
 class GroupCreating extends Component {
@@ -43,6 +44,7 @@ class GroupCreating extends Component {
             cash.days.push(document.getElementsByName("cbName")[i].checked)
         }
         this.props.createGroupSubmit(cash);
+        this.props.history.goBack();
     }
 
     handleChange(e) {
@@ -83,6 +85,8 @@ class GroupCreating extends Component {
     }
 
     render() {
+        console.log("this.props", this.props.history);
+
         return (<div className="container-fluid">
                 <div>
                     <form className="form-inline">
@@ -149,8 +153,13 @@ class GroupCreating extends Component {
                     </table>
                 </div>
                 <div>
-                    <Link className='btn btn-success' onClick={this.onSaveGroup}
-                          to='/groups/group_list'>Сохранить</Link>
+                    <h5>Добавьте студентов в группу:</h5>
+                </div>
+                <div>
+                    <button className='btn btn-success'
+                          onClick={this.onSaveGroup}
+                          // to='/groups/group_list'
+                    >Сохранить</button>
                 </div>
             </div>
         )

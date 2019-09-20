@@ -3,8 +3,9 @@ import {Route} from 'react-router-dom';
 import Layout from './components/Layout';
 import MainTable from "./components/MainTable"
 import Schedule from "./components/Schedule";
-import Groups from "./components/groups and users/Groups";
+import Groups from "./components/groups/Groups";
 import Home from "./components/Home";
+import Users from "./components/users/Users";
 
 export default () => (
     <Layout>
@@ -12,5 +13,6 @@ export default () => (
         <Route path='/payment' component={MainTable}/>
         <Route path='/schedule' component={Schedule}/>
         <Route path='/groups' component={Groups}/>
+        <Route path='/users' component={Users}/>
     </Layout>
 );

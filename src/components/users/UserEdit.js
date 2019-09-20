@@ -32,6 +32,7 @@ class UserEdit extends Component {
         console.log("user-data: ", cash);
         console.log(this.props.userId);
         this.props.editUserSubmit(this.props.userId, cash);
+        this.props.history.goBack();
     }
 
     render() {
@@ -98,8 +99,10 @@ class UserEdit extends Component {
                         </div>
                     </form>
                     <div>
-                        <Link to="/groups/user_list" className='btn btn-success'
-                              onClick={this.onSaveEditUser}>Сохранить</Link>
+                        <Link
+                            // to="/groups/user_list"
+                            className='btn btn-success'
+                            onClick={this.onSaveEditUser}>Сохранить</Link>
                     </div>
                 </div>
             </div>

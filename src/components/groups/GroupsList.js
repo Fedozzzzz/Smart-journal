@@ -14,13 +14,14 @@ class GroupsList extends Component {
 
     render() {
         console.log('render-group-list-page');
+        console.log("this.props", this.props);
         return (
             <div>
                 <h3>Группы</h3>
                 {this.props.groups ?
                     this.props.groups.map(group => (
                         <div>
-                            <h5><Link to={`/groups/group_list/group_${group.guid}`}>{group.name}</Link></h5>
+                            <h5><Link to={`/groups/group_${group.guid}`}>{group.name}</Link></h5>
                         </div>
                     )) : <Loading/>}
                 <div>

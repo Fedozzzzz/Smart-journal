@@ -7,7 +7,7 @@ import {actionCreators} from "../rubbish/Users";
 const Home = props => (
     <div>
         <h1>Smart Journal</h1>
-        <p>Welcome to the Smart Journal web-Application!</p>
+        <p>Добро пожаловать в "Smart Journal"!</p>
     </div>
 );
 

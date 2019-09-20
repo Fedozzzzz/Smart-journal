@@ -3,6 +3,8 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {actionCreators} from "../../store/groupReducer";
 import {Link} from "react-router-dom";
+import AddUserToGroup from "./AddUserToGroup";
+import Loading from "../Loading";
 
 
 class GroupEdit extends Component {
@@ -24,6 +26,7 @@ class GroupEdit extends Component {
 
     componentDidMount() {
         this.props.getGroupById(this.props.groupId);
+        this.props.getUsersFromGroup(this.props.groupId);
         console.log("did mount:");
         console.log(this.props.groupById);
     }
@@ -31,8 +34,6 @@ class GroupEdit extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         console.log("did-update");
         if (this.props.groupById !== prevProps.groupById) {
-            // console.log(this.props.groupById);
-            // console.log()
             let tempMap = new Map();
             for (let i = 0; i < 7; i++) {
                 tempMap.set(i + "cbEdit", this.props.groupById.days[i]);
@@ -63,6 +64,7 @@ class GroupEdit extends Component {
         cash.duration = 0;
         // console.log("group-data: ", cash);
         this.props.editGroupSubmit(this.props.groupId, cash);
+        this.props.history.goBack();
         // let users;//add user to group
         //this.props.addUserToGroup();
     }
@@ -103,7 +105,7 @@ class GroupEdit extends Component {
                     defaultValue={this.props.groupById.startTimes[i]}
                 />
             </td>);
-            console.log(this.props.groupById.startTimes[i]);
+            // console.log(this.props.groupById.startTimes[i]);
         }
         return result;
     }
@@ -111,6 +113,7 @@ class GroupEdit extends Component {
 
     render() {
         console.log("render edit group");
+        console.log("this.props.history", this.props);
         // console.log(id);
         return (
             <div>
@@ -180,20 +183,32 @@ class GroupEdit extends Component {
                     {/*<p>Добавьте студентов в группу: </p>*!/*/}
                 </div>
                 <div>
-                    <h5>Выберите учеников из списка, чтобы добавить их в группу:</h5>
-                    <div>
-                        {this.props.users.map(user =>
+                    <h5>Студенты этой группы:</h5>{
+                    this.props.usersFromGroup ?
+                        this.props.usersFromGroup.map(user => (
                             <div>
-                                {user.name} {user.surname}
-                            </div>)}
-                    </div>
+                                <Link
+                                    to={`/groups/users/user_${user.guid}`}>
+                                    {user.name} {user.surname} {user.patronymic}
+                                </Link>
+                            </div>
+                        )) : <Loading/>
+                }
                 </div>
                 <div>
-                    <Link to='/groups/group_list' className='btn btn-success'
-                          onClick={this.onSaveEditGroup}>Сохранить</Link>
-                    <Link to={`/groups/edit_group/add_users_to_group/group_${this.props.groupById.guid}`}
+                    <Link to={`/groups/edit_group/add_users_to_group_${this.props.groupId}`}
                           className="btn btn-outline-primary"
-                          onClick={() => this.props.deleteGroup(this.props.groupId)}>Добавить учеников</Link>
+                          onClick={() => this.props.addUsersToGroup()}>+Добавить учеников</Link>
+                </div>
+                <div>
+                    <button
+                        // to='/groups/group_list'
+                        className='btn btn-success'
+                        onClick={this.onSaveEditGroup}>Сохранить
+                    </button>
+                    {/*<Link to={`/groups/edit_group/add_users_to_group/group_${this.props.groupId}`}*/}
+                    {/*      className="btn btn-outline-primary"*/}
+                    {/*      onClick={() => this.props.addUsersToGroup()}>Добавить учеников</Link>*/}
                 </div>
             </div>
         )
