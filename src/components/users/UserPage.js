@@ -1,24 +1,32 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../store/groupReducer";
+import {actionCreators} from "../../store/reducers/userReducer";
 import {Link} from "react-router-dom";
 import Loading from "../Loading";
 
 
 class UserPage extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLoaded: false,
-            userById: null
-        }
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         isLoaded: false,
+    //         userById: null
+    //     }
+    // }
 
     componentDidMount() {
         console.log("props user:", this.props.userById);
         this.props.getUserById(this.props.userId);
+        console.log("initial get method");
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (!this.props.isLoaded) {
+            console.log("additional get method");
+            this.props.getUserById(this.props.userId);
+        }
     }
 
     render() {
@@ -32,13 +40,12 @@ class UserPage extends Component {
                         <div>Отчество: {this.props.userById.patronymic}</div>
                         <div>Номер телефона: {this.props.userById.phoneNumber}</div>
                         <div>Email : {this.props.userById.email}</div>
-                        <Link to='/users/user_list' className="btn btn-outline-danger"
+                        <Link to='/users' className="btn btn-outline-danger"
                               onClick={() => this.props.deleteUser(this.props.userId)}>Удалить</Link>
                         <Link to={`/users/edit_user/user_${this.props.userId}`}
                               className="btn btn-outline-warning"
                               onClick={() => this.props.editUser(this.props.userId)}>Редактировать</Link>
                     </div>) : <Loading/>}
-
                 </div>
             </div>
         )
@@ -46,6 +53,6 @@ class UserPage extends Component {
 }
 
 export default connect(
-    state => state.group,
+    state => state.user,
     dispatch => bindActionCreators(actionCreators, dispatch)
 )(UserPage);

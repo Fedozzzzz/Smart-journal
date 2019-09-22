@@ -1,6 +1,5 @@
-import {call, put, takeLatest, all} from 'redux-saga/effects'
-// import * as api from "../fakeApi"
-import {actionTypes} from "../store/groupReducer";
+import {call, put, takeLatest} from 'redux-saga/effects'
+import {actionTypes} from "../../store/reducers/userReducer";
 
 //url
 const url = 'http://localhost:8200';
@@ -100,16 +99,17 @@ function* callDeleteUser({guid}) {
         let headers = new Headers();
         console.log("saga-delete-user ", guid);
         headers.append('Content-Type', "application/json");
-        yield call(() => fetch(url + '/users/' + guid.toString(),
+        const res = yield call(() => fetch(url + '/users/' + guid.toString(),
             {
                 method: 'DELETE',
                 headers: headers
-            }).then(response => response.json())
+            }).then(response => response)
             .catch(error => console.log(error)));
-        yield put({type: actionTypes.deleteUserSucceededType})
+        // console.log(res);
+        yield put({type: actionTypes.deleteUserSucceededType, ok: res.ok})
     } catch (error) {
         console.log(error);
-        yield put({type: actionTypes.deleteUserFailedType})
+        yield put({type: actionTypes.deleteUserFailedType, ok: false})
     }
 }
 
@@ -123,14 +123,14 @@ function* callEditUser({guid, data}) {
         // console.log("saga-edit-user-data", JSON.stringify(data));
         let headers = new Headers();
         headers.append('Content-Type', "application/json");
-        yield call(() => fetch(url + '/users/' + guid.toString(),
+        const res = yield call(() => fetch(url + '/users/' + guid.toString(),
             {
                 method: 'PUT',
                 headers: headers,
                 // mode: "no-cors",
                 body: JSON.stringify(data)
             }).catch(error => console.log(error)));
-        yield put({type: actionTypes.editUserSucceededType})
+        yield put({type: actionTypes.editUserSucceededType, ok: res.ok})
     } catch (error) {
         console.log(error);
         yield put({type: actionTypes.editUserFailedType})
@@ -162,5 +162,36 @@ function* callAddUserToGroup({groupId, userId}) {
     } catch (error) {
         console.log(error);
         yield put({type: actionTypes.addUserToGroupFailedType})
+    }
+}
+
+
+//delete user from group
+
+export function* deleteUserFromGroup() {
+    yield takeLatest(actionTypes.deleteUserFromGroupSubmitType, callDeleteUserFromGroup)
+}
+
+function* callDeleteUserFromGroup({groupId, userId, ...arrayOfUserId}) {
+    try {
+        let headers = new Headers();
+        const requestBody = {
+            "userIds": arrayOfUserId,
+            "userId": userId,
+            "groupId": groupId
+        };
+        console.log("saga-delete-user-from-group ", groupId, userId, arrayOfUserId);
+        headers.append('Content-Type', "application/json");
+        yield call(() => fetch(url + '/users/assign',
+            {
+                method: 'DELETE',
+                headers: headers,
+                body: requestBody
+            }).then(res => console.log(res))
+            .catch(error => console.log(error)));
+        yield put({type: actionTypes.deleteUserFromGroupSucceededType})
+    } catch (error) {
+        console.log(error);
+        yield put({type: actionTypes.deleteUserFromGroupFailedType})
     }
 }

@@ -1,7 +1,16 @@
 import {all} from "redux-saga/effects"
-import {createGroup, getGroups, deleteGroup, editGroup, getGroupById} from "./groups-sagas";
-import {editSchedule, getSchedule} from "./schedule-sagas";
-import {addUserToGroup, createUser, deleteUser, editUser, getAllUsers, getUser, getUsersFromGroup} from "./user-sagas";
+import {createGroup, getGroups, deleteGroup, editGroup, getGroupById} from "./components-sagas/groups-sagas";
+import {editSchedule, getSchedule} from "./components-sagas/schedule-sagas";
+import {
+    addUserToGroup,
+    createUser,
+    deleteUser,
+    deleteUserFromGroup,
+    editUser,
+    getAllUsers,
+    getUser,
+    getUsersFromGroup
+} from "./components-sagas/user-sagas";
 
 export default function* rootSaga() {
     console.log('hello-from-root-saga!!!');
@@ -19,6 +28,7 @@ export default function* rootSaga() {
         editSchedule(),
         getAllUsers(),
         deleteUser(),
-        editUser()
+        editUser(),
+        deleteUserFromGroup()
     ])
 }

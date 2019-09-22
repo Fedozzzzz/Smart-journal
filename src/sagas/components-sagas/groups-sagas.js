@@ -1,5 +1,5 @@
 import {call, put, takeLatest} from 'redux-saga/effects';
-import {actionTypes} from "../store/groupReducer";
+import {actionTypes} from "../../store/reducers/groupReducer";
 
 //MAIN TABLE COMPONENT
 

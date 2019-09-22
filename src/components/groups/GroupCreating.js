@@ -2,7 +2,7 @@ import React, {Component} from "react"
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../store/groupReducer";
+import {actionCreators} from "../../store/reducers/groupReducer";
 import AddUserToGroup from "./AddUserToGroup";
 
 
@@ -19,7 +19,9 @@ class GroupCreating extends Component {
         };
         this.onSaveGroup = this.onSaveGroup.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleUsersChange = this.handleUsersChange.bind(this);
     }
+
 
     componentDidMount() {
         this.props.getAllUsers();
@@ -83,6 +85,30 @@ class GroupCreating extends Component {
         }
         return result;
     }
+
+
+    handleUsersChange(e) {
+        // console.log("check before: ", this.state);
+        // console.log("e.target.id", e.target.id);
+        // console.log("e.target.id", e.target.checked);
+        let tempMap = new Map(this.state.chosenUsers);
+        if (e.target.checked) {
+            tempMap.set(e.target.id, 0);
+            // console.log(tempMap);
+            this.setState({chosenUsers: tempMap});
+        } else {
+            tempMap.delete(e.target.id);
+            this.setState({chosenUsers: tempMap})
+        }
+        // console.log("check: ", this.state.chosenUsers);
+    }
+
+
+    // componentWillUnmount() {
+    //     th
+    // }
+    // this.props.addUsersToGroupSubmit(groupId, userId)
+    // }
 
     render() {
         console.log("this.props", this.props.history);
@@ -153,13 +179,27 @@ class GroupCreating extends Component {
                     </table>
                 </div>
                 <div>
-                    <h5>Добавьте студентов в группу:</h5>
+                    {this.props.users ? <div>
+                        <h5>Добавьте студентов в группу:</h5>
+                        {this.props.users.map(user => (<div className="form-inline">
+                            <div>{user.name} {user.surname} {user.patronymic}</div>
+                            < div className="form-check">
+                                < input className="form-check-input"
+                                        type="checkbox"
+                                        value=""
+                                        onChange={this.handleUsersChange}
+                                        id={user.guid}/>
+                            </div>
+                        </div>))}
+                        }
+                    </div> : null}
                 </div>
                 <div>
                     <button className='btn btn-success'
-                          onClick={this.onSaveGroup}
-                          // to='/groups/group_list'
-                    >Сохранить</button>
+                            onClick={this.onSaveGroup}
+                        // to='/groups/group_list'
+                    >Сохранить
+                    </button>
                 </div>
             </div>
         )

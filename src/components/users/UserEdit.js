@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../store/groupReducer";
+import {actionCreators} from "../../store/reducers/userReducer";
 
 class UserEdit extends Component {
 
@@ -99,10 +99,10 @@ class UserEdit extends Component {
                         </div>
                     </form>
                     <div>
-                        <Link
+                        <button
                             // to="/groups/user_list"
                             className='btn btn-success'
-                            onClick={this.onSaveEditUser}>Сохранить</Link>
+                            onClick={this.onSaveEditUser}>Сохранить</button>
                     </div>
                 </div>
             </div>
@@ -112,6 +112,6 @@ class UserEdit extends Component {
 
 
 export default connect(
-    state => state.group,
+    state => state.user,
     dispatch => bindActionCreators(actionCreators, dispatch)
 )(UserEdit)

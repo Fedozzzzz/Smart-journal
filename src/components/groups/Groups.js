@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {actionCreators} from "../../store/groupReducer";
+import {actionCreators} from "../../store/reducers/groupReducer";
 import {Route, Link} from "react-router-dom"
 import '../../css/Groups.css'
 import UserPage from "../users/UserPage";

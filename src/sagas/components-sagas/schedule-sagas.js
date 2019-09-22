@@ -5,7 +5,7 @@ import {
     editScheduleSucceededType,
     editScheduleFailedType,
     editScheduleSubmitType, initScheduleType
-} from "../store/scheduleReducer";
+} from "../../store/reducers/scheduleReducer";
 
 const url = 'http://7a1b344f.ngrok.io';
 

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {actionCreators} from "../store/scheduleReducer";
+import {actionCreators} from "../store/reducers/scheduleReducer";
 import {Route} from "react-router-dom"
 import {Link} from "react-router-dom";
 import "../css/Schedule.css"

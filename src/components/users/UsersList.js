@@ -1,28 +1,41 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../store/groupReducer";
+import {actionCreators} from "../../store/reducers/userReducer";
 import {Link} from "react-router-dom";
 import Loading from "../Loading";
 
+
 class UsersList extends Component {
 
-    componentDidMount() {
+    componentDidMount(prevProps) {
         console.log("user-list-did-mount");
         this.props.getAllUsers();
-        // this.forceUpdate();
+        console.log("initial get method");
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // console.log("this.props:", this.props.ok);
+        // console.log("prev.props:", prevProps.ok);
+        // if (this.props.newUser !== prevProps.newUser
+        //     || this.props.ok) {
+        //     this.props.getAllUsers();
+        // }
+
+        if(!this.props.isLoaded){
+            console.log("additional get method");
+            this.props.getAllUsers();
+        }
+        // // else
+        // if (this.props.status !== prevProps.status) {
+        //     this.props.getAllUsers();
+        // }
     }
 
 
-    // componentDidUpdate(prevProps, prevState, snapshot) {
-    //     if (this.props !== prevProps) {
-    //         // this.props.getAllUsers();
-    //     }
-    // }
-
     render() {
         console.log("render-users-list");
-        // console.log("props:", this.props.users);
+        console.log("props", this.props.ok);
         return (
             <div>
                 <h3>Студенты</h3>
@@ -42,6 +55,6 @@ class UsersList extends Component {
 }
 
 export default connect(
-    state => state.group,
+    state => state.user,
     dispatch => bindActionCreators(actionCreators, dispatch)
 )(UsersList)
