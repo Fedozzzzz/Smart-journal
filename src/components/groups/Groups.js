@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {actionCreators} from "../../store/reducers/groupReducer";
+// import {actionCreators} from "../../store/reducers/groupReducer";
+
 import {Route, Link} from "react-router-dom"
 import '../../css/Groups.css'
 import UserPage from "../users/UserPage";
@@ -14,6 +15,7 @@ import GroupsEdit from "./GroupEdit";
 import GroupPage from "./GroupPage";
 import UserCreating from "../users/UserCreating";
 import AddUserToGroup from "./AddUserToGroup";
+import {groupActionCreators} from "../../store/reducers/groupReducer";
 
 
 class Groups extends Component {
@@ -40,5 +42,5 @@ class Groups extends Component {
 
 export default connect(
     state => state.group,
-    dispatch => bindActionCreators(actionCreators, dispatch)
+    dispatch => bindActionCreators(groupActionCreators, dispatch)
 )(Groups);

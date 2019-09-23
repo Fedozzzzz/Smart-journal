@@ -46,10 +46,11 @@ export const actionTypes = {
 };
 
 const initialState = {
-    isLoaded: true
+    // isLoaded: true
+    users: []
 };
 
-export const actionCreators = {
+export const userActionCreators = {
 
     getAllUsers: () => ({
         type: actionTypes.getAllUsersType

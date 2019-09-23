@@ -2,7 +2,8 @@ import React, {Component} from "react"
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../store/reducers/groupReducer";
+import {userActionCreators} from "../../store/reducers/userReducer";
+import {groupActionCreators} from "../../store/reducers/groupReducer";
 import AddUserToGroup from "./AddUserToGroup";
 
 
@@ -111,7 +112,7 @@ class GroupCreating extends Component {
     // }
 
     render() {
-        console.log("this.props", this.props.history);
+        console.log("this.props", this.props);
 
         return (<div className="container-fluid">
                 <div>
@@ -179,9 +180,9 @@ class GroupCreating extends Component {
                     </table>
                 </div>
                 <div>
-                    {this.props.users ? <div>
+                    {this.props.user.users ? <div>
                         <h5>Добавьте студентов в группу:</h5>
-                        {this.props.users.map(user => (<div className="form-inline">
+                        {this.props.user.users.map(user => (<div className="form-inline">
                             <div>{user.name} {user.surname} {user.patronymic}</div>
                             < div className="form-check">
                                 < input className="form-check-input"
@@ -191,7 +192,6 @@ class GroupCreating extends Component {
                                         id={user.guid}/>
                             </div>
                         </div>))}
-                        }
                     </div> : null}
                 </div>
                 <div>
@@ -206,8 +206,13 @@ class GroupCreating extends Component {
     }
 }
 
-
 export default connect(
-    state => state.group,
-    dispatch => bindActionCreators(actionCreators, dispatch)
+    state => {
+        // console.log(state);
+        return {
+            group: state.group,
+            user: state.user
+        }
+    },
+    dispatch => bindActionCreators(Object.assign({}, groupActionCreators, userActionCreators), dispatch)
 )(GroupCreating);

@@ -30,14 +30,14 @@ export const actionTypes = {
 
 const initialState = {
     groups: [],
-    users: [], //??????
+    // users: [], //??????
     isLoaded: false,
     onCreatingGroup: false,
     onCreatingUser: false,
     error: ''
 };
 
-export const actionCreators = {
+export const groupActionCreators = {
     getAllGroups: () => ({
         type: actionTypes.firstInitGroupType
     }),
@@ -93,7 +93,7 @@ export const groupReducer = (state, action) => {
         case actionTypes.createGroupSubmitType:
             return {
                 ...state,
-                isLoaded: false,
+                // isLoaded: false,
                 onCreatingGroup: false,
             };
         case actionTypes.createGroupSucceededType:
@@ -122,12 +122,12 @@ export const groupReducer = (state, action) => {
         case actionTypes.deleteGroupSucceededType:
             return {
                 ...state,
-                isLoaded: false
+                // isLoaded: false
             };
         case actionTypes.deleteGroupFailedType:
             return {
                 ...state,
-                isLoaded: false
+                // isLoaded: false
             };
 
         case actionTypes.getGroupByIdSucceededType:

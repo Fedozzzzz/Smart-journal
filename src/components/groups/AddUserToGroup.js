@@ -1,7 +1,8 @@
 import React, {Component} from "react"
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../store/reducers/groupReducer";
+// import {actionCreators} from "../../store/reducers/groupReducer";
+import {groupActionCreators} from "../../store/reducers/groupReducer";
 import Loading from "../Loading";
 import {Link} from "react-router-dom";
 
@@ -66,7 +67,8 @@ class AddUserToGroup extends Component {
                                     <div>{user.name} {user.surname} {user.patronymic}</div>
                                     <button className="btn btn-danger"
                                             onClick={this.props.deleteUserFromGroup(this.props.groupId, user.guid)}>
-                                        Удалить</button>
+                                        Удалить
+                                    </button>
                                 </div>
                             )) : <Loading/>
                         }
@@ -103,7 +105,7 @@ class AddUserToGroup extends Component {
 
 export default connect(
     state => state.group,
-    dispatch => bindActionCreators(actionCreators, dispatch)
+    dispatch => bindActionCreators(groupActionCreators, dispatch)
 )(AddUserToGroup);
 
 

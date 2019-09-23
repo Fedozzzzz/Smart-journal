@@ -1,7 +1,8 @@
 import React, {Component} from "react"
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../store/reducers/userReducer";
+// import {ctionCreators} from "../../store/reducers/userReducer";
+import {userActionCreators} from "../../store/reducers/userReducer";
 import {Route, Switch} from "react-router-dom";
 import UserCreating from "./UserCreating";
 import UserList from "./UsersList";
@@ -28,5 +29,5 @@ class Users extends Component {
 
 export default connect(
     state => state.user,
-    dispatch => bindActionCreators(actionCreators, dispatch)
+    dispatch => bindActionCreators(userActionCreators, dispatch)
 )(Users);

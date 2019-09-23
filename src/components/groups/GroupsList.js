@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../store/reducers/groupReducer";
+// import {actionCreators} from "../../store/reducers/groupReducer";
 import {Link} from "react-router-dom";
 import Loading from "../Loading";
+import {groupActionCreators} from "../../store/reducers/groupReducer";
 
 class GroupsList extends Component {
 
@@ -14,7 +15,7 @@ class GroupsList extends Component {
 
     render() {
         console.log('render-group-list-page');
-        // console.log("this.props", this.props);
+        console.log("this.props", this.props);
         return (
             <div>
                 <h3>Группы</h3>
@@ -36,5 +37,5 @@ class GroupsList extends Component {
 
 export default connect(
     state => state.group,
-    dispatch => bindActionCreators(actionCreators, dispatch)
+    dispatch => bindActionCreators(groupActionCreators, dispatch)
 )(GroupsList)

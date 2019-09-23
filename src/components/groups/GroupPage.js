@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../store/reducers/groupReducer";
+// import {actionCreators} from "../../store/reducers/groupReducer";
 import {Link} from "react-router-dom";
 
 import "../../css/GroupPage.css"
 import Loading from "../Loading";
+import {groupActionCreators} from "../../store/reducers/groupReducer";
 
 class GroupPage extends Component {
 
@@ -20,7 +21,7 @@ class GroupPage extends Component {
     componentDidMount() {
         // console.log("props user:", this.props.userById);
         this.props.getGroupById(this.props.groupId);
-        this.props.getUsersFromGroup(this.props.groupId);
+        // this.props.getUsersFromGroup(this.props.groupId);
     }
 
     renderSchedule() {
@@ -67,15 +68,15 @@ class GroupPage extends Component {
                             </table>
                         </div>
                         <div>
-                            <h5>Студенты этой группы:</h5>{
-                            this.props.usersFromGroup ?
-                                this.props.usersFromGroup.map(user => (
-                                    <div>
-                                        <Link
-                                            to={`/groups/users/user_${user.guid}`}>{user.name} {user.surname} {user.patronymic}</Link>
-                                    </div>
-                                )) : <Loading/>
-                        }
+                        {/*    <h5>Студенты этой группы:</h5>{*/}
+                        {/*    this.props.usersFromGroup ?*/}
+                        {/*        this.props.usersFromGroup.map(user => (*/}
+                        {/*            <div>*/}
+                        {/*                <Link*/}
+                        {/*                    to={`/groups/users/user_${user.guid}`}>{user.name} {user.surname} {user.patronymic}</Link>*/}
+                        {/*            </div>*/}
+                        {/*        )) : <Loading/>*/}
+                        {/*}*/}
                         </div>
                         <div>
                             <Link to='/groups/'
@@ -94,5 +95,5 @@ class GroupPage extends Component {
 
 export default connect(
     state => state.group,
-    dispatch => bindActionCreators(actionCreators, dispatch)
+    dispatch => bindActionCreators(groupActionCreators, dispatch)
 )(GroupPage)

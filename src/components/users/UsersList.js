@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../store/reducers/userReducer";
+// import {actionCreators} from "../../store/reducers/userReducer";
 import {Link} from "react-router-dom";
 import Loading from "../Loading";
-
+import {userActionCreators} from "../../store/reducers/userReducer";
 
 class UsersList extends Component {
 
@@ -22,7 +22,7 @@ class UsersList extends Component {
         //     this.props.getAllUsers();
         // }
 
-        if(!this.props.isLoaded){
+        if (!this.props.isLoaded) {
             console.log("additional get method");
             this.props.getAllUsers();
         }
@@ -35,7 +35,7 @@ class UsersList extends Component {
 
     render() {
         console.log("render-users-list");
-        console.log("props", this.props.ok);
+        console.log("props", this.props);
         return (
             <div>
                 <h3>Студенты</h3>
@@ -56,5 +56,5 @@ class UsersList extends Component {
 
 export default connect(
     state => state.user,
-    dispatch => bindActionCreators(actionCreators, dispatch)
+    dispatch => bindActionCreators(userActionCreators, dispatch)
 )(UsersList)
