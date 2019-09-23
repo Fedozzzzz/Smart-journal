@@ -1,15 +1,12 @@
 import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
 import createSagaMiddleware from 'redux-saga'
 import {connectRouter, routerMiddleware} from "connected-react-router";
-// import { routerReducer, routerMiddleware } from 'react-router-redux';
-//import * as reducerForSaga from './reducerForSaga'
 import * as scheduleReducer from './reducers/scheduleReducer'
 import * as groupsReducer from './reducers/tableReducer'
-//import * as formReducer from './formReducer'
-//import tableSagas from '../sagas/table-sagas'
-import mainTableSagas from '../sagas/root-sagas'
 import * as groupReducer from "./reducers/groupReducer"
 import * as userReducer from "./reducers/userReducer"
+import mainTableSagas from '../sagas/root-sagas'
+
 
 //import scheduleSagas from '../sagas/schedule-sagas'
 

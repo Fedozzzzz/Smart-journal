@@ -24,7 +24,7 @@ class UserCreating extends Component {
     }
 
     handleChange(e) {
-        console.log(e.target.id);
+        // console.log(e.target.id);
         switch (e.target.id) {
             case "userName":
                 this.setState({name: e.target.value});

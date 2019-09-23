@@ -11,47 +11,106 @@ class GroupCreating extends Component {
 
     constructor(props) {
         super(props);
-        let tempMap = new Map();
+        let tempCbMap = new Map();
+        let tempStMap = new Map();
         for (let i = 0; i < 7; i++) {
-            tempMap.set(i + "cb", false);
+            tempCbMap.set(i + "cb", false);
+            tempStMap.set(i + "stForm", null);
         }
         this.state = {
-            checkboxes: tempMap
+            checkboxes: tempCbMap,
+            stInputs: tempStMap,
+            data: {
+                name: null,
+                duration: null,
+                cost: null,
+                days: [],
+                startTimes: []
+            }
         };
         this.onSaveGroup = this.onSaveGroup.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleCheckboxesChange = this.handleCheckboxesChange.bind(this);
         this.handleUsersChange = this.handleUsersChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleStartTimesInputsChange = this.handleStartTimesInputsChange.bind(this);
     }
-
 
     componentDidMount() {
         this.props.getAllUsers();
     }
 
+    // onSaveGroup() {
+    //     // console.log('submit-group');
+    //     let cash = {
+    //         "name": "default",
+    //         "duration": null,
+    //         "cost": null,
+    //         "days": [],
+    //         "startTimes": []
+    //     };
+    //     cash.name = document.getElementById('groupName').value;
+    //     cash.cost = document.getElementById('cost').value;
+    //     cash.duration = document.getElementById("duration").value;
+    //     for (let i = 0; i < document.getElementsByName("startTimes").length; i++) {
+    //         cash.startTimes.push(document.getElementsByName("startTimes")[i].value)
+    //     }
+    //     for (let i = 0; i < document.getElementsByName("cbName").length; i++) {
+    //         cash.days.push(document.getElementsByName("cbName")[i].checked)
+    //     }
+    //     this.props.createGroupSubmit(cash);
+    //     this.props.history.goBack();
+    // }
+
     onSaveGroup() {
-        console.log('submit-group');
-        let cash = {
-            "name": "default",
-            "duration": null,
-            "cost": null,
-            "days": [],
-            "startTimes": []
-        };
-        cash.name = document.getElementById('groupName').value;
-        cash.cost = document.getElementById('cost').value;
-        cash.duration = document.getElementById("duration").value;
-        for (let i = 0; i < document.getElementsByName("startTimes").length; i++) {
-            cash.startTimes.push(document.getElementsByName("startTimes")[i].value)
-        }
-        for (let i = 0; i < document.getElementsByName("cbName").length; i++) {
-            cash.days.push(document.getElementsByName("cbName")[i].checked)
-        }
-        this.props.createGroupSubmit(cash);
+        let tempArr = [];
+        let data = Object.assign({}, this.state.data);
+        this.state.checkboxes.forEach((v) => {
+            tempArr.push(v);
+        });
+        data.days = tempArr;
+        tempArr = [];
+        this.state.stInputs.forEach((v) => {
+            tempArr.push(v);
+        });
+        data.startTimes = tempArr;
+        console.log(data);
+        this.props.createGroupSubmit(data);
         this.props.history.goBack();
     }
 
-    handleChange(e) {
+    handleCheckboxesChange(e) {
         this.setState({checkboxes: this.state.checkboxes.set(e.target.id, e.target.checked)});
+    }
+
+    handleInputChange(e) {
+
+        // console.log(e.target);
+        let temp = Object.assign({}, this.state.data);
+        switch (e.target.id) {
+            case 'groupName':
+                temp.name = e.target.value;
+                // this.setState({data: this.state.})
+                break;
+            case 'cost':
+                temp.cost = e.target.value;
+                // this.setState({surname: e.target.value});
+                break;
+            case 'duration':
+                temp.duration = e.target.value;
+                // this.setState({patronymic: e.target.value});
+                break;
+            // case "email-input":
+            //     this.setState({email: e.target.value});
+            //     break;
+            // case "tel-input":
+            //     this.setState({phoneNumber: e.target.value});
+            //     break;
+        }
+        this.setState({data: temp});
+    }
+
+    handleStartTimesInputsChange(e) {
+        this.setState({stInputs: this.state.stInputs.set(e.target.id, e.target.value)});
     }
 
     renderCheckBoxes() {
@@ -61,7 +120,7 @@ class GroupCreating extends Component {
                 <form>
                     <input className="form-check-input"
                            type="checkbox"
-                           onChange={this.handleChange}
+                           onChange={this.handleCheckboxesChange}
                            id={i + "cb"}
                            name="cbName"
                            aria-label="..."/>
@@ -81,12 +140,12 @@ class GroupCreating extends Component {
                     id={i + "stForm"}
                     name="startTimes"
                     disabled={!this.state.checkboxes.get(i + "cb")}
+                    onChange={this.handleStartTimesInputsChange}
                 />
             </td>)
         }
         return result;
     }
-
 
     handleUsersChange(e) {
         // console.log("check before: ", this.state);
@@ -104,10 +163,8 @@ class GroupCreating extends Component {
         // console.log("check: ", this.state.chosenUsers);
     }
 
-
-
     render() {
-        // console.log("this.props", this.props);
+        // console.log("this.state", this.state);
 
         return (<div className="container-fluid">
                 <div>
@@ -119,6 +176,7 @@ class GroupCreating extends Component {
                                    type="text"
                                    placeholder="Введите название"
                                    id='groupName'
+                                   onChange={this.handleInputChange}
                             />
                         </div>
                     </form>
@@ -131,6 +189,7 @@ class GroupCreating extends Component {
                                    type="number"
                                    placeholder="Цена за занятие"
                                    id='cost'
+                                   onChange={this.handleInputChange}
                             />
                         </div>
                     </form>
@@ -143,6 +202,7 @@ class GroupCreating extends Component {
                                    type="number"
                                    placeholder="Продолжительность (в мин.)"
                                    id='duration'
+                                   onChange={this.handleInputChange}
                             />
                         </div>
                     </form>
@@ -203,7 +263,6 @@ class GroupCreating extends Component {
 
 export default connect(
     state => {
-        // console.log(state);
         return {
             group: state.group,
             user: state.user

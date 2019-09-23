@@ -23,13 +23,13 @@ class UserEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
-        if (this.props.userById) {
+        if (nextProps.userById) {
             this.setState({
-                    name: this.props.userById.name || null,
-                    surname: this.props.userById.surname || null,
-                    patronymic: this.props.userById.patronymic || null,
-                    email: this.props.userById.email || null,
-                    phoneNumber: this.props.userById.phoneNumber || null
+                    name: nextProps.userById.name || null,
+                    surname: nextProps.userById.surname || null,
+                    patronymic: nextProps.userById.patronymic || null,
+                    email: nextProps.userById.email || null,
+                    phoneNumber: nextProps .userById.phoneNumber || null
                 }
             )
         }
@@ -56,7 +56,7 @@ class UserEdit extends Component {
     // }
 
     onSaveEditUser() {
-        console.log("this.state", this.state);
+        console.log("this.state OK!", this.state);
         this.props.editUserSubmit(this.props.userId, this.state);
         this.props.history.goBack();
     }
@@ -81,7 +81,6 @@ class UserEdit extends Component {
                 break;
         }
     }
-
 
     render() {
         console.log("this.state", this.state);

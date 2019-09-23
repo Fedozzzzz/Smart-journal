@@ -12,24 +12,59 @@ class GroupEdit extends Component {
 
     constructor(props) {
         super(props);
-        let tempMap = new Map();
+        let tempCbMap = new Map();
+        let tempStMap = new Map();
         for (let i = 0; i < 7; i++) {
-            tempMap.set(i + "cbEdit", false);
+            tempCbMap.set(i + "cbEdit", false);
+            tempStMap.set(i + "stFormEdit", null);
         }
         this.state = {
-            checkboxes: tempMap
+            checkboxes: tempCbMap,
+            stInputs: tempStMap,
+            data: {
+                name: null,
+                duration: null,
+                cost: null,
+                days: [],
+                startTimes: []
+            }
         };
         this.onSaveEditGroup = this.onSaveEditGroup.bind(this);
         this.renderCheckBoxes = this.renderCheckBoxes.bind(this);
         this.renderStartTimeInputs = this.renderStartTimeInputs.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleCheckboxesChange = this.handleCheckboxesChange.bind(this);
+        this.handleStartTimesInputsChange = this.handleStartTimesInputsChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
     componentDidMount() {
         this.props.getGroupById(this.props.groupId);
         this.props.getUsersFromGroup(this.props.groupId);
-        console.log("did mount:");
-        console.log(this.props.groupById);
+    }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        // console.log("WillReceiveProps");
+        if (this.props.group.groupById) {
+            let tempCbMap = new Map();
+            let tempStMap = new Map();
+            for (let i = 0; i < 7; i++) {
+                tempCbMap.set(i + "cbEdit", this.props.group.groupById.days[i]);
+                tempStMap.set(i + "stFormEdit", this.props.group.groupById.startTimes[i]);
+            }
+            // console.log(tempStMap, tempCbMap);
+            this.setState({
+                    checkboxes: tempCbMap,
+                    stInputs: tempStMap,
+                    data: {
+                        name: this.props.group.groupById.name || null,
+                        duration: this.props.group.groupById.duration || null,
+                        cost: this.props.group.groupById.cost || null,
+                        days: this.props.group.groupById.days || [],
+                        startTimes: this.props.group.groupById.startTimes || []
+                    }
+                }
+            )
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -45,33 +80,85 @@ class GroupEdit extends Component {
         }
     }
 
+    // onSaveEditGroup() {
+    //     let cash = {
+    //         "name": "default",
+    //         "duration": null,
+    //         "cost": null,
+    //         "days": [],
+    //         "startTimes": []
+    //     };
+    //     cash.name = document.getElementById('editedGroupName').value || this.props.group.groupById.name;
+    //     cash.cost = document.getElementById('editedCost').value || this.props.group.groupById.cost;
+    //     cash.duration = document.getElementById("editedDuration").value;
+    //     for (let i = 0; i < document.getElementsByName("startTimes").length; i++) {
+    //         cash.startTimes.push(document.getElementsByName("startTimes")[i].value)
+    //     }
+    //     for (let i = 0; i < document.getElementsByName("cbNameEdit").length; i++) {
+    //         cash.days.push(document.getElementsByName("cbNameEdit")[i].checked)
+    //     }
+    //     cash.duration = 0;
+    //     // console.log("group-data: ", cash);
+    //     this.props.editGroupSubmit(this.props.groupId, cash);
+    //     this.props.history.goBack();
+    //     // let users;//add user to group
+    //     //this.props.addUserToGroup();
+    // }
+
     onSaveEditGroup() {
-        let cash = {
-            "name": "default",
-            "duration": null,
-            "cost": null,
-            "days": [],
-            "startTimes": []
-        };
-        cash.name = document.getElementById('editedGroupName').value || this.props.group.groupById.name;
-        cash.cost = document.getElementById('editedCost').value || this.props.group.groupById.cost;
-        cash.duration = document.getElementById("editedDuration").value;
-        for (let i = 0; i < document.getElementsByName("startTimes").length; i++) {
-            cash.startTimes.push(document.getElementsByName("startTimes")[i].value)
+        let tempArr = [];
+        let data = Object.assign({}, this.state.data);
+        this.state.checkboxes.forEach((v) => {
+            tempArr.push(v);
+        });
+        data.days = tempArr;
+        tempArr = [];
+        this.state.stInputs.forEach((v) => {
+            tempArr.push(v);
+        });
+        data.startTimes = tempArr;
+        for (let i = 0; i < 7; i++) {
+            if (!data.days[i]) {
+                data.startTimes[i] = null;
+            }
         }
-        for (let i = 0; i < document.getElementsByName("cbNameEdit").length; i++) {
-            cash.days.push(document.getElementsByName("cbNameEdit")[i].checked)
-        }
-        cash.duration = 0;
-        // console.log("group-data: ", cash);
-        this.props.editGroupSubmit(this.props.groupId, cash);
+        console.log(data);
+        this.props.editGroupSubmit(this.props.groupId, data);
         this.props.history.goBack();
-        // let users;//add user to group
-        //this.props.addUserToGroup();
     }
 
-    handleChange(e) {
+    handleCheckboxesChange(e) {
         this.setState({checkboxes: this.state.checkboxes.set(e.target.id, e.target.checked)});
+    }
+
+    handleStartTimesInputsChange(e) {
+        this.setState({stInputs: this.state.stInputs.set(e.target.id, e.target.value)});
+    }
+
+    handleInputChange(e) {
+        // console.log(e.target);
+        let temp = Object.assign({}, this.state.data);
+        switch (e.target.id) {
+            case 'editedGroupName':
+                temp.name = e.target.value;
+                // this.setState({data: this.state.})
+                break;
+            case 'editedCost':
+                temp.cost = e.target.value;
+                // this.setState({surname: e.target.value});
+                break;
+            case 'editedDuration':
+                temp.duration = e.target.value;
+                // this.setState({patronymic: e.target.value});
+                break;
+            // case "email-input":
+            //     this.setState({email: e.target.value});
+            //     break;
+            // case "tel-input":
+            //     this.setState({phoneNumber: e.target.value});
+            //     break;
+        }
+        this.setState({data: temp});
     }
 
     renderCheckBoxes() {
@@ -81,7 +168,7 @@ class GroupEdit extends Component {
                 <form>
                     <input className="form-check-input"
                            type="checkbox"
-                           onChange={this.handleChange}
+                           onChange={this.handleCheckboxesChange}
                            id={i + "cbEdit"}
                            name="cbNameEdit"
                            aria-label="..."
@@ -94,7 +181,6 @@ class GroupEdit extends Component {
     }
 
     renderStartTimeInputs() {
-        // console.log(this.state.checkboxes);
         let result = [];
         for (let i = 0; i < 7; i++) {
             result.push(<td>
@@ -104,17 +190,18 @@ class GroupEdit extends Component {
                     id={i + "stFormEdit"}
                     name="startTimes"
                     disabled={!this.state.checkboxes.get(i + "cbEdit")}
-                    defaultValue={this.props.group.groupById.startTimes[i]}
+                    defaultValue={this.state.checkboxes.get(i + "cbEdit") ? this.props.group.groupById.startTimes[i] : null}
+                    // value={!this.state.checkboxes.get(i + "cbEdit") ? this.state.stInputs.get(i + "stFormEdit") : null}
+                    onChange={this.handleStartTimesInputsChange}
                 />
             </td>);
-            // console.log(this.props.groupById.startTimes[i]);
         }
         return result;
     }
 
     render() {
-        console.log("render edit group");
-        console.log("this.props", this.props);
+        // console.log("render edit group");
+        // console.log("this.state", this.state);
         // console.log(id);
         return (
             <div>
@@ -124,8 +211,10 @@ class GroupEdit extends Component {
                         <div className="col-xs-10">
                             <input className="form-control"
                                    type="text"
-                                   placeholder={this.props.group.groupById ? this.props.group.groupById.name : "Введите название"}
+                                   placeholder="Введите название"
                                    id='editedGroupName'
+                                   defaultValue={this.props.group.groupById ? this.props.group.groupById.name : null}
+                                   onChange={this.handleInputChange}
                             />
                         </div>
                     </form>
@@ -136,8 +225,10 @@ class GroupEdit extends Component {
                         <div className="col-xs-10">
                             <input className="form-control"
                                    type="number"
-                                   placeholder={this.props.group.groupById ? this.props.group.groupById.cost : "Цена за занятие"}
+                                   placeholder="Цена за занятие"
                                    id='editedCost'
+                                   defaultValue={this.props.group.groupById ? this.props.group.groupById.cost : null}
+                                   onChange={this.handleInputChange}
                             />
                         </div>
                     </form>
@@ -148,8 +239,10 @@ class GroupEdit extends Component {
                         <div className="col-xs-10">
                             <input className="form-control"
                                    type="number"
-                                   placeholder={this.props.group.groupById ? this.props.group.groupById.duration : "Продолжительность (в мин.)"}
+                                   placeholder="Продолжительность (в мин.)"
                                    id='editedDuration'
+                                   defaultValue={this.props.group.groupById ? this.props.group.groupById.duration : null}
+                                   onChange={this.handleInputChange}
                             />
                         </div>
                     </form>
@@ -184,17 +277,17 @@ class GroupEdit extends Component {
                     {/*<p>Добавьте студентов в группу: </p>*!/*/}
                 </div>
                 <div>
-                {/*    <h5>Студенты этой группы:</h5>{*/}
-                {/*    this.props.user.usersFromGroup ?*/}
-                {/*        this.props.usersFromGroup.map(user => (*/}
-                {/*            <div>*/}
-                {/*                <Link*/}
-                {/*                    to={`/groups/users/user_${user.guid}`}>*/}
-                {/*                    {user.name} {user.surname} {user.patronymic}*/}
-                {/*                </Link>*/}
-                {/*            </div>*/}
-                {/*        )) : <Loading/>*/}
-                {/*}*/}
+                    {/*    <h5>Студенты этой группы:</h5>{*/}
+                    {/*    this.props.user.usersFromGroup ?*/}
+                    {/*        this.props.usersFromGroup.map(user => (*/}
+                    {/*            <div>*/}
+                    {/*                <Link*/}
+                    {/*                    to={`/groups/users/user_${user.guid}`}>*/}
+                    {/*                    {user.name} {user.surname} {user.patronymic}*/}
+                    {/*                </Link>*/}
+                    {/*            </div>*/}
+                    {/*        )) : <Loading/>*/}
+                    {/*}*/}
                 </div>
                 <div>
                     <Link to={`/groups/edit_group/add_users_to_group_${this.props.groupId}`}
