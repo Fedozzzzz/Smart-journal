@@ -21,7 +21,6 @@ class UserCreating extends Component {
             "phoneNumber": ""
         };
         cash.name = document.getElementById('userName').value;
-        //console.log('name ', document.getElementById('userName').value);
         cash.surname = document.getElementById('userSurname').value; //
         cash.patronymic = document.getElementById('userPatronymic').value;
         cash.email = document.getElementById("email-input").value;
@@ -98,7 +97,8 @@ class UserCreating extends Component {
                     <button
                         // to="/groups/user_list"
                         className='btn btn-success'
-                        onClick={this.onSaveUser}>Сохранить</button>
+                        onClick={this.onSaveUser}>Сохранить
+                    </button>
                 </div>
             </div>
         )

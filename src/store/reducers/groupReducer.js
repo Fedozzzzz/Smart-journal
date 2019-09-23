@@ -1,9 +1,9 @@
 export const actionTypes = {
 
-//first init
-    firstInitGroupType: 'GET_GROUPS',
-    firstInitGroupSucceededType: 'GET_GROUPS_SUCCEEDED',
-    firstInitGroupFailedType: 'GET_GROUPS_SUCCEEDED',
+//get list of groups
+    getAllGroupsType: 'GET_ALL_GROUPS',
+    getAllGroupsSucceededType: 'GET_ALL_GROUPS_SUCCEEDED',
+    getAllGroupsFailedType: 'GET_ALL_GROUPS_SUCCEEDED',
 
 //creating group
     createGroupType: 'CREATE_GROUP',
@@ -39,7 +39,7 @@ const initialState = {
 
 export const groupActionCreators = {
     getAllGroups: () => ({
-        type: actionTypes.firstInitGroupType
+        type: actionTypes.getAllGroupsType
     }),
     createGroup: () => ({
         type: actionTypes.createGroupType,
@@ -74,22 +74,24 @@ export const groupReducer = (state, action) => {
     state = state || initialState;
 
     switch (action.type) {
-        case actionTypes.firstInitGroupSucceededType:
+        case actionTypes.getAllGroupsSucceededType:
             return {
                 ...state,
                 isLoaded: true,
                 groups: action.groups
             };
-        case actionTypes.firstInitGroupFailedType:
+        case actionTypes.getAllGroupsFailedType:
             return {
                 ...state,
+                isLoaded: false,
                 error: action.payload
             };
-        case actionTypes.createGroupType:
-            return {
-                ...state,
-                onCreatingGroup: true
-            };
+        // case actionTypes.createGroupType:
+        //     return {
+        //         ...state,
+        //         // isLoaded: false,
+        //         // onCreatingGroup: true
+        //     };
         case actionTypes.createGroupSubmitType:
             return {
                 ...state,
@@ -113,6 +115,7 @@ export const groupReducer = (state, action) => {
         case actionTypes.editGroupSucceededType:
             return {
                 ...state,
+                isLoaded: false,
             };
         case actionTypes.editGroupFailedType:
             return {
@@ -122,7 +125,7 @@ export const groupReducer = (state, action) => {
         case actionTypes.deleteGroupSucceededType:
             return {
                 ...state,
-                // isLoaded: false
+                isLoaded: false
             };
         case actionTypes.deleteGroupFailedType:
             return {
@@ -133,6 +136,7 @@ export const groupReducer = (state, action) => {
         case actionTypes.getGroupByIdSucceededType:
             return {
                 ...state,
+                isLoaded: true,
                 groupById: action.groupById
             };
         case actionTypes.getGroupByIdFailedType: {

@@ -7,7 +7,7 @@ import {actionTypes} from "../../store/reducers/groupReducer";
 const url = 'http://localhost:8200';
 
 export function* getGroups() {
-    yield takeLatest(actionTypes.firstInitGroupType, callGetGroups)
+    yield takeLatest(actionTypes.getAllGroupsType, callGetGroups)
 }
 
 function* callGetGroups() {
@@ -28,10 +28,10 @@ function* callGetGroups() {
         // console.log('saga-get-groups-groups');
         console.log('saga groups: ', groups);
         //yield dispatch();
-        yield put({type: actionTypes.firstInitGroupSucceededType, groups});
+        yield put({type: actionTypes.getAllGroupsSucceededType, groups});
     } catch (error) {
         console.log(error);
-        yield put({type: actionTypes.firstInitGroupFailedType});
+        yield put({type: actionTypes.getAllGroupsFailedType});
     }
 }
 

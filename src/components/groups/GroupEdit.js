@@ -1,11 +1,11 @@
 import React, {Component} from "react"
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-// import {actionCreators} from "../../store/reducers/groupReducer";
 import {Link} from "react-router-dom";
 import AddUserToGroup from "./AddUserToGroup";
 import Loading from "../Loading";
 import {groupActionCreators} from "../../store/reducers/groupReducer";
+import {userActionCreators} from "../../store/reducers/userReducer";
 
 
 class GroupEdit extends Component {
@@ -53,8 +53,8 @@ class GroupEdit extends Component {
             "days": [],
             "startTimes": []
         };
-        cash.name = document.getElementById('editedGroupName').value || this.props.groupById.name;
-        cash.cost = document.getElementById('editedCost').value || this.props.groupById.cost;
+        cash.name = document.getElementById('editedGroupName').value || this.props.group.groupById.name;
+        cash.cost = document.getElementById('editedCost').value || this.props.group.groupById.cost;
         cash.duration = document.getElementById("editedDuration").value;
         for (let i = 0; i < document.getElementsByName("startTimes").length; i++) {
             cash.startTimes.push(document.getElementsByName("startTimes")[i].value)
@@ -85,7 +85,7 @@ class GroupEdit extends Component {
                            id={i + "cbEdit"}
                            name="cbNameEdit"
                            aria-label="..."
-                           defaultChecked={this.props.groupById.days[i]}
+                           defaultChecked={this.props.group.groupById.days[i]}
                     />
                 </form>
             </td>)
@@ -94,6 +94,7 @@ class GroupEdit extends Component {
     }
 
     renderStartTimeInputs() {
+        // console.log(this.state.checkboxes);
         let result = [];
         for (let i = 0; i < 7; i++) {
             result.push(<td>
@@ -103,7 +104,7 @@ class GroupEdit extends Component {
                     id={i + "stFormEdit"}
                     name="startTimes"
                     disabled={!this.state.checkboxes.get(i + "cbEdit")}
-                    defaultValue={this.props.groupById.startTimes[i]}
+                    defaultValue={this.props.group.groupById.startTimes[i]}
                 />
             </td>);
             // console.log(this.props.groupById.startTimes[i]);
@@ -111,10 +112,9 @@ class GroupEdit extends Component {
         return result;
     }
 
-
     render() {
         console.log("render edit group");
-        console.log("this.props.history", this.props);
+        console.log("this.props", this.props);
         // console.log(id);
         return (
             <div>
@@ -124,7 +124,7 @@ class GroupEdit extends Component {
                         <div className="col-xs-10">
                             <input className="form-control"
                                    type="text"
-                                   placeholder={this.props.groupById ? this.props.groupById.name : "Введите название"}
+                                   placeholder={this.props.group.groupById ? this.props.group.groupById.name : "Введите название"}
                                    id='editedGroupName'
                             />
                         </div>
@@ -136,7 +136,7 @@ class GroupEdit extends Component {
                         <div className="col-xs-10">
                             <input className="form-control"
                                    type="number"
-                                   placeholder={this.props.groupById ? this.props.groupById.cost : "Цена за занятие"}
+                                   placeholder={this.props.group.groupById ? this.props.group.groupById.cost : "Цена за занятие"}
                                    id='editedCost'
                             />
                         </div>
@@ -148,7 +148,7 @@ class GroupEdit extends Component {
                         <div className="col-xs-10">
                             <input className="form-control"
                                    type="number"
-                                   placeholder={this.props.groupById ? this.props.groupById.duration : "Продолжительность (в мин.)"}
+                                   placeholder={this.props.group.groupById ? this.props.group.groupById.duration : "Продолжительность (в мин.)"}
                                    id='editedDuration'
                             />
                         </div>
@@ -169,12 +169,12 @@ class GroupEdit extends Component {
                         </tr>
                         </thead>
                         <tbody>
-                        {this.props.groupById ?
+                        {this.props.group.groupById ?
                             <tr>
                                 {this.renderCheckBoxes()}
                             </tr>
                             : null}
-                        {this.props.groupById ?
+                        {this.props.group.groupById ?
                             <tr>
                                 {this.renderStartTimeInputs()}
                             </tr>
@@ -184,17 +184,17 @@ class GroupEdit extends Component {
                     {/*<p>Добавьте студентов в группу: </p>*!/*/}
                 </div>
                 <div>
-                    <h5>Студенты этой группы:</h5>{
-                    this.props.usersFromGroup ?
-                        this.props.usersFromGroup.map(user => (
-                            <div>
-                                <Link
-                                    to={`/groups/users/user_${user.guid}`}>
-                                    {user.name} {user.surname} {user.patronymic}
-                                </Link>
-                            </div>
-                        )) : <Loading/>
-                }
+                {/*    <h5>Студенты этой группы:</h5>{*/}
+                {/*    this.props.user.usersFromGroup ?*/}
+                {/*        this.props.usersFromGroup.map(user => (*/}
+                {/*            <div>*/}
+                {/*                <Link*/}
+                {/*                    to={`/groups/users/user_${user.guid}`}>*/}
+                {/*                    {user.name} {user.surname} {user.patronymic}*/}
+                {/*                </Link>*/}
+                {/*            </div>*/}
+                {/*        )) : <Loading/>*/}
+                {/*}*/}
                 </div>
                 <div>
                     <Link to={`/groups/edit_group/add_users_to_group_${this.props.groupId}`}
@@ -218,6 +218,12 @@ class GroupEdit extends Component {
 
 
 export default connect(
-    state => state.group,
-    dispatch => bindActionCreators(groupActionCreators, dispatch)
-)(GroupEdit);
+    state => {
+        return {
+            group: state.group,
+            user: state.user
+        }
+    },
+    dispatch => bindActionCreators(Object.assign({}, groupActionCreators, userActionCreators), dispatch)
+)
+(GroupEdit);

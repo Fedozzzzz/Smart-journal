@@ -35,9 +35,9 @@ function* callGetSchedule({id}) {
     //     // console.log('saga-get-groups-groups');
     //     console.log('saga groups: ', groups);
     //     //yield dispatch();
-    //     yield put({type: firstInitGroupSucceededType, groups});
+    //     yield put({type: getAllGroupsSucceededType, groups});
     // } catch (error) {
-    //     yield put({type: firstInitGroupFailedType});
+    //     yield put({type: getAllGroupsFailedType});
     // }
 }
 

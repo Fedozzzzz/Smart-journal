@@ -1,19 +1,12 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-// import {actionCreators} from "../../store/reducers/groupReducer";
-
-import {Route, Link} from "react-router-dom"
+import {Route} from "react-router-dom"
 import '../../css/Groups.css'
-import UserPage from "../users/UserPage";
-import UserList from "../users/UsersList";
-import UserEdit from "../users/UserEdit";
-import GroupsMenu from "./GroupsMenu";
 import GroupsList from "./GroupsList";
 import GroupsCreating from "./GroupCreating";
 import GroupsEdit from "./GroupEdit";
 import GroupPage from "./GroupPage";
-import UserCreating from "../users/UserCreating";
 import AddUserToGroup from "./AddUserToGroup";
 import {groupActionCreators} from "../../store/reducers/groupReducer";
 

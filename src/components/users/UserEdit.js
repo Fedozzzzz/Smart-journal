@@ -24,12 +24,12 @@ class UserEdit extends Component {
             "email": "",
             "phoneNumber": ""
         };
-        cash.name = document.getElementById('editedUserName').value;
+        cash.name = document.getElementById('editedUserName').value || this.props.userById.name;
         //console.log('name ', document.getElementById('userName').value);
-        cash.surname = document.getElementById('editedUserSurname').value; //
-        cash.patronymic = document.getElementById('editedUserPatronymic').value;
-        cash.email = document.getElementById("editedEmail-input").value;
-        cash.phoneNumber = document.getElementById("editedTel-input").value;
+        cash.surname = document.getElementById('editedUserSurname').value || this.props.userById.surname; //
+        cash.patronymic = document.getElementById('editedUserPatronymic').value || this.props.userById.patronymic;
+        cash.email = document.getElementById("editedEmail-input").value || this.props.userById.email;
+        cash.phoneNumber = document.getElementById("editedTel-input").value || this.props.userById.phoneNumber;
         console.log("user-data: ", cash);
         console.log(this.props.userId);
         this.props.editUserSubmit(this.props.userId, cash);

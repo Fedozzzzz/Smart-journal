@@ -13,6 +13,12 @@ class GroupsList extends Component {
         this.props.getAllGroups();
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.isLoaded === false) {
+            this.props.getAllGroups();
+        }
+    }
+
     render() {
         console.log('render-group-list-page');
         console.log("this.props", this.props);

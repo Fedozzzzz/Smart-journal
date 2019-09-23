@@ -46,8 +46,9 @@ export const actionTypes = {
 };
 
 const initialState = {
-    // isLoaded: true
-    users: []
+    users: [],
+    usersFromGroup: [],
+    isLoaded: false
 };
 
 export const userActionCreators = {
@@ -165,7 +166,8 @@ export const userReducer = (state, action) => {
         case actionTypes.getUsersFromGroupSucceededType: {
             return {
                 ...state,
-                usersFromGroup: action.usersFromGroup
+                usersFromGroup: action.usersFromGroup,
+                isLoaded: true
             }
         }
         case actionTypes.getUsersFromGroupFailedType: {
@@ -186,7 +188,6 @@ export const userReducer = (state, action) => {
                 // ok: action.ok,
             }
         }
-
         default :
             return state;
     }

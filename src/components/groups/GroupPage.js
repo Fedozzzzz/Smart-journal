@@ -24,6 +24,12 @@ class GroupPage extends Component {
         // this.props.getUsersFromGroup(this.props.groupId);
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.isLoaded === false) {
+            this.props.getGroupById(this.props.groupId);
+        }
+    }
+
     renderSchedule() {
         let res = [];
         for (let i = 0; i < 7; i++) {
@@ -68,15 +74,15 @@ class GroupPage extends Component {
                             </table>
                         </div>
                         <div>
-                        {/*    <h5>Студенты этой группы:</h5>{*/}
-                        {/*    this.props.usersFromGroup ?*/}
-                        {/*        this.props.usersFromGroup.map(user => (*/}
-                        {/*            <div>*/}
-                        {/*                <Link*/}
-                        {/*                    to={`/groups/users/user_${user.guid}`}>{user.name} {user.surname} {user.patronymic}</Link>*/}
-                        {/*            </div>*/}
-                        {/*        )) : <Loading/>*/}
-                        {/*}*/}
+                            {/*    <h5>Студенты этой группы:</h5>{*/}
+                            {/*    this.props.usersFromGroup ?*/}
+                            {/*        this.props.usersFromGroup.map(user => (*/}
+                            {/*            <div>*/}
+                            {/*                <Link*/}
+                            {/*                    to={`/groups/users/user_${user.guid}`}>{user.name} {user.surname} {user.patronymic}</Link>*/}
+                            {/*            </div>*/}
+                            {/*        )) : <Loading/>*/}
+                            {/*}*/}
                         </div>
                         <div>
                             <Link to='/groups/'
