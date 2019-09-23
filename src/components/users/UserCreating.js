@@ -2,36 +2,50 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {userActionCreators} from "../../store/reducers/userReducer";
-import {Link} from "react-router-dom";
-
 
 class UserCreating extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            name: null,
+            surname: null,
+            patronymic: null,
+            email: null,
+            phoneNumber: null
+        };
         this.onSaveUser = this.onSaveUser.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     onSaveUser() {
-        let cash = {
-            "name": "",
-            "surname": "",
-            "patronymic": "",
-            "email": "",
-            "phoneNumber": ""
-        };
-        cash.name = document.getElementById('userName').value;
-        cash.surname = document.getElementById('userSurname').value; //
-        cash.patronymic = document.getElementById('userPatronymic').value;
-        cash.email = document.getElementById("email-input").value;
-        cash.phoneNumber = document.getElementById("tel-input").value;
-        console.log("user-data: ", cash);
-        this.props.createUserSubmit(cash);
+        this.props.createUserSubmit(this.state);
         this.props.history.goBack();
     }
 
+    handleChange(e) {
+        console.log(e.target.id);
+        switch (e.target.id) {
+            case "userName":
+                this.setState({name: e.target.value});
+                break;
+            case 'userSurname':
+                this.setState({surname: e.target.value});
+                break;
+            case "userPatronymic":
+                this.setState({patronymic: e.target.value});
+                break;
+            case "email-input":
+                this.setState({email: e.target.value});
+                break;
+            case "tel-input":
+                this.setState({phoneNumber: e.target.value});
+                break;
+        }
+    }
 
     render() {
+        console.log(this.state);
         return (
             <div>
                 <form className="form-inline">
@@ -42,6 +56,7 @@ class UserCreating extends Component {
                                    type="text"
                                    placeholder="Введите имя"
                                    id='userName'
+                                   onChange={this.handleChange}
                             />
                         </div>
                     </div>
@@ -54,6 +69,7 @@ class UserCreating extends Component {
                                    type="text"
                                    placeholder="Введите фамилию"
                                    id='userSurname'
+                                   onChange={this.handleChange}
                             />
                         </div>
                     </div>
@@ -66,6 +82,7 @@ class UserCreating extends Component {
                                    type="text"
                                    placeholder="Введите отчество"
                                    id='userPatronymic'
+                                   onChange={this.handleChange}
                             />
                         </div>
                     </div>
@@ -77,7 +94,9 @@ class UserCreating extends Component {
                             <input className="form-control"
                                    type="email"
                                    placeholder="ivanov.ii@example.com"
-                                   id="email-input"/>
+                                   id="email-input"
+                                   onChange={this.handleChange}
+                            />
                         </div>
                     </div>
                 </form>
@@ -89,7 +108,9 @@ class UserCreating extends Component {
                             <input className="form-control"
                                    type="tel"
                                    placeholder="1-(555)-555-5555"
-                                   id="tel-input"/>
+                                   id="tel-input"
+                                   onChange={this.handleChange}
+                            />
                         </div>
                     </div>
                 </form>

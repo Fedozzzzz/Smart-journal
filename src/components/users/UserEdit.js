@@ -1,42 +1,90 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {Link} from "react-router-dom";
 import {bindActionCreators} from "redux";
-// import {ators} from "../../store/reducers/userReducer";
 import {userActionCreators} from "../../store/reducers/userReducer";
 
 class UserEdit extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            name: null,
+            surname: null,
+            patronymic: null,
+            email: null,
+            phoneNumber: null
+        };
         this.onSaveEditUser = this.onSaveEditUser.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
         this.props.getUserById(this.props.userId);
     }
 
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (this.props.userById) {
+            this.setState({
+                    name: this.props.userById.name || null,
+                    surname: this.props.userById.surname || null,
+                    patronymic: this.props.userById.patronymic || null,
+                    email: this.props.userById.email || null,
+                    phoneNumber: this.props.userById.phoneNumber || null
+                }
+            )
+        }
+    }
+
+    // onSaveEditUser() {
+    //     let cash = {
+    //         "name": "",
+    //         "surname": "",
+    //         "patronymic": "",
+    //         "email": "",
+    //         "phoneNumber": ""
+    //     };
+    //     cash.name = document.getElementById('editedUserName').value || this.props.userById.name;
+    //     //console.log('name ', document.getElementById('userName').value);
+    //     cash.surname = document.getElementById('editedUserSurname').value || this.props.userById.surname; //
+    //     cash.patronymic = document.getElementById('editedUserPatronymic').value || this.props.userById.patronymic;
+    //     cash.email = document.getElementById("editedEmail-input").value || this.props.userById.email;
+    //     cash.phoneNumber = document.getElementById("editedTel-input").value || this.props.userById.phoneNumber;
+    //     console.log("user-data: ", cash);
+    //     console.log(this.props.userId);
+    //     this.props.editUserSubmit(this.props.userId, cash);
+    //     this.props.history.goBack();
+    // }
+
     onSaveEditUser() {
-        let cash = {
-            "name": "",
-            "surname": "",
-            "patronymic": "",
-            "email": "",
-            "phoneNumber": ""
-        };
-        cash.name = document.getElementById('editedUserName').value || this.props.userById.name;
-        //console.log('name ', document.getElementById('userName').value);
-        cash.surname = document.getElementById('editedUserSurname').value || this.props.userById.surname; //
-        cash.patronymic = document.getElementById('editedUserPatronymic').value || this.props.userById.patronymic;
-        cash.email = document.getElementById("editedEmail-input").value || this.props.userById.email;
-        cash.phoneNumber = document.getElementById("editedTel-input").value || this.props.userById.phoneNumber;
-        console.log("user-data: ", cash);
-        console.log(this.props.userId);
-        this.props.editUserSubmit(this.props.userId, cash);
+        console.log("this.state", this.state);
+        this.props.editUserSubmit(this.props.userId, this.state);
         this.props.history.goBack();
     }
 
+    handleChange(e) {
+        // console.log(e.target.id);
+        switch (e.target.id) {
+            case 'editedUserName':
+                this.setState({name: e.target.value});
+                break;
+            case 'editedUserSurname':
+                this.setState({surname: e.target.value});
+                break;
+            case 'editedUserPatronymic':
+                this.setState({patronymic: e.target.value});
+                break;
+            case "editedEmail-input":
+                this.setState({email: e.target.value});
+                break;
+            case "editedTel-input":
+                this.setState({phoneNumber: e.target.value});
+                break;
+        }
+    }
+
+
     render() {
+        console.log("this.state", this.state);
         return (
             <div>
                 <div>
@@ -46,7 +94,9 @@ class UserEdit extends Component {
                             <div className="col-xs-10">
                                 <input className="form-control"
                                        type="text"
-                                       placeholder={this.props.userById ? this.props.userById.name : "Введите имя"}
+                                       onChange={this.handleChange}
+                                       defaultValue={this.props.userById ? this.props.userById.name : null}
+                                       placeholder="Введите имя"
                                        id='editedUserName'
                                 />
                             </div>
@@ -58,7 +108,9 @@ class UserEdit extends Component {
                             <div className="col-xs-10">
                                 <input className="form-control"
                                        type="text"
-                                       placeholder={this.props.userById ? this.props.userById.surname : "Введите фамилию"}
+                                       onChange={this.handleChange}
+                                       defaultValue={this.props.userById ? this.props.userById.surname : null}
+                                       placeholder="Введите фамилию"
                                        id='editedUserSurname'
                                 />
                             </div>
@@ -70,7 +122,9 @@ class UserEdit extends Component {
                             <div className="col-xs-10">
                                 <input className="form-control"
                                        type="text"
-                                       placeholder={this.props.userById ? this.props.userById.patronymic : "Введите отчество"}
+                                       onChange={this.handleChange}
+                                       defaultValue={this.props.userById ? this.props.userById.patronymic : null}
+                                       placeholder="Введите отчество"
                                        id='editedUserPatronymic'
                                 />
                             </div>
@@ -82,8 +136,11 @@ class UserEdit extends Component {
                             <div className="col-xs-10">
                                 <input className="form-control"
                                        type="email"
-                                       placeholder={this.props.userById ? this.props.userById.email : "ivanov.ii@example.com"}
-                                       id="editedEmail-input"/>
+                                       onChange={this.handleChange}
+                                       defaultValue={this.props.userById ? this.props.userById.email : null}
+                                       placeholder="ivanov.ii@example.com"
+                                       id="editedEmail-input"
+                                />
                             </div>
                         </div>
                     </form>
@@ -94,16 +151,16 @@ class UserEdit extends Component {
                             <div className="col-xs-10">
                                 <input className="form-control"
                                        type="tel"
-                                       placeholder={this.props.userById ? this.props.userById.phoneNumber : "1-(555)-555-5555"}
-                                       id="editedTel-input"/>
+                                       onChange={this.handleChange}
+                                       defaultValue={this.props.userById ? this.props.userById.phoneNumber : null}
+                                       placeholder={"1-(555)-555-5555"}
+                                       id="editedTel-input"
+                                />
                             </div>
                         </div>
                     </form>
                     <div>
-                        <button
-                            // to="/groups/user_list"
-                            className='btn btn-success'
-                            onClick={this.onSaveEditUser}>Сохранить</button>
+                        <button className='btn btn-success' onClick={this.onSaveEditUser}>Сохранить</button>
                     </div>
                 </div>
             </div>

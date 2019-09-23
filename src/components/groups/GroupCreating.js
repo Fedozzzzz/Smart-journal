@@ -105,14 +105,9 @@ class GroupCreating extends Component {
     }
 
 
-    // componentWillUnmount() {
-    //     th
-    // }
-    // this.props.addUsersToGroupSubmit(groupId, userId)
-    // }
 
     render() {
-        console.log("this.props", this.props);
+        // console.log("this.props", this.props);
 
         return (<div className="container-fluid">
                 <div>

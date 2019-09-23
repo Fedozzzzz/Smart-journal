@@ -37,7 +37,7 @@ export const actionCreators = {
 };
 
 export const scheduleReducer = (state, action) => {//action.type===????
-    console.log('scheduleReducer');
+    // console.log('scheduleReducer');
     state = state || initialState;
 
     console.log(action.type);
