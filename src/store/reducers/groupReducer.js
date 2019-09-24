@@ -104,7 +104,7 @@ export const groupActionCreators = {
 export const groupReducer = (state, action) => {
 
     state = state || initialState;
-
+    console.log(action.type);
     switch (action.type) {
         case actionTypes.getAllGroupsSucceededType:
             return {
@@ -192,6 +192,7 @@ export const groupReducer = (state, action) => {
         case actionTypes.deleteUserFromGroupSucceededType: {
             return {
                 ...state,
+                isLoaded: false
                 // ok: action.ok,
             }
         }
@@ -211,6 +212,7 @@ export const groupReducer = (state, action) => {
         case actionTypes.addUserToGroupSucceededType: {
             return {
                 ...state,
+                isLoaded: false,
                 // usersToGroup: action.usersToGroup
                 isUsersAddedToGroup: true,
             }

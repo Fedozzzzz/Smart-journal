@@ -191,7 +191,7 @@ export function* deleteUserFromGroup() {
     yield takeLatest(actionTypes.deleteUserFromGroupSubmitType, callDeleteUserFromGroup)
 }
 
-function* callDeleteUserFromGroup({groupId, userId, ...arrayOfUserId}) {
+function* callDeleteUserFromGroup({groupId, userId, arrayOfUserId}) {
     try {
         let headers = new Headers();
         const requestBody = {
@@ -205,7 +205,7 @@ function* callDeleteUserFromGroup({groupId, userId, ...arrayOfUserId}) {
             {
                 method: 'DELETE',
                 headers: headers,
-                body: requestBody
+                body: JSON.stringify(requestBody)
             })
         // .then(res => console.log(res))
             .catch(error => console.log(error)));

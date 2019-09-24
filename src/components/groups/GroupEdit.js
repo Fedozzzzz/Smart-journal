@@ -21,6 +21,7 @@ class GroupEdit extends Component {
         this.state = {
             checkboxes: tempCbMap,
             stInputs: tempStMap,
+            chosenUsers: [],
             data: {
                 name: null,
                 duration: null,
@@ -28,18 +29,22 @@ class GroupEdit extends Component {
                 days: [],
                 startTimes: []
             }
+
         };
         this.onSaveEditGroup = this.onSaveEditGroup.bind(this);
+        this.onDeleteUserFromGroup = this.onDeleteUserFromGroup.bind(this);
         this.renderCheckBoxes = this.renderCheckBoxes.bind(this);
         this.renderStartTimeInputs = this.renderStartTimeInputs.bind(this);
         this.handleCheckboxesChange = this.handleCheckboxesChange.bind(this);
         this.handleStartTimesInputsChange = this.handleStartTimesInputsChange.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleUsersChange = this.handleUsersChange.bind(this);
     }
 
     componentDidMount() {
         this.props.getGroupById(this.props.groupId);
         this.props.getUsersFromGroup(this.props.groupId);
+        this.props.getAllUsers();
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -69,15 +74,25 @@ class GroupEdit extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         console.log("did-update");
-        if (this.props.groupById !== prevProps.groupById) {
-            let tempMap = new Map();
-            for (let i = 0; i < 7; i++) {
-                tempMap.set(i + "cbEdit", this.props.groupById.days[i]);
-            }
-            this.setState({
-                checkboxes: tempMap
-            });
+        // if (this.props.groupById !== prevProps.groupById) {
+        //     let tempMap = new Map();
+        //     for (let i = 0; i < 7; i++) {
+        //         tempMap.set(i + "cbEdit", this.props.groupById.days[i]);
+        //     }
+        //     this.setState({
+        //         checkboxes: tempMap
+        //     });
+        // }
+
+        // if (this.props.group.usersFromGroup !== prevProps.group.usersFromGroup) {
+        //     this.props.getUsersFromGroup(this.props.groupId);
+        // }
+
+        if (!this.props.group.isLoaded) {
+            this.props.getUsersFromGroup(this.props.groupId);
         }
+        console.log(this.props.group.usersFromGroup);
+        console.log(prevProps.group.usersFromGroup);
     }
 
     // onSaveEditGroup() {
@@ -124,6 +139,11 @@ class GroupEdit extends Component {
         }
         console.log(data);
         this.props.editGroupSubmit(this.props.groupId, data);
+        data = [];
+        this.state.chosenUsers.forEach((value, key) => {
+            data.push(key);
+        });
+        this.props.addUsersToGroupSubmit(this.props.groupId, data);
         this.props.history.goBack();
     }
 
@@ -159,6 +179,28 @@ class GroupEdit extends Component {
             //     break;
         }
         this.setState({data: temp});
+    }
+
+    handleUsersChange(e) {
+        // console.log("check before: ", this.state);
+        // console.log("e.target.id", e.target.id);
+        // console.log("e.target.id", e.target.checked);
+        let tempMap = new Map(this.state.chosenUsers);
+        if (e.target.checked) {
+            tempMap.set(e.target.id, 0);
+            // console.log(tempMap);
+            this.setState({chosenUsers: tempMap});
+        } else {
+            tempMap.delete(e.target.id);
+            this.setState({chosenUsers: tempMap})
+        }
+        // console.log("check: ", this.state.chosenUsers);
+    }
+
+
+    onDeleteUserFromGroup(e) {
+        // console.log(e.target.id);
+        this.props.deleteUserFromGroup(this.props.groupId, e.target.id);
     }
 
     renderCheckBoxes() {
@@ -199,10 +241,12 @@ class GroupEdit extends Component {
         return result;
     }
 
+
     render() {
         // console.log("render edit group");
         // console.log("this.state", this.state);
         // console.log(id);
+        console.log("this.props", this.props.group.usersFromGroup);
         return (
             <div>
                 <div>
@@ -274,25 +318,39 @@ class GroupEdit extends Component {
                             : null}
                         </tbody>
                     </table>
-                    {/*<p>Добавьте студентов в группу: </p>*!/*/}
+
                 </div>
                 <div>
-                    {/*    <h5>Студенты этой группы:</h5>{*/}
-                    {/*    this.props.user.usersFromGroup ?*/}
-                    {/*        this.props.usersFromGroup.map(user => (*/}
-                    {/*            <div>*/}
-                    {/*                <Link*/}
-                    {/*                    to={`/groups/users/user_${user.guid}`}>*/}
-                    {/*                    {user.name} {user.surname} {user.patronymic}*/}
-                    {/*                </Link>*/}
-                    {/*            </div>*/}
-                    {/*        )) : <Loading/>*/}
-                    {/*}*/}
+                    <h5>Студенты этой группы:</h5>{
+                    this.props.group.usersFromGroup ?
+                        this.props.group.usersFromGroup.map(user => (
+                            <div>
+                                <Link
+                                    to={`/users/user_${user.guid}`}>
+                                    {user.name} {user.surname} {user.patronymic}
+                                </Link>
+                                <button className="btn btn-danger" onClick={this.onDeleteUserFromGroup}
+                                        id={user.guid}>Удалить
+                                </button>
+                            </div>
+                        )) : <Loading/>
+                }
                 </div>
                 <div>
-                    <Link to={`/groups/edit_group/add_users_to_group_${this.props.groupId}`}
-                          className="btn btn-outline-primary"
-                          onClick={() => this.props.addUsersToGroup()}>+Добавить учеников</Link>
+                    <h5>Добавьте студентов в группу: </h5>
+                    <p>Веберите студентов из списка, чтобы добавить их в группу</p>
+                    {this.props.user.users.map(user => (<div className="form-inline">
+                        <Link to={`/users/user_${user.guid}`}>
+                            {user.name} {user.surname} {user.patronymic}</Link>
+                        < div className="form-check">
+                            < input className="form-check-input"
+                                    type="checkbox"
+                                    value=""
+                                    onChange={this.handleUsersChange}
+                                    id={user.guid}
+                            />
+                        </div>
+                    </div>))}
                 </div>
                 <div>
                     <button
@@ -300,9 +358,6 @@ class GroupEdit extends Component {
                         className='btn btn-success'
                         onClick={this.onSaveEditGroup}>Сохранить
                     </button>
-                    {/*<Link to={`/groups/edit_group/add_users_to_group/group_${this.props.groupId}`}*/}
-                    {/*      className="btn btn-outline-primary"*/}
-                    {/*      onClick={() => this.props.addUsersToGroup()}>Добавить учеников</Link>*/}
                 </div>
             </div>
         )

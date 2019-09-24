@@ -25,6 +25,7 @@ class GroupPage extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.isLoaded === false) {
             this.props.getGroupById(this.props.groupId);
+            this.props.getUsersFromGroup(this.props.groupId);
         }
     }
 
@@ -77,7 +78,7 @@ class GroupPage extends Component {
                                 this.props.usersFromGroup.map(user => (
                                     <div>
                                         <Link
-                                            to={`/groups/users/user_${user.guid}`}>{user.name} {user.surname} {user.patronymic}</Link>
+                                            to={`/users/user_${user.guid}`}>{user.name} {user.surname} {user.patronymic}</Link>
                                     </div>
                                 )) : <Loading/>
                         }

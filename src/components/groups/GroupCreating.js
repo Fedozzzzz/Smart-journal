@@ -249,7 +249,8 @@ class GroupCreating extends Component {
                     {this.props.user.users ? <div>
                         <h5>Добавьте студентов в группу:</h5>
                         {this.props.user.users.map(user => (<div className="form-inline">
-                            <div>{user.name} {user.surname} {user.patronymic}</div>
+                            <Link to={`/users/user_${user.guid}`}>
+                                {user.name} {user.surname} {user.patronymic}</Link>
                             < div className="form-check">
                                 < input className="form-check-input"
                                         type="checkbox"
