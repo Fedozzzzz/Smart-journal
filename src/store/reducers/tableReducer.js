@@ -50,7 +50,7 @@ export const actionCreators= {
 export const tableReducer=(state, action)=> {
     //console.log('usersReducer');
     state = state || initialState;
-    console.log(action.type);
+    // console.log(action.type);
     switch (action.type) {
         // case initGroupsSucceededType:
         //     console.log('init-succeeded');

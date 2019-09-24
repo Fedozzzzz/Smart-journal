@@ -17,14 +17,17 @@ class GroupsList extends Component {
         if (this.props.isLoaded === false) {
             this.props.getAllGroups();
         }
-        if(this.props.newGroup){
-            this.props.addUsersToGroupSubmit(this.props.newGroup.guid, this.props.usersToGroup);
+        if (this.props.newGroup!==prevProps.newGroup) {
+            // if (!this.props.isUsersAddedToGroup) {
+                console.log("addUserToGroup");
+                this.props.addUsersToGroupSubmit(this.props.newGroup.guid, this.props.usersToGroup);
+            // }
         }
     }
 
     render() {
         console.log('render-group-list-page');
-        console.log("this.props", this.props);
+        // console.log("this.props", this.props);
         return (
             <div>
                 <h3>Группы</h3>

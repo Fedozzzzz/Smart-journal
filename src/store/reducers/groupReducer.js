@@ -51,7 +51,8 @@ const initialState = {
     isLoaded: false,
     onCreatingGroup: false,
     onCreatingUser: false,
-    error: ''
+    error: '',
+    isUsersAddedToGroup: false
 };
 
 export const groupActionCreators = {
@@ -81,7 +82,7 @@ export const groupActionCreators = {
         guid,
         data
     }),
-    addUsersToGroup: (...userIds) => ({
+    addUsersToGroup: (userIds) => ({
         type: actionTypes.addUserToGroupType,
         userIds
     }),
@@ -203,13 +204,15 @@ export const groupReducer = (state, action) => {
         case actionTypes.addUserToGroupType: {
             return {
                 ...state,
-                usersToGroup: action.userIds
+                usersToGroup: action.userIds,
+                isUsersAddedToGroup: false
             }
         }
         case actionTypes.addUserToGroupSucceededType: {
             return {
                 ...state,
                 // usersToGroup: action.usersToGroup
+                isUsersAddedToGroup: true,
             }
         }
         default :
