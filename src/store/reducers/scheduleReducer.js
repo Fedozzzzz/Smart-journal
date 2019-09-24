@@ -1,37 +1,38 @@
+export const actionTypes = {
 //init
-export const initScheduleType = 'INIT_SCHEDULE';
-export const initScheduleSucceededType = 'INIT_SCHEDULE_SUCCEEDED';
-export const initScheduleFailedType = 'INIT_SCHEDULE_FAILED';
+    getScheduleType: 'GET_SCHEDULE',
+    getScheduleSucceededType: 'GET_SCHEDULE_SUCCEEDED',
+    getScheduleFailedType: 'GET_SCHEDULE_FAILED',
 
 //edit
-export const editScheduleType = 'EDIT_SCHEDULE_TYPE';
-export const editScheduleSucceededType = 'EDIT_SCHEDULE_SUCCEEDED';
-export const editScheduleFailedType = 'EDIT_SCHEDULE_FAILED';
-
-export const editScheduleSubmitType = 'EDIT_SCHEDULE_SUBMIT';
-
+    editScheduleType: 'EDIT_SCHEDULE_TYPE',
+    editScheduleSucceededType: 'EDIT_SCHEDULE_SUCCEEDED',
+    editScheduleFailedType: 'EDIT_SCHEDULE_FAILED',
+    editScheduleSubmitType: 'EDIT_SCHEDULE_SUBMIT',
+};
 // export const editUserSubmitedType='EDIT_SCHEDULE_SUBMITED'; //save
 //add
 
 const initialState = {
     schedule: [],
-    error: '',
-    isEdit: false,
-    isEdited: false,
+    error: null,
+    // isEdit: false,
+    // isEdited: false,
     isLoaded: false
 };
 
-export const actionCreators = {
-    initSchedule: () => ({
-        type: initScheduleType
+export const scheduleActionCreators = {
+    getSchedule: (groupId, from, to) => ({
+        type: actionTypes.getScheduleType,
+        groupId, from, to
     }),
     editSchedule: () => ({
-        type: editScheduleType,
+        type: actionTypes.editScheduleType,
     }),
-    saveSchedule: (id, data) => ({
+    saveSchedule: (groupId, data) => ({
         // type: editScheduleSubmitType,
-        type: editScheduleSucceededType,
-        id,
+        type: actionTypes.editScheduleSucceededType,
+        groupId,
         data
     })
 };
@@ -42,12 +43,18 @@ export const scheduleReducer = (state, action) => {//action.type===????
 
     // console.log(action.type);
     switch (action.type) {
-        // case(initScheduleSucceededType):
-        //     return {
-        //         ...state,  //spread????
-        //         schedule: action.schedule,
-        //         isLoaded: true
-        //     };
+        case actionTypes.getScheduleSucceededType:
+            return {
+                ...state,  //spread????
+                schedule: action.schedule,
+                isLoaded: true
+            };
+        case actionTypes.getScheduleFailedType:
+            return {
+                ...state,
+                error: action.payload
+            };
+
         // case editScheduleType:
         //     return {
         //         ...state,

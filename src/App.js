@@ -2,7 +2,7 @@ import React from 'react';
 import {Route} from 'react-router-dom';
 import Layout from './components/Layout';
 import MainTable from "./components/MainTable"
-import Schedule from "./components/Schedule";
+import Schedule from "./components/schedule/Schedule";
 import Groups from "./components/groups/Groups";
 import Home from "./components/Home";
 import Users from "./components/users/Users";

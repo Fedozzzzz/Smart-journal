@@ -1,65 +1,54 @@
 import {call, put, takeLatest, all} from 'redux-saga/effects'
-import {
-    initScheduleSucceededType,
-    initScheduleFailedType,
-    editScheduleSucceededType,
-    editScheduleFailedType,
-    editScheduleSubmitType, initScheduleType
-} from "../../store/reducers/scheduleReducer";
+import {actionTypes} from "../../store/reducers/scheduleReducer";
 
 const url = 'http://7a1b344f.ngrok.io';
 
 //GET
 
 export function* getSchedule() {
-    yield takeLatest(initScheduleType, callGetSchedule);
+    yield takeLatest(actionTypes.getScheduleType, callGetSchedule);
 }
 
-function* callGetSchedule({id}) {
+function* callGetSchedule({groupId, from, to}) {
     try {
         console.log('saga-get-schedule');
-        const schedule = yield call(() => fetch(url + "/schedule/" + id.toString() + "?from=",
-            {method: "GET"}).then(res => res.json())
+        let headers = new Headers();
+        headers.append('Content-Type', "application/json");
+        const schedule = yield call(() => fetch(url + "/schedule/" + groupId.toString() +
+            "?from=" + from + "&to=" + to,
+            {
+                method: "GET",
+                headers: headers
+            }).then(res => res.json())
             .catch(err => console.log(err)));
-        yield put({type: initScheduleSucceededType, schedule})
+        yield put({type: actionTypes.getScheduleSucceededType, schedule})
     } catch (e) {
-        yield put({type: initScheduleFailedType});
+        console.log(e);
+        yield put({type: actionTypes.getScheduleFailedType});
     }
-    // try {
-    //     console.log('saga-get-schedule');
-    //     const groups = yield fetch(url + '/groups',
-    //         {
-    //             method: 'GET',
-    //         }).then(response => response.json())
-    //         .catch(error => console.error(error));
-    //     // console.log('saga-get-groups-groups');
-    //     console.log('saga groups: ', groups);
-    //     //yield dispatch();
-    //     yield put({type: getAllGroupsSucceededType, groups});
-    // } catch (error) {
-    //     yield put({type: getAllGroupsFailedType});
-    // }
 }
 
 
 export function* editSchedule() {
-    yield takeLatest(editScheduleSubmitType, callEditSchedule)
+    yield takeLatest(actionTypes.editScheduleSubmitType, callEditSchedule)
 }
 
-function* callEditSchedule({data}, {id}) {
+function* callEditSchedule({groupId, data}) {
     try {
         let headers = new Headers();
         console.log("saga-edit-schedule");
         headers.append('Content-Type', "application/json");//
-        const newSchedule = yield call(() => fetch(url + "/schedule/" + id.toString(),
+        const newSchedule = yield call(() => fetch(url + "/schedule/" + groupId.toString(),
             {
                 method: 'PUT',
                 headers: headers,
                 body: JSON.stringify(data)
-            }).then(response => response.json())
+            })
+        // .then(response => response.json())
             .catch(error => console.log(error)));
-        yield put({type: editScheduleSucceededType, newSchedule})
+        yield put({type: actionTypes.editScheduleSucceededType, newSchedule})
     } catch (error) {
-        yield put({type: editScheduleFailedType})
+        console.log(error);
+        yield put({type: actionTypes.editScheduleFailedType})
     }
 }

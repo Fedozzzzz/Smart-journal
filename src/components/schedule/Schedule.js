@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {actionCreators} from "../store/reducers/scheduleReducer";
-import {Route} from "react-router-dom"
-import {Link} from "react-router-dom";
-import "../css/Schedule.css"
+// import {actionCreators} from "../../store/reducers/scheduleReducer";
+// import {Route} from "react-router-dom"
+// import {Link} from "react-router-dom";
+import "../../css/Schedule.css"
+import {scheduleActionCreators} from "../../store/reducers/scheduleReducer";
+import {groupActionCreators, groupReducer} from "../../store/reducers/groupReducer";
 
 // eslint-disable-next-line no-extend-native
 Date.prototype.daysInMonth = function () {
@@ -16,13 +18,13 @@ class Schedule extends Component {
     constructor(props, ctx) {
         super(props, ctx);
         this.state = {
+            selectedGroup: null,
             date: "",
-            groupId: null,
             isSelected: false,
             newSchedule: []
         };
         // this.renderWeekSchedule = this.renderWeekSchedule.bind(this);
-        this.renderScheduleMenu = this.renderScheduleMenu.bind(this);
+        // this.renderScheduleMenu = this.renderScheduleMenu.bind(this);
         this.renderWeekSchedule = this.renderWeekSchedule.bind(this);
         this.renderTableSchedule = this.renderTableSchedule.bind(this);
         this.renderTrueSchedule = this.renderTrueSchedule.bind(this);
@@ -31,28 +33,40 @@ class Schedule extends Component {
         this.onEdit = this.onEdit.bind(this);
         this.onClick = this.onClick.bind(this);
         this.onSave = this.onSave.bind(this);
+        this.onSelectGroup = this.onSelectGroup.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     componentDidMount(prevProps, prevState, snapshot) {
         console.log("did mount");
-        this.props.initSchedule();
+        // this.props.getSchedule();
+        this.props.getAllGroups();
     }
 
     onDateChange(e) {
+        // console.log(e.target.value);
         this.setState({
             date: new Date(e.target.value),
             isSelected: true
         });
-        this.props.initSchedule()
+        // this.props.getSchedule()
     }
 
     onGroupChange(e) {
         this.setState({groupId: e.target.value});
-        this.props.initSchedule()
+        // this.props.getSchedule()
     }
 
     onSubmit(e) {
-        e.preventDefault();
+        let date = new Date(this.state.date);
+        console.log(date);
+        let from = date.toISOString().slice(0, 10);
+        date.setUTCDate(this.state.date.daysInMonth());
+        // console.log(this.state.date.daysInMonth());
+        // console.log(date);
+        let to = date.toISOString().slice(0, 10);
+        console.log(this.state.selectedGroup, from, to);
+        this.props.getSchedule(this.state.selectedGroup, from, to);
     }
 
     onEdit(e) {
@@ -112,6 +126,11 @@ class Schedule extends Component {
                 </table> : null)
     }
 
+    onSelectGroup(e) {
+        // console.log(e.target.value);
+        this.setState({selectedGroup: e.target.value});
+    }
+
     renderForm() {
         return (
             <div className="container">
@@ -129,17 +148,23 @@ class Schedule extends Component {
                                 onChange={this.onDateChange}
                             />
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="exampleGroup">№ Группы</label>
-                            <input type="number"
-                                   className="form-control"
-                                   id="exampleGroup"
-                                   aria-describedby="groupHelp"
-                                   placeholder="Введите № группы"
-                                   value={this.state.groupId}
-                                   onChange={this.onGroupChange}
-                            />
-                        </div>
+                        {/*<div className="form-group">*/}
+                        {/*    <label htmlFor="exampleGroup">№ Группы</label>*/}
+                        {/*    <input type="number"*/}
+                        {/*           className="form-control"*/}
+                        {/*           id="exampleGroup"*/}
+                        {/*           aria-describedby="groupHelp"*/}
+                        {/*           placeholder="Введите № группы"*/}
+                        {/*           value={this.state.groupId}*/}
+                        {/*           onChange={this.onGroupChange}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
+                        <select className="custom-select" onChange={this.onSelectGroup}>
+                            <option selected>Выберите группу</option>
+                            {this.props.group.groups.map(group => (
+                                <option value={group.guid}>{group.name}</option>
+                            ))}
+                        </select>
                     </form>
                 </div>
                 <div className="buttons">
@@ -197,10 +222,6 @@ class Schedule extends Component {
 
         // console.log(tempArr);
         this.setState({newSchedule: tempArr});
-        // console.log(this.state);
-
-        // console.log(this.state.date.toString());
-        // console.log(document.getElementById(day).className);
     }
 
     renderTrueSchedule() {
@@ -259,33 +280,27 @@ class Schedule extends Component {
         )
     }
 
-    renderScheduleMenu() {
-        // console.log(this.state.date);
-        return (
-            <div className="schedule">
-                <h1>Schedule</h1>
-                {this.renderForm()}
-                {this.state.isSelected ? this.renderTrueSchedule() : null}
-                {/*<Link to='/schedule/true_schedule'>True Schedule</Link>*/}
-                <Link to='/schedule/week_schedule'>Week Schedule</Link>
-            </div>
-        )
-    }
-
     render() {
         // console.log("render");
-        // console.log(this.props.isEdit);
+        // console.log(this.state);
         return (
             <div>
-                <Route exact path='/schedule' render={this.renderScheduleMenu}/>
-                <Route path='/schedule/true_schedule' render={this.renderTrueSchedule}/>
-                <Route path='/schedule/week_schedule' render={this.renderWeekSchedule}/>
+                <div className="schedule">
+                    <h3>Расписание</h3>
+                    {this.renderForm()}
+                    {this.state.isSelected ? this.renderTrueSchedule() : null}
+                </div>
             </div>
         );
     }
 }
 
 export default connect(
-    state => state.schedule,
-    dispatch => bindActionCreators(actionCreators, dispatch)
+    state => {
+        return {
+            schedule: state.schedule,
+            group: state.group
+        }
+    },
+    dispatch => bindActionCreators(Object.assign({}, scheduleActionCreators, groupActionCreators), dispatch)
 )(Schedule);
