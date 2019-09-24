@@ -6,24 +6,6 @@ const url = 'http://localhost:8200';
 
 //USERS
 
-export function* getUsersFromGroup() {
-    yield takeLatest(actionTypes.getUsersFromGroupType, callGetUsersFromGroup)
-}
-
-function* callGetUsersFromGroup({groupId}) {
-    try {
-        const usersFromGroup = yield call(() => fetch(url + '/groups/' + groupId.toString() + '/users',
-            {
-                method: 'GET',
-            }).then(response => response.json())
-            .catch(error => console.error(error)));
-        yield put({type: actionTypes.getUsersFromGroupSucceededType, usersFromGroup});
-    } catch (error) {
-        console.log(error);
-        yield put({type: actionTypes.getUsersFromGroupFailedType});
-    }
-}
-
 export function* createUser() {
     yield takeLatest(actionTypes.createUserSubmitType, callCreateUser)
 }
@@ -137,61 +119,3 @@ function* callEditUser({guid, data}) {
     }
 }
 
-//add user to group
-export function* addUserToGroup() {
-    yield takeLatest(actionTypes.addUserToGroupSubmitType, callAddUserToGroup)
-}
-
-function* callAddUserToGroup({groupId, userId}) {
-    try {
-        console.log("saga-add-user-to-group", groupId, userId);
-        let headers = new Headers();
-        const data = {
-            "UserId": userId,
-            "GroupId": groupId
-        };
-        headers.append('Content-Type', "application/json");
-        yield call(() => fetch(url + '/users/assign',
-            {
-                method: 'POST',
-                headers: headers,
-                // mode: "no-cors",
-                body: JSON.stringify(data)
-            }).catch(error => console.log(error)));
-        yield put({type: actionTypes.addUserToGroupSucceededType})
-    } catch (error) {
-        console.log(error);
-        yield put({type: actionTypes.addUserToGroupFailedType})
-    }
-}
-
-
-//delete user from group
-
-export function* deleteUserFromGroup() {
-    yield takeLatest(actionTypes.deleteUserFromGroupSubmitType, callDeleteUserFromGroup)
-}
-
-function* callDeleteUserFromGroup({groupId, userId, ...arrayOfUserId}) {
-    try {
-        let headers = new Headers();
-        const requestBody = {
-            "userIds": arrayOfUserId,
-            "userId": userId,
-            "groupId": groupId
-        };
-        console.log("saga-delete-user-from-group ", groupId, userId, arrayOfUserId);
-        headers.append('Content-Type', "application/json");
-        yield call(() => fetch(url + '/users/assign',
-            {
-                method: 'DELETE',
-                headers: headers,
-                body: requestBody
-            }).then(res => console.log(res))
-            .catch(error => console.log(error)));
-        yield put({type: actionTypes.deleteUserFromGroupSucceededType})
-    } catch (error) {
-        console.log(error);
-        yield put({type: actionTypes.deleteUserFromGroupFailedType})
-    }
-}

@@ -1,10 +1,5 @@
 export const actionTypes = {
 
-    //get users from group
-    getUsersFromGroupType: 'GET_USERS',
-    getUsersFromGroupSucceededType: 'GET_USERS_SUCCEEDED',
-    getUsersFromGroupFailedType: 'GET_USERS_FAILED',
-
 //creating user
     createUserType: "CREATE_USER",
     createUserSubmitType: "CREATE_USER_SUBMIT",
@@ -32,17 +27,6 @@ export const actionTypes = {
     getAllUsersSucceededType: 'GET_ALL_USERS_SUCCEEDED',
     getAllUsersFailedType: 'GET_ALL_USERS_FAILED',
 
-//add user to group
-    addUserToGroupType: 'ADD_USER_TO_GROUP',
-    addUserToGroupSubmitType: 'ADD_USER_TO_GROUP_SUBMIT',
-    addUserToGroupSucceededType: 'ADD_USER_TO_GROUP_SUCCEEDED',
-    addUserToGroupFailedType: 'ADD_USER_TO_GROUP_FAILED',
-
-    //delete users or user from group
-    deleteUserFromGroupType: 'ADD_USER_TO_GROUP',
-    deleteUserFromGroupSubmitType: 'ADD_USER_TO_GROUP_SUBMIT',
-    deleteUserFromGroupSucceededType: 'ADD_USER_TO_GROUP_SUCCEEDED',
-    deleteUserFromGroupFailedType: 'ADD_USER_TO_GROUP_FAILED',
 };
 
 const initialState = {
@@ -56,10 +40,7 @@ export const userActionCreators = {
     getAllUsers: () => ({
         type: actionTypes.getAllUsersType
     }),
-    getUsersFromGroup: (groupId) => ({
-        type: actionTypes.getUsersFromGroupType,
-        groupId
-    }),
+
     createUser: () => ({
         type: actionTypes.createUserType,
     }),
@@ -67,14 +48,7 @@ export const userActionCreators = {
         type: actionTypes.createUserSubmitType,
         data
     }),
-    addUsersToGroup: () => ({
-        type: actionTypes.addUserToGroupType
-    }),
-    addUsersToGroupSubmit: (groupId, userId) => ({
-        type: actionTypes.addUserToGroupSubmitType,
-        groupId,
-        userId
-    }),
+
     deleteUser: (guid) => ({
         type: actionTypes.deleteUserType,
         guid
@@ -91,10 +65,6 @@ export const userActionCreators = {
         type: actionTypes.getUserType,
         guid: id
     }),
-    deleteUserFromGroup: (groupId, userId) => ({
-        type: actionTypes.deleteUserFromGroupSubmitType,
-        groupId, userId
-    })
 };
 
 
@@ -158,31 +128,6 @@ export const userReducer = (state, action) => {
             }
         }
         case actionTypes.editUserFailedType: {
-            return {
-                ...state,
-                // ok: action.ok,
-            }
-        }
-        case actionTypes.getUsersFromGroupSucceededType: {
-            return {
-                ...state,
-                usersFromGroup: action.usersFromGroup,
-                isLoaded: true
-            }
-        }
-        case actionTypes.getUsersFromGroupFailedType: {
-            return {
-                ...state,
-                error: action.payload
-            }
-        }
-        case actionTypes.deleteUserFromGroupSucceededType: {
-            return {
-                ...state,
-                // ok: action.ok,
-            }
-        }
-        case actionTypes.deleteUserFromGroupFailedType: {
             return {
                 ...state,
                 // ok: action.ok,

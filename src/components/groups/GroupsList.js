@@ -17,6 +17,9 @@ class GroupsList extends Component {
         if (this.props.isLoaded === false) {
             this.props.getAllGroups();
         }
+        if(this.props.newGroup){
+            this.props.addUsersToGroupSubmit(this.props.newGroup.guid, this.props.usersToGroup);
+        }
     }
 
     render() {

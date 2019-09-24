@@ -42,32 +42,32 @@ export const scheduleReducer = (state, action) => {//action.type===????
 
     console.log(action.type);
     switch (action.type) {
-        case(initScheduleSucceededType):
-            return {
-                ...state,  //spread????
-                schedule: action.schedule,
-                isLoaded: true
-            };
-        case editScheduleType:
-            return {
-                ...state,
-                isEdit: true,
-                isEdited: false
-            };
-        case editScheduleSucceededType:
-            console.log("succeed");
-            return {
-                ...state,
-                isEdit: false,
-                isEdited: true
-            };
-        case editScheduleFailedType:
-            return {
-                ...state,
-                isEdit: false,
-                isEdited: false,
-                error: action.payload
-            };
+        // case(initScheduleSucceededType):
+        //     return {
+        //         ...state,  //spread????
+        //         schedule: action.schedule,
+        //         isLoaded: true
+        //     };
+        // case editScheduleType:
+        //     return {
+        //         ...state,
+        //         isEdit: true,
+        //         isEdited: false
+        //     };
+        // case editScheduleSucceededType:
+        //     console.log("succeed");
+        //     return {
+        //         ...state,
+        //         isEdit: false,
+        //         isEdited: true
+        //     };
+        // case editScheduleFailedType:
+        //     return {
+        //         ...state,
+        //         isEdit: false,
+        //         isEdited: false,
+        //         error: action.payload
+        //     };
         default :
             return state;
     }

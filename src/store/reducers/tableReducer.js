@@ -52,45 +52,45 @@ export const tableReducer=(state, action)=> {
     state = state || initialState;
     console.log(action.type);
     switch (action.type) {
-        case initGroupsSucceededType:
-            console.log('init-succeeded');
-            // console.log(action.users);
-            let groups = new Map();
-            action.groups.map(group => {
-                groups.set(group.id.toString(), group);
-            });
-            return {
-                ...state,
-                isLoading: false,
-                isLoaded: true,
-                groups: groups
-            };
-        case initGroupsFailedType:
-            return {
-                ...state,
-                isLoading: false,
-                isLoaded: false,
-                error: action.payload
-            };
-        case editGroupsType:
-            return {
-                ...state,
-                isEdit: true,
-                isEdited: false
-            };
-        case editGroupsSucceededType:
-            return {
-                ...state,
-                isEdit: false,
-                isEdited: true
-            };
-        case editGroupsFailedType:
-            return {
-                ...state,
-                isEdit: false,
-                isEdited: false,
-                error: action.payload
-            };
+        // case initGroupsSucceededType:
+        //     console.log('init-succeeded');
+        //     // console.log(action.users);
+        //     let groups = new Map();
+        //     action.groups.map(group => {
+        //         groups.set(group.id.toString(), group);
+        //     });
+        //     return {
+        //         ...state,
+        //         isLoading: false,
+        //         isLoaded: true,
+        //         groups: groups
+        //     };
+        // case initGroupsFailedType:
+        //     return {
+        //         ...state,
+        //         isLoading: false,
+        //         isLoaded: false,
+        //         error: action.payload
+        //     };
+        // case editGroupsType:
+        //     return {
+        //         ...state,
+        //         isEdit: true,
+        //         isEdited: false
+        //     };
+        // case editGroupsSucceededType:
+        //     return {
+        //         ...state,
+        //         isEdit: false,
+        //         isEdited: true
+        //     };
+        // case editGroupsFailedType:
+        //     return {
+        //         ...state,
+        //         isEdit: false,
+        //         isEdited: false,
+        //         error: action.payload
+        //     };
         default:
             return state;
     }

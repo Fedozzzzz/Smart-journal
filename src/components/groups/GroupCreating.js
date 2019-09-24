@@ -20,6 +20,7 @@ class GroupCreating extends Component {
         this.state = {
             checkboxes: tempCbMap,
             stInputs: tempStMap,
+            chosenUsers: [],
             data: {
                 name: null,
                 duration: null,
@@ -76,6 +77,16 @@ class GroupCreating extends Component {
         console.log(data);
         this.props.createGroupSubmit(data);
         this.props.history.goBack();
+    }
+
+    componentWillUnmount() {
+        // console.log("will unmount this.props ", this.props.group);
+        let data = [];
+        this.state.chosenUsers.forEach((value, key) => {
+            data.push(key);
+        });
+        this.props.addUsersToGroup(data)
+        // this.props.addUsersToGroupSubmit(this.props.newGroup.guid, data);
     }
 
     handleCheckboxesChange(e) {
@@ -244,7 +255,8 @@ class GroupCreating extends Component {
                                         type="checkbox"
                                         value=""
                                         onChange={this.handleUsersChange}
-                                        id={user.guid}/>
+                                        id={user.guid}
+                                />
                             </div>
                         </div>))}
                     </div> : null}

@@ -26,6 +26,7 @@ class UsersList extends Component {
             console.log("additional get method");
             this.props.getAllUsers();
         }
+
         // // else
         // if (this.props.status !== prevProps.status) {
         //     this.props.getAllUsers();
