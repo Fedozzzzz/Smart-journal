@@ -1,7 +1,8 @@
 import {call, put, takeLatest, all} from 'redux-saga/effects'
 import {actionTypes} from "../../store/reducers/scheduleReducer";
 
-const url = 'http://7a1b344f.ngrok.io';
+//url
+const url = 'http://localhost:8200';
 
 //GET
 
@@ -19,7 +20,8 @@ function* callGetSchedule({groupId, from, to}) {
             {
                 method: "GET",
                 headers: headers
-            }).then(res => res.json())
+            })
+            .then(res => res.json())
             .catch(err => console.log(err)));
         yield put({type: actionTypes.getScheduleSucceededType, schedule})
     } catch (e) {

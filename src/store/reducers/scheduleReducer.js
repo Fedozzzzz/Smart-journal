@@ -14,9 +14,9 @@ export const actionTypes = {
 //add
 
 const initialState = {
-    schedule: [],
+    schedule: null,
     error: null,
-    // isEdit: false,
+    isEdit: false,
     // isEdited: false,
     isLoaded: false
 };
@@ -54,27 +54,26 @@ export const scheduleReducer = (state, action) => {//action.type===????
                 ...state,
                 error: action.payload
             };
-
-        // case editScheduleType:
-        //     return {
-        //         ...state,
-        //         isEdit: true,
-        //         isEdited: false
-        //     };
-        // case editScheduleSucceededType:
-        //     console.log("succeed");
-        //     return {
-        //         ...state,
-        //         isEdit: false,
-        //         isEdited: true
-        //     };
-        // case editScheduleFailedType:
-        //     return {
-        //         ...state,
-        //         isEdit: false,
-        //         isEdited: false,
-        //         error: action.payload
-        //     };
+        case actionTypes.editScheduleType:
+            return {
+                ...state,
+                isEdit: true,
+                // isEdited: false
+            };
+        case actionTypes.editScheduleSucceededType:
+            console.log("succeed");
+            return {
+                ...state,
+                isEdit: false,
+                // isEdited: true
+            };
+        case actionTypes.editScheduleFailedType:
+            return {
+                ...state,
+                isEdit: false,
+                // isEdited: false,
+                error: action.payload
+            };
         default :
             return state;
     }

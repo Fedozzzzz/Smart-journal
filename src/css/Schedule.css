@@ -30,6 +30,9 @@
     /*color: white;*/
 }
 
+.opacity-cell{
+    opacity: .4;
+}
 
 .form {
     display: flex;
