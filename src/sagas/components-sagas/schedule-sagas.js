@@ -30,7 +30,6 @@ function* callGetSchedule({groupId, from, to}) {
     }
 }
 
-
 export function* editSchedule() {
     yield takeLatest(actionTypes.editScheduleSubmitType, callEditSchedule)
 }

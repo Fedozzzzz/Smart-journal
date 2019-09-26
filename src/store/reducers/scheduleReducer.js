@@ -31,7 +31,7 @@ export const scheduleActionCreators = {
     }),
     saveSchedule: (groupId, data) => ({
         // type: editScheduleSubmitType,
-        type: actionTypes.editScheduleSucceededType,
+        type: actionTypes.editScheduleSubmitType,
         groupId,
         data
     })
@@ -41,7 +41,7 @@ export const scheduleReducer = (state, action) => {//action.type===????
     // console.log('scheduleReducer');
     state = state || initialState;
 
-    // console.log(action.type);
+    console.log(action.type);
     switch (action.type) {
         case actionTypes.getScheduleSucceededType:
             return {
@@ -61,7 +61,7 @@ export const scheduleReducer = (state, action) => {//action.type===????
                 // isEdited: false
             };
         case actionTypes.editScheduleSucceededType:
-            console.log("succeed");
+            // console.log("succeed");
             return {
                 ...state,
                 isEdit: false,

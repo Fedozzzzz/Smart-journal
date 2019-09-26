@@ -7,6 +7,8 @@ import {connect} from 'react-redux';
 import "../../css/Schedule.css"
 import {scheduleActionCreators} from "../../store/reducers/scheduleReducer";
 import {groupActionCreators, groupReducer} from "../../store/reducers/groupReducer";
+import Form from "../Form"
+
 
 // eslint-disable-next-line no-extend-native
 Date.prototype.daysInMonth = function () {
@@ -18,13 +20,13 @@ class Schedule extends Component {
     constructor(props, ctx) {
         super(props, ctx);
         this.state = {
-            selectedGroup: null,
+            selectedGroupId: null,
             currentMonth: new Date(),
             previousMonth: new Date(),
             date: String(),
             // nextMonth
             isSelected: false,
-            newSchedule: []
+            newSchedule: new Map()
         };
         // this.renderWeekSchedule = this.renderWeekSchedule.bind(this);
         // this.renderScheduleMenu = this.renderScheduleMenu.bind(this);
@@ -33,9 +35,9 @@ class Schedule extends Component {
         this.renderTrueSchedule = this.renderTrueSchedule.bind(this);
         this.onDateChange = this.onDateChange.bind(this);
         // this.onGroupChange = this.onGroupChange.bind(this);
-        // this.onEdit = this.onEdit.bind(this);
+        this.onEdit = this.onEdit.bind(this);
         // this.onClick = this.onClick.bind(this);
-        // this.onSave = this.onSave.bind(this);
+        this.onSave = this.onSave.bind(this);
         this.onSelectGroup = this.onSelectGroup.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
@@ -49,13 +51,24 @@ class Schedule extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.schedule.schedule !== prevProps.schedule.schedule) {
-            let scheduleOfGroup = new Map;
+            let scheduleOfGroup = new Map();
+            let scheduleArr = new Map();
             this.props.schedule.schedule.map((day) => {
                 // console.log(new Date(day.date).getDate());
                 // scheduleOfGroup.push(new Date(day.date).getDate());
+                // let date = new Date(day.date).getDate();
+                // let tempObj = {
+                //     date: day.startTime,
+                //     toDelete: false
+                // };
+                scheduleArr.set(new Date(day.date).getDate(), {toDelete: false, startTime: day.startTime});
                 scheduleOfGroup.set(new Date(day.date).getDate(), day.startTime);
             });
-            this.setState({scheduleOfGroup: scheduleOfGroup});
+            this.setState({
+                scheduleOfGroup: scheduleOfGroup,
+                // newSchedule: scheduleArr,
+                // scheduleArr: scheduleArr
+            });
         }
         // console.log(this.state);
     }
@@ -66,7 +79,7 @@ class Schedule extends Component {
 
     onSelectGroup(e) {
         // console.log(e.target.value);
-        this.setState({selectedGroup: e.target.value});
+        this.setState({selectedGroupId: e.target.value});
     }
 
     onSubmit(e) {
@@ -81,25 +94,62 @@ class Schedule extends Component {
         let from = date.toISOString().slice(0, 10);
         date.setUTCDate(this.state.currentMonth.daysInMonth());
         let to = date.toISOString().slice(0, 10);
-        console.log(this.state.selectedGroup, from, to);
-        this.props.getSchedule(this.state.selectedGroup, from, to);
+        console.log(this.state.selectedGroupId, from, to);
+        this.props.getSchedule(this.state.selectedGroupId, from, to);
     }
 
-    // onEdit(e) {
-    //     e.preventDefault();
-    //     let stateDate = new Date(this.state.date);
-    //     let nowDate = new Date(Date.now());
-    //     stateDate.setDate(nowDate.getDay());
-    //     if (Date.parse(this.state.date) < Date.now()) {
-    //         alert("Внимание! Вы пытаетесь изменить расписание группы за прошедший месяц. Это может привести к нежелательным последствиям.")
-    //     }
-    //     this.props.editSchedule();
+    onEdit(e) {
+        // e.preventDefault();
+        // let stateDate = new Date(this.state.date);
+        // let nowDate = new Date(Date.now());
+        // stateDate.setDate(nowDate.getDay());
+        // if (Date.parse(this.state.date) < Date.now()) {
+        //     alert("Внимание! Вы пытаетесь изменить расписание группы за прошедший месяц. Это может привести к нежелательным последствиям.")
+        // }
+        this.props.editSchedule();
+    }
+
+    onClick(day) {
+        // console.log(day);
+        let elem = document.getElementById(day + "cell");
+        // console.log(elem.className);
+        if (this.props.schedule.isEdit) {
+            let tempMap = this.state.newSchedule;
+            if (elem.className === "selected-cell") {
+                elem.className = "cell";
+                // let tempForm = document.createElement("form");
+                // tempMap.delete(day);
+                tempMap.set(day, {toDelete: true, startTime: this.state.scheduleOfGroup.get(day)});
+            } else {
+                elem.className = "selected-cell";
+                let startTime = prompt("Введите время занятия в формате --:--");
+                // console.log(startTime);
+                tempMap.set(day, {toDelete: false, startTime: startTime});
+                // this.setState({newSchedule: tempMap});
+            }
+            this.setState({newSchedule: tempMap});
+        }
+    }
+
+    // handleStartTimesInputChange(day, e) {
+    //     console.log(day, e.target.value);
     // }
-    //
-    // onSave(e) {
-    //     e.preventDefault();
-    //     this.props.saveSchedule(this.state.groupId, this.state.newSchedule);
-    // }
+
+    onSave(e) {
+        // e.preventDefault();
+        let data = [];
+        let currDate = new Date(this.state.currentMonth);
+        this.state.newSchedule.forEach((value, key) => {
+            let obj = {};
+            currDate.setDate(key);
+            obj.date = currDate.toISOString();
+            obj.startTime = value.startTime;
+            obj.toDelete = value.toDelete;
+            data.push(obj);
+        });
+        console.log(data);
+        this.props.saveSchedule(this.state.selectedGroupId, data);
+    }
 
     // renderTableSchedule() {
     //     let size = this.props.groups.size;
@@ -313,11 +363,30 @@ class Schedule extends Component {
         if (this.state.scheduleOfGroup) {
             for (let i = 1; i < endOfTable + 1; i++) {
                 if (i < beginOfWeek) {
-                    week.push(<td className="opacity-cell">{daysInPreviousMonth++}</td>);
+                    week.push(<td className="opacity-cell">
+                        <div>{++daysInPreviousMonth}</div>
+                        <p>{null}</p>
+                    </td>);
                 } else {
+                    let className = this.state.scheduleOfGroup.has(day + 1) ? "selected-cell" : "cell";
                     week.push(day < this.state.currentMonth.daysInMonth() ?
-                        <td className={this.state.scheduleOfGroup.has(day) ? "selected-cell" : "cell"}>{++day}</td> :
-                        <td className="opacity-cell">{daysInNextMonth++}</td>);
+                        <td className={className} onClick={this.onClick.bind(this, day + 1)} id={day + 1 + "cell"}>
+                            <div>{++day}</div>
+                            <p>{this.state.scheduleOfGroup.has(day) ? this.state.scheduleOfGroup.get(day) : null}</p>
+                            {/*<input*/}
+                            {/*    className="form-control cell"*/}
+                            {/*    type="time"*/}
+                            {/*    id={i + "stForm"}*/}
+                            {/*    name="startTimes"*/}
+                            {/*    disabled={!this.props.schedule.isEdit}*/}
+                            {/*    defaultValue={this.state.scheduleOfGroup.has(day) ? this.state.scheduleOfGroup.get(day) : null}*/}
+                            {/*    onChange={this.handleStartTimesInputChange.bind(this, day)}*/}
+                            {/*/>*/}
+                        </td> :
+                        <td className="opacity-cell">
+                            <div>{daysInNextMonth++}</div>
+                            <p>{null}</p>
+                        </td>);
                     if (i % weekSize === 0 || i === endOfTable) {
                         tableBody.push(<tr>{week}</tr>);
                         week = [];
@@ -348,15 +417,16 @@ class Schedule extends Component {
         )
     }
 
-
     render() {
         // console.log("render");
-        // console.log(this.state);
+        console.log("this.state", this.state);
+        // console.log("this.props", this.props);
         return (
             <div>
                 <div className="schedule">
                     <h3>Расписание</h3>
                     {this.renderForm()}
+                    {/*<Form handlers={this}/>*/}
                     {this.props.schedule.schedule ? this.renderTrueSchedule() : null}
                 </div>
             </div>
