@@ -1,9 +1,7 @@
 import {call, put, takeLatest} from 'redux-saga/effects';
+//action types
 import {actionTypes} from "../../store/reducers/groupReducer";
-
-//MAIN TABLE COMPONENT
-
-//GROUPS COMPONENT
+//url
 const url = 'http://localhost:8200';
 
 export function* getGroups() {
@@ -13,7 +11,6 @@ export function* getGroups() {
 function* callGetGroups() {
     try {
         console.log('saga-get-groups');
-
         let headers = new Headers();
         // headers.append("Content-type", "text/html");
         // headers.append("Access-Control-Allow-Origin", "*");

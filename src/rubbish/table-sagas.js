@@ -1,9 +1,9 @@
 import {put, call,takeEvery, takeLatest} from 'redux-saga/effects'
-import * as api from '../../fakeApi'
+import * as api from '../fakeApi'
 // import {editUserDataType, editUserSucceededType,
 //     editUserFailedType, initUserDataType,
 //     initUserSucceededType,initUserFailedType,editUserSubmitedType } from "../store/reducerForSaga"
-import {initGroupsFailedType, initGroupsSucceededType, initGroupsType , editGroupsFailedType, editGroupsType,editUserSubmitedType,editGroupsSucceededType} from "../../store/reducers/tableReducer";
+import {initGroupsFailedType, initGroupsSucceededType, initGroupsType , editGroupsFailedType, editGroupsType,editUserSubmitedType,editGroupsSucceededType} from "./tableReducer";
 
 
 export function* initGroups() {

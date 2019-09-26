@@ -2,9 +2,11 @@ import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
 import createSagaMiddleware from 'redux-saga'
 import {connectRouter, routerMiddleware} from "connected-react-router";
 import * as scheduleReducer from './reducers/scheduleReducer'
-import * as groupsReducer from './reducers/tableReducer'
+import * as groupsReducer from '../rubbish/tableReducer'
 import * as groupReducer from "./reducers/groupReducer"
 import * as userReducer from "./reducers/userReducer"
+import {paymentsReducer} from "./reducers/paymentsReducer";
+import {attendanceReducer} from "./reducers/attendanceReducer";
 import mainTableSagas from '../sagas/root-sagas'
 
 

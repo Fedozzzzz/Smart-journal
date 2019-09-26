@@ -104,7 +104,7 @@ export const groupActionCreators = {
 export const groupReducer = (state, action) => {
 
     state = state || initialState;
-    console.log(action.type);
+    // console.log(action.type);
     switch (action.type) {
         case actionTypes.getAllGroupsSucceededType:
             return {

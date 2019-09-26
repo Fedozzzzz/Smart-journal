@@ -15,7 +15,7 @@ function* callGetSchedule({groupId, from, to}) {
         console.log('saga-get-schedule');
         let headers = new Headers();
         headers.append('Content-Type', "application/json");
-        const schedule = yield call(() => fetch(url + "/schedule/" + groupId.toString() +
+        const schedule = yield call(() => fetch(url + "/schedule/" + groupId +
             "?from=" + from + "&to=" + to,
             {
                 method: "GET",
@@ -38,16 +38,14 @@ function* callEditSchedule({groupId, data}) {
     try {
         let headers = new Headers();
         console.log("saga-edit-schedule");
-        headers.append('Content-Type', "application/json");//
-        const newSchedule = yield call(() => fetch(url + "/schedule/" + groupId.toString(),
+        headers.append('Content-Type', "application/json");
+        yield call(() => fetch(url + "/schedule/" + groupId,
             {
                 method: 'PUT',
                 headers: headers,
                 body: JSON.stringify(data)
-            })
-        // .then(response => response.json())
-            .catch(error => console.log(error)));
-        yield put({type: actionTypes.editScheduleSucceededType, newSchedule})
+            }).catch(error => console.log(error)));
+        yield put({type: actionTypes.editScheduleSucceededType})
     } catch (error) {
         console.log(error);
         yield put({type: actionTypes.editScheduleFailedType})

@@ -10,8 +10,6 @@ export const actionTypes = {
     editScheduleFailedType: 'EDIT_SCHEDULE_FAILED',
     editScheduleSubmitType: 'EDIT_SCHEDULE_SUBMIT',
 };
-// export const editUserSubmitedType='EDIT_SCHEDULE_SUBMITED'; //save
-//add
 
 const initialState = {
     schedule: null,

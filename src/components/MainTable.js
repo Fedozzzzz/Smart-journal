@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as actionCreators1 from "../store/reducers/tableReducer";
+import * as actionCreators1 from "../rubbish/tableReducer";
 // import * as actionCreators from "../store/tableReducer"
 
 //import * as actionCreators2 from "../store/formReducer"
