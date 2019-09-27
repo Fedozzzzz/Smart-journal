@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-// import {actionCreators} from "../../store/reducers/scheduleReducer";
-// import {Route} from "react-router-dom"
-// import {Link} from "react-router-dom";
 import "../../css/Schedule.css"
 import {scheduleActionCreators} from "../../store/reducers/scheduleReducer";
-import {groupActionCreators, groupReducer} from "../../store/reducers/groupReducer";
+import {groupActionCreators} from "../../store/reducers/groupReducer";
 import Form from "../Form"
 
 
@@ -28,18 +25,13 @@ class Schedule extends Component {
             isSelected: false,
             newSchedule: new Map()
         };
-        // this.renderWeekSchedule = this.renderWeekSchedule.bind(this);
-        // this.renderScheduleMenu = this.renderScheduleMenu.bind(this);
-        // this.renderWeekSchedule = this.renderWeekSchedule.bind(this);
-        // this.renderTableSchedule = this.renderTableSchedule.bind(this);
+        this.renderForm = this.renderForm.bind(this);
         this.renderTrueSchedule = this.renderTrueSchedule.bind(this);
         this.onDateChange = this.onDateChange.bind(this);
-        // this.onGroupChange = this.onGroupChange.bind(this);
         this.onEdit = this.onEdit.bind(this);
-        // this.onClick = this.onClick.bind(this);
         this.onSave = this.onSave.bind(this);
         this.onSelectGroup = this.onSelectGroup.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        // this.onSubmit = this.onSubmit.bind(this);
     }
 
     componentDidMount(prevProps, prevState, snapshot) {
@@ -52,16 +44,9 @@ class Schedule extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.schedule.schedule !== prevProps.schedule.schedule) {
             let scheduleOfGroup = new Map();
-            let scheduleArr = new Map();
+            // let scheduleArr = new Map();
             this.props.schedule.schedule.map((day) => {
-                // console.log(new Date(day.date).getDate());
-                // scheduleOfGroup.push(new Date(day.date).getDate());
-                // let date = new Date(day.date).getDate();
-                // let tempObj = {
-                //     date: day.startTime,
-                //     toDelete: false
-                // };
-                scheduleArr.set(new Date(day.date).getDate(), {toDelete: false, startTime: day.startTime});
+                // scheduleArr.set(new Date(day.date).getDate(), {toDelete: false, startTime: day.startTime});
                 scheduleOfGroup.set(new Date(day.date).getDate(), day.startTime);
             });
             this.setState({
@@ -70,33 +55,80 @@ class Schedule extends Component {
                 // scheduleArr: scheduleArr
             });
         }
+        // console.log(this.state.currentMonth !== prevState.currentMonth);
+        // console.log("isLoaded?", this.props.schedule.isLoaded);
+        if ((this.state.selectedGroupId !== prevState.selectedGroupId) && this.state.currentMonth
+            || (this.state.currentMonth !== prevState.currentMonth) && this.state.selectedGroupId
+            || (!this.props.schedule.isLoaded && this.state.currentMonth && this.state.selectedGroupId)) {
+            let date = new Date(this.state.currentMonth);
+            console.log(date);
+            let from = date.toISOString().slice(0, 10);
+            date.setUTCDate(this.state.currentMonth.daysInMonth());
+            let to = date.toISOString().slice(0, 10);
+            console.log(this.state.selectedGroupId, from, to);
+            this.props.getSchedule(this.state.selectedGroupId, from, to);
+        }
         // console.log(this.state);
     }
 
     onDateChange(e) {
-        this.setState({date: new Date(e.target.value)});
+        console.log(e.target.value);
+        if (this.state.newSchedule.size) {
+            if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
+                this.setState({
+                    currentMonth: new Date(e.target.value),
+                    previousMonth: new Date(new Date(e.target.value).setMonth(new Date(e.target.value).getMonth() - 1)),
+                    nextMonth: new Date(new Date(e.target.value).setMonth(new Date(e.target.value).getMonth() + 1)),
+                });
+            }
+            // else {
+            //     this.setState({
+            //         currentMonth: new Date(new Date(e.target.value).setMonth(new Date(e.target.value).getMonth() - 1))
+            //     });
+            // }
+        } else {
+            this.setState({
+                currentMonth: new Date(e.target.value),
+                previousMonth: new Date(new Date(e.target.value).setMonth(new Date(e.target.value).getMonth() - 1)),
+                nextMonth: new Date(new Date(e.target.value).setMonth(new Date(e.target.value).getMonth() + 1)),
+            });
+        }
     }
 
     onSelectGroup(e) {
-        // console.log(e.target.value);
-        this.setState({selectedGroupId: e.target.value});
+        let groupId = e.target.value;
+        if (this.state.newSchedule.size) {
+            if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
+                this.setState({
+                    selectedGroupId: groupId,
+                    isSelected: true,
+                    newSchedule: new Map()
+                });
+                this.props.saveSchedule();
+            }
+        } else {
+            this.setState({
+                selectedGroupId: groupId,
+                isSelected: true
+            });
+        }
     }
 
-    onSubmit(e) {
-        this.setState({
-            currentMonth: new Date(this.state.date),
-            previousMonth: new Date(new Date(this.state.date).setMonth(new Date(this.state.date).getMonth() - 1)),
-            nextMonth: new Date(new Date(this.state.date).setMonth(new Date(this.state.date).getMonth() + 1)),
-            isSelected: true
-        });
-        let date = new Date(this.state.date);
-        console.log(date);
-        let from = date.toISOString().slice(0, 10);
-        date.setUTCDate(this.state.currentMonth.daysInMonth());
-        let to = date.toISOString().slice(0, 10);
-        console.log(this.state.selectedGroupId, from, to);
-        this.props.getSchedule(this.state.selectedGroupId, from, to);
-    }
+    // onSubmit(e) {
+    //     this.setState({
+    //         currentMonth: new Date(this.state.date),
+    //         previousMonth: new Date(new Date(this.state.date).setMonth(new Date(this.state.date).getMonth() - 1)),
+    //         nextMonth: new Date(new Date(this.state.date).setMonth(new Date(this.state.date).getMonth() + 1)),
+    //         isSelected: true
+    //     });
+    //     let date = new Date(this.state.date);
+    //     console.log(date);
+    //     let from = date.toISOString().slice(0, 10);
+    //     date.setUTCDate(this.state.currentMonth.daysInMonth());
+    //     let to = date.toISOString().slice(0, 10);
+    //     console.log(this.state.selectedGroupId, from, to);
+    //     this.props.getSchedule(this.state.selectedGroupId, from, to);
+    // }
 
     onEdit(e) {
         // e.preventDefault();
@@ -110,7 +142,7 @@ class Schedule extends Component {
     }
 
     onClick(day) {
-        // console.log(day);
+        console.log("onclick");
         let elem = document.getElementById(day + "cell");
         // console.log(elem.className);
         if (this.props.schedule.isEdit) {
@@ -120,23 +152,21 @@ class Schedule extends Component {
                 // let tempForm = document.createElement("form");
                 // tempMap.delete(day);
                 tempMap.set(day, {toDelete: true, startTime: this.state.scheduleOfGroup.get(day)});
+                this.setState({newSchedule: tempMap});
             } else {
-                elem.className = "selected-cell";
                 let startTime = prompt("Введите время занятия в формате --:--");
                 // console.log(startTime);
-                tempMap.set(day, {toDelete: false, startTime: startTime});
+                if (startTime) {
+                    elem.className = "selected-cell";
+                    tempMap.set(day, {toDelete: false, startTime: startTime});
+                    this.setState({newSchedule: tempMap});
+                }
                 // this.setState({newSchedule: tempMap});
             }
-            this.setState({newSchedule: tempMap});
         }
     }
 
-    // handleStartTimesInputChange(day, e) {
-    //     console.log(day, e.target.value);
-    // }
-
     onSave(e) {
-        // e.preventDefault();
         let data = [];
         let currDate = new Date(this.state.currentMonth);
         this.state.newSchedule.forEach((value, key) => {
@@ -149,50 +179,12 @@ class Schedule extends Component {
         });
         console.log(data);
         this.props.saveSchedule(this.state.selectedGroupId, data);
+        this.setState({newSchedule: new Map()});
     }
 
-    // renderTableSchedule() {
-    //     let size = this.props.groups.size;
-    //     // console.log(size);
-    //     let out = [];
-    //     for (let i = 1; i <= size; i++) {
-    //         //console.log(this.props.groups.get(i).weekSchedule.days);
-    //         console.log(this.props.groups.get(i.toString()));
-    //         out.push(<tr>
-    //             <td>{this.props.groups.get(i.toString()).id}</td>
-    //             {this.props.groups.get(i.toString()).weekSchedule.days !== null ?//week schedule must be not null
-    //                 this.props.groups.get(i.toString()).weekSchedule.days.map(day => (
-    //                     day ? <td>+</td> : <td>-</td>
-    //                 )) : null}
-    //         </tr>);
-    //     }
-    //     return (out);
-    // }
-    //
-    // renderWeekSchedule() {
-    //     console.log('render-week-schedule');
-    //     return (
-    //         this.props.isLoaded ?
-    //             <table className='table table-striped'>
-    //                 <thead>
-    //                 <tr>
-    //                     <th>Группа</th>
-    //                     <th>Пн</th>
-    //                     <th>Вт</th>
-    //                     <th>Ср</th>
-    //                     <th>Чт</th>
-    //                     <th>Пт</th>
-    //                     <th>Сб</th>
-    //                     <th>Вс</th>
-    //                 </tr>
-    //                 </thead>
-    //                 <tbody>
-    //                 {this.renderTableSchedule()}
-    //                 </tbody>
-    //             </table> : null)
-    // }
-
     renderForm() {
+        // console.log("form state", this.state.currentMonth.toISOString().slice(0, 7));
+        // let value = this.state.currentMonth.toISOString().slice(0, 7);
         return (
             <div className="container">
                 <div className="form">
@@ -205,7 +197,9 @@ class Schedule extends Component {
                                 id="exampleMonth"
                                 aria-describedby="monthHelp"
                                 placeholder="Введите месяц"
-                                value={this.state.date.dateString}
+                                // value={this.state.currentMonth.toISOString().slice(0, 10)}
+                                value={this.state.currentMonth.toISOString().slice(0, 7)}
+                                // defaultValue={this.state.currentMonth.dateString}
                                 onChange={this.onDateChange}
                             />
                         </div>
@@ -220,7 +214,8 @@ class Schedule extends Component {
                         {/*           onChange={this.onGroupChange}*/}
                         {/*    />*/}
                         {/*</div>*/}
-                        <select className="custom-select" onChange={this.onSelectGroup}>
+                        <select className="custom-select" onChange={this.onSelectGroup}
+                                value={this.state.selectedGroupId}>
                             <option selected>Выберите группу</option>
                             {this.props.group.groups.map(group => (
                                 <option value={group.guid}>{group.name}</option>
@@ -229,12 +224,12 @@ class Schedule extends Component {
                     </form>
                 </div>
                 <div className="buttons">
-                    <button
-                        onClick={this.onSubmit}
-                        type="submit"
-                        className="btn btn-primary"
-                    >Принять
-                    </button>
+                    {/*<button*/}
+                    {/*    onClick={this.onSubmit}*/}
+                    {/*    type="submit"*/}
+                    {/*    className="btn btn-primary"*/}
+                    {/*>Принять*/}
+                    {/*</button>*/}
                     {this.props.schedule.schedule ?
                         <button
                             onClick={this.onEdit}
@@ -255,103 +250,8 @@ class Schedule extends Component {
         )
     }
 
-    // onClick(day) {
-    //     // console.log(day);
-    //     // document.getElementById(day).style.backgroundColor="rgba(144,147,150,0.6)";
-    //     let elem = document.getElementById(day);
-    //     if (elem.className === "selected-cell") {
-    //         elem.className = "cell";
-    //     } else {
-    //         document.getElementById(day).className = "selected-cell";
-    //     }
-    //     let tempArr = this.state.newSchedule;
-    //     let tempObj = {};
-    //     let tempDate = new Date(this.state.date);
-    //     // console.log(tempDate);
-    //     let tempStr = tempDate.setUTCDate(day);
-    //     // console.log(tempStr);
-    //     tempObj.Date = new Date(tempStr).toISOString();
-    //     let flag = false;
-    //     tempArr.forEach((el, i) => {
-    //         if (el.Date === tempObj.Date) {
-    //             tempArr.splice(i, 1);
-    //             flag = true;
-    //         }
-    //     });
-    //     if (!flag) {
-    //         tempArr.push(tempObj);
-    //     }
-    //
-    //     // console.log(tempArr);
-    //     this.setState({newSchedule: tempArr});
-    // }
-    //
-    // renderTrueSchedule() {
-    //     console.log("schedule props", this.props);
-    //     console.log("render schedule");
-    //     // let scheduleOfGroup = [];
-    //     // if (this.props.schedule.schedule) {
-    //     //     this.props.schedule.schedule.map((day) => {
-    //     //         console.log(new Date(day.date).getDate());
-    //     //     })
-    //     // }
-    //     let tableBody = [];
-    //     let day = 1;
-    //     let week = [];
-    //     let flag = false;
-    //     let weekSize = 7;
-    //     // console.log(this.props.isEdit);
-    //     let className = this.props.schedule.schedule.isEdit ? "editing-cell" : "cell";
-    //     // let handler =(el)=> ;
-    //     // console.log("render schedule", this.state.date);
-    //     for (let i = 1; i < weekSize; i++) {
-    //         if (this.state.date.getDay() === i) {
-    //             flag = true;
-    //             week.push(<td className={className} id={day} onClick={this.onClick.bind(this, day)}>{day++}</td>)
-    //         }
-    //         week.push(flag ? <td className={className} id={day} onClick={this.onClick.bind(this, day)}>{day++}</td> :
-    //             <td className="cell">-</td>)
-    //         // week.push(this.state.date.getDay() === i ? <td>{day++}</td> : <td>-</td>)
-    //     }
-    //     // console.log(this.state.date.daysInMonth());
-    //     tableBody.push(<tr>{week}</tr>);
-    //     for (let i = 0; day <= this.state.date.daysInMonth(); i++) {
-    //         week = [];
-    //         for (let j = 0; j < weekSize; j++) {
-    //             if (day <= this.state.date.daysInMonth()) {
-    //                 week.push(<td className={className} id={day} onClick={this.onClick.bind(this, day)}>{day++}</td>);
-    //             } else {
-    //                 week.push(<td className="cell">-</td>)
-    //             }
-    //         }
-    //         tableBody.push(<tr>{week}</tr>)
-    //     }
-    //
-    //     return (
-    //         <div className="schedule__true-schedule">
-    //             <table className='table table-striped'>
-    //                 <thead>
-    //                 <tr>
-    //                     <th>Пн</th>
-    //                     <th>Вт</th>
-    //                     <th>Ср</th>
-    //                     <th>Чт</th>
-    //                     <th>Пт</th>
-    //                     <th>Сб</th>
-    //                     <th>Вс</th>
-    //                 </tr>
-    //                 </thead>
-    //                 <tbody>
-    //                 {tableBody}
-    //                 </tbody>
-    //             </table>
-    //         </div>
-    //     )
-    // }
-
     renderTrueSchedule() {
         console.log("state", this.state.scheduleOfGroup);
-        // if(this.state.entries("scheduleOfGroup"))
         let weekSize = 7;
         let tableBody = [];
         let week = [];
@@ -369,19 +269,12 @@ class Schedule extends Component {
                     </td>);
                 } else {
                     let className = this.state.scheduleOfGroup.has(day + 1) ? "selected-cell" : "cell";
+                    console.log(className);
                     week.push(day < this.state.currentMonth.daysInMonth() ?
                         <td className={className} onClick={this.onClick.bind(this, day + 1)} id={day + 1 + "cell"}>
                             <div>{++day}</div>
-                            <p>{this.state.scheduleOfGroup.has(day) ? this.state.scheduleOfGroup.get(day) : null}</p>
-                            {/*<input*/}
-                            {/*    className="form-control cell"*/}
-                            {/*    type="time"*/}
-                            {/*    id={i + "stForm"}*/}
-                            {/*    name="startTimes"*/}
-                            {/*    disabled={!this.props.schedule.isEdit}*/}
-                            {/*    defaultValue={this.state.scheduleOfGroup.has(day) ? this.state.scheduleOfGroup.get(day) : null}*/}
-                            {/*    onChange={this.handleStartTimesInputChange.bind(this, day)}*/}
-                            {/*/>*/}
+                            <p>{this.state.scheduleOfGroup.has(day) ? this.state.scheduleOfGroup.get(day)
+                                : this.state.newSchedule.has(day) ? this.state.newSchedule.get(day).startTime : null}</p>
                         </td> :
                         <td className="opacity-cell">
                             <div>{daysInNextMonth++}</div>
@@ -433,6 +326,48 @@ class Schedule extends Component {
         );
     }
 }
+
+
+// renderTableSchedule() {
+//     let size = this.props.groups.size;
+//     // console.log(size);
+//     let out = [];
+//     for (let i = 1; i <= size; i++) {
+//         //console.log(this.props.groups.get(i).weekSchedule.days);
+//         console.log(this.props.groups.get(i.toString()));
+//         out.push(<tr>
+//             <td>{this.props.groups.get(i.toString()).id}</td>
+//             {this.props.groups.get(i.toString()).weekSchedule.days !== null ?//week schedule must be not null
+//                 this.props.groups.get(i.toString()).weekSchedule.days.map(day => (
+//                     day ? <td>+</td> : <td>-</td>
+//                 )) : null}
+//         </tr>);
+//     }
+//     return (out);
+// }
+//
+// renderWeekSchedule() {
+//     console.log('render-week-schedule');
+//     return (
+//         this.props.isLoaded ?
+//             <table className='table table-striped'>
+//                 <thead>
+//                 <tr>
+//                     <th>Группа</th>
+//                     <th>Пн</th>
+//                     <th>Вт</th>
+//                     <th>Ср</th>
+//                     <th>Чт</th>
+//                     <th>Пт</th>
+//                     <th>Сб</th>
+//                     <th>Вс</th>
+//                 </tr>
+//                 </thead>
+//                 <tbody>
+//                 {this.renderTableSchedule()}
+//                 </tbody>
+//             </table> : null)
+// }
 
 export default connect(
     state => {

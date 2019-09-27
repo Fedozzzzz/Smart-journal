@@ -43,7 +43,7 @@ export const scheduleReducer = (state, action) => {//action.type===????
     switch (action.type) {
         case actionTypes.getScheduleSucceededType:
             return {
-                ...state,  //spread????
+                ...state,
                 schedule: action.schedule,
                 isLoaded: true
             };
@@ -63,6 +63,7 @@ export const scheduleReducer = (state, action) => {//action.type===????
             return {
                 ...state,
                 isEdit: false,
+                isLoaded: false
                 // isEdited: true
             };
         case actionTypes.editScheduleFailedType:
