@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import "../../css/Schedule.css"
-import {scheduleActionCreators} from "../../store/reducers/scheduleReducer";
-import {groupActionCreators} from "../../store/reducers/groupReducer";
-import Form from "../Form"
-
+import "../../../css/Schedule.css"
+import {scheduleActionCreators} from "../../../store/reducers/scheduleReducer";
+import {groupActionCreators} from "../../../store/reducers/groupReducer";
+import Form from "../../components/Form"
 
 // eslint-disable-next-line no-extend-native
 Date.prototype.daysInMonth = function () {
@@ -18,19 +17,22 @@ class Schedule extends Component {
         super(props, ctx);
         this.state = {
             selectedGroupId: null,
-            currentMonth: new Date(),
-            previousMonth: new Date(),
-            date: String(),
+            currentMonth: new Date(new Date().setDate(1)),
+            previousMonth: new Date(new Date(new Date().setDate(1)).setMonth(new Date().getMonth() - 1)),
+            // date: String(),
             // nextMonth
             isSelected: false,
             newSchedule: new Map()
         };
-        this.renderForm = this.renderForm.bind(this);
+        // this.renderForm = this.renderForm.bind(this);
         this.renderTrueSchedule = this.renderTrueSchedule.bind(this);
         this.onDateChange = this.onDateChange.bind(this);
         this.onEdit = this.onEdit.bind(this);
         this.onSave = this.onSave.bind(this);
         this.onSelectGroup = this.onSelectGroup.bind(this);
+        this.renderButtons = this.renderButtons.bind(this);
+        this.getSelectedGroupId = this.getSelectedGroupId.bind(this);
+        this.getCurrentDate = this.getCurrentDate.bind(this);
         // this.onSubmit = this.onSubmit.bind(this);
     }
 
@@ -61,18 +63,18 @@ class Schedule extends Component {
             || (this.state.currentMonth !== prevState.currentMonth) && this.state.selectedGroupId
             || (!this.props.schedule.isLoaded && this.state.currentMonth && this.state.selectedGroupId)) {
             let date = new Date(this.state.currentMonth);
-            console.log(date);
+            // console.log(date);
             let from = date.toISOString().slice(0, 10);
             date.setUTCDate(this.state.currentMonth.daysInMonth());
             let to = date.toISOString().slice(0, 10);
-            console.log(this.state.selectedGroupId, from, to);
+            // console.log(this.state.selectedGroupId, from, to);
             this.props.getSchedule(this.state.selectedGroupId, from, to);
         }
         // console.log(this.state);
     }
 
     onDateChange(e) {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         if (this.state.newSchedule.size) {
             if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
                 this.setState({
@@ -182,73 +184,73 @@ class Schedule extends Component {
         this.setState({newSchedule: new Map()});
     }
 
-    renderForm() {
-        // console.log("form state", this.state.currentMonth.toISOString().slice(0, 7));
-        // let value = this.state.currentMonth.toISOString().slice(0, 7);
-        return (
-            <div className="container">
-                <div className="form">
-                    <form>
-                        <div className="form-group">
-                            <label htmlFor="exampleMonth" className="label_month">Месяц</label>
-                            <input
-                                type="month"
-                                className="form-control"
-                                id="exampleMonth"
-                                aria-describedby="monthHelp"
-                                placeholder="Введите месяц"
-                                // value={this.state.currentMonth.toISOString().slice(0, 10)}
-                                value={this.state.currentMonth.toISOString().slice(0, 7)}
-                                // defaultValue={this.state.currentMonth.dateString}
-                                onChange={this.onDateChange}
-                            />
-                        </div>
-                        {/*<div className="form-group">*/}
-                        {/*    <label htmlFor="exampleGroup">№ Группы</label>*/}
-                        {/*    <input type="number"*/}
-                        {/*           className="form-control"*/}
-                        {/*           id="exampleGroup"*/}
-                        {/*           aria-describedby="groupHelp"*/}
-                        {/*           placeholder="Введите № группы"*/}
-                        {/*           value={this.state.groupId}*/}
-                        {/*           onChange={this.onGroupChange}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
-                        <select className="custom-select" onChange={this.onSelectGroup}
-                                value={this.state.selectedGroupId}>
-                            <option selected>Выберите группу</option>
-                            {this.props.group.groups.map(group => (
-                                <option value={group.guid}>{group.name}</option>
-                            ))}
-                        </select>
-                    </form>
-                </div>
-                <div className="buttons">
-                    {/*<button*/}
-                    {/*    onClick={this.onSubmit}*/}
-                    {/*    type="submit"*/}
-                    {/*    className="btn btn-primary"*/}
-                    {/*>Принять*/}
-                    {/*</button>*/}
-                    {this.props.schedule.schedule ?
-                        <button
-                            onClick={this.onEdit}
-                            type="redact"
-                            className="btn btn-info"
-                        >Редактировать таблицу
-                        </button> : null}
-                    {this.props.schedule.isEdit ?
-                        <button
-                            onClick={this.onSave}
-                            type="save"
-                            className="btn btn-success"
-                        >Сохранить
-                        </button> : null
-                    }
-                </div>
-            </div>
-        )
-    }
+    // renderForm() {
+    //     // console.log("form state", this.state.currentMonth.toISOString().slice(0, 7));
+    //     // let value = this.state.currentMonth.toISOString().slice(0, 7);
+    //     return (
+    //         <div className="container">
+    //             <div className="form">
+    //                 <form>
+    //                     <div className="form-group">
+    //                         <label htmlFor="exampleMonth" className="label_month">Месяц</label>
+    //                         <input
+    //                             type="month"
+    //                             className="form-control"
+    //                             id="exampleMonth"
+    //                             aria-describedby="monthHelp"
+    //                             placeholder="Введите месяц"
+    //                             // value={this.state.currentMonth.toISOString().slice(0, 10)}
+    //                             value={this.state.currentMonth.toISOString().slice(0, 7)}
+    //                             // defaultValue={this.state.currentMonth.dateString}
+    //                             onChange={this.onDateChange}
+    //                         />
+    //                     </div>
+    //                     {/*<div className="form-group">*/}
+    //                     {/*    <label htmlFor="exampleGroup">№ Группы</label>*/}
+    //                     {/*    <input type="number"*/}
+    //                     {/*           className="form-control"*/}
+    //                     {/*           id="exampleGroup"*/}
+    //                     {/*           aria-describedby="groupHelp"*/}
+    //                     {/*           placeholder="Введите № группы"*/}
+    //                     {/*           value={this.state.groupId}*/}
+    //                     {/*           onChange={this.onGroupChange}*/}
+    //                     {/*    />*/}
+    //                     {/*</div>*/}
+    //                     <select className="custom-select" onChange={this.onSelectGroup}
+    //                             value={this.state.selectedGroupId}>
+    //                         <option selected>Выберите группу</option>
+    //                         {this.props.group.groups.map(group => (
+    //                             <option value={group.guid}>{group.name}</option>
+    //                         ))}
+    //                     </select>
+    //                 </form>
+    //             </div>
+    //             <div className="buttons">
+    //                 {/*<button*/}
+    //                 {/*    onClick={this.onSubmit}*/}
+    //                 {/*    type="submit"*/}
+    //                 {/*    className="btn btn-primary"*/}
+    //                 {/*>Принять*/}
+    //                 {/*</button>*/}
+    //                 {this.props.schedule.schedule ?
+    //                     <button
+    //                         onClick={this.onEdit}
+    //                         type="redact"
+    //                         className="btn btn-info"
+    //                     >Редактировать таблицу
+    //                     </button> : null}
+    //                 {this.props.schedule.isEdit ?
+    //                     <button
+    //                         onClick={this.onSave}
+    //                         type="save"
+    //                         className="btn btn-success"
+    //                     >Сохранить
+    //                     </button> : null
+    //                 }
+    //             </div>
+    //         </div>
+    //     )
+    // }
 
     renderTrueSchedule() {
         console.log("state", this.state.scheduleOfGroup);
@@ -269,7 +271,7 @@ class Schedule extends Component {
                     </td>);
                 } else {
                     let className = this.state.scheduleOfGroup.has(day + 1) ? "selected-cell" : "cell";
-                    console.log(className);
+                    // console.log(className);
                     week.push(day < this.state.currentMonth.daysInMonth() ?
                         <td className={className} onClick={this.onClick.bind(this, day + 1)} id={day + 1 + "cell"}>
                             <div>{++day}</div>
@@ -310,15 +312,86 @@ class Schedule extends Component {
         )
     }
 
+    getSelectedGroupId(value) {
+        // this.setState({selectedGroupId: value});
+        if (this.state.newSchedule.size) {
+            if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
+                this.setState({
+                    selectedGroupId: value,
+                    isSelected: true,
+                    newSchedule: new Map()
+                });
+                this.props.saveSchedule();
+            }
+        } else {
+            this.setState({
+                selectedGroupId: value,
+                isSelected: true
+            });
+        }
+    }
+
+    getCurrentDate(value) {
+        // this.setState({selectedGroupId: value});
+        let previousMonth = new Date(new Date(value).setMonth(new Date(value).getMonth() - 1));
+        console.log("getCurDate", previousMonth);
+        if (this.state.newSchedule.size) {
+            if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
+                this.setState({
+                    currentMonth: new Date(value),
+                    previousMonth: previousMonth,
+                    nextMonth: new Date(new Date(value).setMonth(new Date(value).getMonth() + 1)),
+                });
+            }
+        } else {
+            this.setState({
+                currentMonth: new Date(value),
+                previousMonth: new Date(new Date(value).setMonth(new Date(value).getMonth() - 1)),
+                nextMonth: new Date(new Date(value).setMonth(new Date(value).getMonth() + 1)),
+            });
+        }
+    }
+
+    renderButtons() {
+        return (
+            <div className="buttons">
+                {/*<button*/}
+                {/*    onClick={this.onSubmit}*/}
+                {/*    type="submit"*/}
+                {/*    className="btn btn-primary"*/}
+                {/*>Принять*/}
+                {/*</button>*/}
+                {this.props.schedule.schedule ?
+                    <button
+                        onClick={this.onEdit}
+                        type="redact"
+                        className="btn btn-info"
+                    >Редактировать таблицу
+                    </button> : null}
+                {this.props.schedule.isEdit ?
+                    <button
+                        onClick={this.onSave}
+                        type="save"
+                        className="btn btn-success"
+                    >Сохранить
+                    </button> : null
+                }
+            </div>)
+    }
+
     render() {
         // console.log("render");
         console.log("this.state", this.state);
         // console.log("this.props", this.props);
+        // console.log("this.props.children", this.props.children);
         return (
             <div>
                 <div className="schedule">
                     <h3>Расписание</h3>
-                    {this.renderForm()}
+                    {/*{this.renderForm()}*/}
+                    <Form getSelectedGroupId={this.getSelectedGroupId} groups={this.props.group.groups}
+                          getCurrentDate={this.getCurrentDate}/>
+                    {this.renderButtons()}
                     {/*<Form handlers={this}/>*/}
                     {this.props.schedule.schedule ? this.renderTrueSchedule() : null}
                 </div>

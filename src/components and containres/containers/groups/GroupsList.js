@@ -3,8 +3,8 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 // import {actionCreators} from "../../store/reducers/groupReducer";
 import {Link} from "react-router-dom";
-import Loading from "../Loading";
-import {groupActionCreators} from "../../store/reducers/groupReducer";
+import Loading from "../../components/Loading";
+import {groupActionCreators} from "../../../store/reducers/groupReducer";
 
 class GroupsList extends Component {
 

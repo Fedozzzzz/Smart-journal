@@ -2,13 +2,13 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Route} from "react-router-dom"
-import '../../css/Groups.css'
+import '../../../css/Groups.css'
 import GroupsList from "./GroupsList";
 import GroupsCreating from "./GroupCreating";
 import GroupsEdit from "./GroupEdit";
 import GroupPage from "./GroupPage";
 import AddUserToGroup from "./AddUserToGroup";
-import {groupActionCreators} from "../../store/reducers/groupReducer";
+import {groupActionCreators} from "../../../store/reducers/groupReducer";
 
 
 class Groups extends Component {

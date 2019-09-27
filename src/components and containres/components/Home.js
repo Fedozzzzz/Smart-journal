@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {actionCreators} from "../rubbish/Users";
+import {actionCreators} from "../../rubbish/Users";
 
 
 const Home = props => (

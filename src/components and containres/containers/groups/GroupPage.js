@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {Link} from "react-router-dom";
-import "../../css/GroupPage.css"
-import Loading from "../Loading";
-import {groupActionCreators} from "../../store/reducers/groupReducer";
+import "../../../css/GroupPage.css"
+import Loading from "../../components/Loading"
+import {groupActionCreators} from "../../../store/reducers/groupReducer";
 
 class GroupPage extends Component {
 

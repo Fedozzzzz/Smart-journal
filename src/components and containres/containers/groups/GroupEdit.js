@@ -3,9 +3,9 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {Link} from "react-router-dom";
 import AddUserToGroup from "./AddUserToGroup";
-import Loading from "../Loading";
-import {groupActionCreators} from "../../store/reducers/groupReducer";
-import {userActionCreators} from "../../store/reducers/userReducer";
+import Loading from "../../components/Loading";
+import {groupActionCreators} from "../../../store/reducers/groupReducer";
+import {userActionCreators} from "../../../store/reducers/userReducer";
 
 
 class GroupEdit extends Component {

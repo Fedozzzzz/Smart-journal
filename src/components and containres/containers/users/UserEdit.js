@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {userActionCreators} from "../../store/reducers/userReducer";
+import {userActionCreators} from "../../../store/reducers/userReducer";
 
 class UserEdit extends Component {
 
