@@ -9,6 +9,7 @@ import {
 } from "./components-sagas/groups-sagas";
 import {editSchedule, getSchedule} from "./components-sagas/schedule-sagas";
 import {createUser, deleteUser, editUser, getAllUsers, getUser,} from "./components-sagas/user-sagas";
+import {editAttendance, getAttendance} from "./components-sagas/attendance-sagas";
 
 export default function* rootSaga() {
     console.log('hello-from-root-saga!!!');
@@ -28,6 +29,8 @@ export default function* rootSaga() {
         addUserToGroup(),
         addUserToGroupSubmit(),
         getUsersFromGroup(),
-        deleteUserFromGroup()
+        deleteUserFromGroup(),
+        getAttendance(),
+        editAttendance()
     ])
 }

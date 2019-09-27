@@ -7,15 +7,16 @@ import {actionTypes} from "../../store/reducers/attendanceReducer";
 const url = "http://localhost:8202";
 
 export function* getAttendance() {
-    yield takeLatest(actionTypes.editAttendanceType, callGetAttendance);
+    yield takeLatest(actionTypes.getAttendanceType, callGetAttendance);
 }
 
-function* callGetAttendance({groupId}) {
+function* callGetAttendance({groupId, from, to}) {
     try {
         console.log('saga-get-Attendance');
         let headers = new Headers();
         headers.append('Content-Type', "application/json");
-        const attendance = yield call(() => fetch(url + "/attendance/" + groupId,
+        const attendance = yield call(() => fetch(url + "/attendance/" + groupId
+            + "?from=" + from + "&to=" + to,
             {
                 method: "GET",
                 headers: headers

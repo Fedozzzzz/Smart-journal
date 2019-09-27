@@ -1,25 +1,25 @@
 export const actionTypes = {
     //get attendance
-    getAttendanceType: 'GET_SCHEDULE',
-    getAttendanceSucceededType: 'GET_SCHEDULE_SUCCEEDED',
-    getAttendanceFailedType: 'GET_SCHEDULE_FAILED',
+    getAttendanceType: 'GET_ATTENDANCE',
+    getAttendanceSucceededType: 'GET_ATTENDANCE_SUCCEEDED',
+    getAttendanceFailedType: 'GET_ATTENDANCE_FAILED',
 
 //edit attendance
-    editAttendanceType: 'EDIT_SCHEDULE_TYPE',
-    editAttendanceSucceededType: 'EDIT_SCHEDULE_SUCCEEDED',
-    editAttendanceFailedType: 'EDIT_SCHEDULE_FAILED',
-    editAttendanceSubmitType: 'EDIT_SCHEDULE_SUBMIT',
+    editAttendanceType: 'EDIT_ATTENDANCE_TYPE',
+    editAttendanceSucceededType: 'EDIT_ATTENDANCE_SUCCEEDED',
+    editAttendanceFailedType: 'EDIT_ATTENDANCE_FAILED',
+    editAttendanceSubmitType: 'EDIT_ATTENDANCE_SUBMIT',
 };
 
 const initialState = {
-    attendance: [],
+    attendance: null,
     isEdit: false
 };
 
 export const attendanceActionCreators = {
-    getAttendance: (groupId) => ({
+    getAttendance: (groupId, from, to) => ({
         type: actionTypes.getAttendanceType,
-        groupId
+        groupId, from, to
     }),
     editAttendance: () => ({
         type: actionTypes.editAttendanceType

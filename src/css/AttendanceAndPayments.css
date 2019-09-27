@@ -1,0 +1,10 @@
+.cell{
+}
+
+.table th, .table td{
+    min-width: 50px;
+}
+
+.table__input{
+    max-width: 40px;
+}

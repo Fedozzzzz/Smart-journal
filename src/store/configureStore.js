@@ -20,7 +20,9 @@ export default function configureStore(history, initialState) {
         tableGroups: groupsReducer.tableReducer,
         group: groupReducer.groupReducer,
         schedule: scheduleReducer.scheduleReducer,
-        user: userReducer.userReducer
+        user: userReducer.userReducer,
+        attendance: attendanceReducer,
+        payments: paymentsReducer
     };
 
     const sagaMiddleware = createSagaMiddleware();
