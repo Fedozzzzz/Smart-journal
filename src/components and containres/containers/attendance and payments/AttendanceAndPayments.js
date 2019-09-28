@@ -1,12 +1,17 @@
 import React, {Component} from "react"
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {groupActionCreators} from "../../../store/reducers/groupReducer";
+// import {groupActionCreators} from "../../../rubbish/groupReducer";
+import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 import Form from "../../components/Form";
-import {scheduleActionCreators} from "../../../store/reducers/scheduleReducer";
+// import {scheduleActionCreators} from "../../../rubbish/scheduleReducer";
+import {scheduleActionCreators} from "../../../store/redux/schedule/actionCreators";
 import "../../../css/AttendanceAndPayments.css"
-import {attendanceActionCreators} from "../../../store/reducers/attendanceReducer";
-import {paymentsActionCreators} from "../../../store/reducers/paymentsReducer";
+// import {attendanceActionCreators} from "../../../store/reducers/attendanceReducer";
+import {attendanceActionCreators} from "../../../store/redux/attendance/actionCreators";
+// import {paymentsActionCreators} from "../../../rubbish/paymentsReducer";
+import {paymentsActionCreators} from "../../../store/redux/payments/actionCreators";
+import {EditSaveButtons} from "../../components/EditSaveButtons";
 
 
 class AttendanceAndPayments extends Component {
@@ -111,28 +116,28 @@ class AttendanceAndPayments extends Component {
         this.props.saveEditAttendance(this.state.selectedGroupId, data);
     }
 
-    renderButtons() {
-        // console.log("buttons", this.props.attendance.attendance);
-        return (
-            <div className="buttons">
-                {this.props.attendance.attendance ?
-                    <button
-                        onClick={this.onEdit}
-                        type="redact"
-                        className="btn btn-info"
-                    >Редактировать таблицу
-                    </button>
-                    : null}
-                {this.props.attendance.isEdit ?
-                    <button
-                        onClick={this.onSave}
-                        type="save"
-                        className="btn btn-success"
-                    >Сохранить
-                    </button> : null
-                }
-            </div>)
-    }
+    // renderButtons() {
+    //     // console.log("buttons", this.props.attendance.attendance);
+    //     return (
+    //         <div className="buttons">
+    //             {this.props.attendance.attendance ?
+    //                 <button
+    //                     onClick={this.onEdit}
+    //                     type="redact"
+    //                     className="btn btn-info"
+    //                 >Редактировать таблицу
+    //                 </button>
+    //                 : null}
+    //             {this.props.attendance.isEdit ?
+    //                 <button
+    //                     onClick={this.onSave}
+    //                     type="save"
+    //                     className="btn btn-success"
+    //                 >Сохранить
+    //                 </button> : null
+    //             }
+    //         </div>)
+    // }
 
     renderScheduleHead() {
         let result = [];
@@ -249,7 +254,9 @@ class AttendanceAndPayments extends Component {
             {/*{this.renderForm()}*/}
             <Form getSelectedGroupId={this.getSelectedGroupId} getCurrentDate={this.getCurrentDate}
                   groups={this.props.group.groups}/>
-            {this.renderButtons()}
+            {/*{this.renderButtons()}*/}
+            <EditSaveButtons isLoaded={this.props.attendance.isLoaded} isEdit={this.props.attendance.isEdit}
+                             onEdit={this.onEdit} onSave={this.onSave}/>
             {this.props.group.usersFromGroup ? this.renderTable() : null}
         </div>)
     }

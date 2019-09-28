@@ -4,7 +4,7 @@ import {bindActionCreators} from "redux";
 import {Link} from "react-router-dom";
 import "../../../css/GroupPage.css"
 import Loading from "../../components/Loading"
-import {groupActionCreators} from "../../../store/reducers/groupReducer";
+import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 
 class GroupPage extends Component {
 

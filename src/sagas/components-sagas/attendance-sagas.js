@@ -1,8 +1,8 @@
 import {call, put, takeLatest} from "redux-saga/effects"
 
 //action types
-import {actionTypes} from "../../store/reducers/attendanceReducer";
-
+// import {actionTypes} from "../../store/reducers/attendanceReducer";
+import {actionTypes} from "../../store/redux/attendance/actionTypes";
 //url
 const url = "http://localhost:8202";
 

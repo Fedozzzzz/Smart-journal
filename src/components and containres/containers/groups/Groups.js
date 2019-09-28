@@ -8,8 +8,7 @@ import GroupsCreating from "./GroupCreating";
 import GroupsEdit from "./GroupEdit";
 import GroupPage from "./GroupPage";
 import AddUserToGroup from "./AddUserToGroup";
-import {groupActionCreators} from "../../../store/reducers/groupReducer";
-
+import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 
 class Groups extends Component {
 

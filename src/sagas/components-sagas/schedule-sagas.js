@@ -1,6 +1,6 @@
 import {call, put, takeLatest, all} from 'redux-saga/effects'
-import {actionTypes} from "../../store/reducers/scheduleReducer";
-
+// import {actionTypes} from "../../rubbish/scheduleReducer";
+import {actionTypes} from "../../store/redux/schedule/actionTypes";
 //url
 const url = 'http://localhost:8200';
 

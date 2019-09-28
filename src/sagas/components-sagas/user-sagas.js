@@ -1,6 +1,6 @@
 import {call, put, takeLatest} from 'redux-saga/effects'
-import {actionTypes} from "../../store/reducers/userReducer";
-
+// import {actionTypes} from "../../rubbish/userReducer";
+import {actionTypes} from "../../store/redux/users/actionTypes";
 //url
 const url = 'http://localhost:8200';
 

@@ -1,11 +1,8 @@
 import React, {Component} from "react"
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-// import {actionCreators} from "../../store/reducers/groupReducer";
-import {groupActionCreators} from "../../../store/reducers/groupReducer";
+import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 import Loading from "../../components/Loading";
-import {Link} from "react-router-dom";
-
 
 class AddUserToGroup extends Component {
 

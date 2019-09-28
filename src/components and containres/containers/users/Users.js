@@ -1,8 +1,8 @@
 import React, {Component} from "react"
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-// import {ctionCreators} from "../../store/reducers/userReducer";
-import {userActionCreators} from "../../../store/reducers/userReducer";
+// import {userActionCreators} from "../../../rubbish/userReducer";
+import {userActionCreators} from "../../../store/redux/users/actionCreators";
 import {Route, Switch} from "react-router-dom";
 import UserCreating from "./UserCreating";
 import UserList from "./UsersList";

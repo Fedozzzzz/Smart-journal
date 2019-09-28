@@ -1,31 +1,24 @@
 import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
 import createSagaMiddleware from 'redux-saga'
 import {connectRouter, routerMiddleware} from "connected-react-router";
-import * as scheduleReducer from './reducers/scheduleReducer'
-import * as groupsReducer from '../rubbish/tableReducer'
-import * as groupReducer from "./reducers/groupReducer"
-import * as userReducer from "./reducers/userReducer"
-import {paymentsReducer} from "./reducers/paymentsReducer";
-import {attendanceReducer} from "./reducers/attendanceReducer";
-import mainTableSagas from '../sagas/root-sagas'
-
-
-//import scheduleSagas from '../sagas/schedule-sagas'
+import {scheduleReducer} from "./redux/schedule/reducer";
+import {groupReducer} from "./redux/groups/reducer";
+import {userReducer} from "./redux/users/reducer";
+import {paymentsReducer} from "./redux/payments/reducer";
+import {attendanceReducer} from "./redux/attendance/reducer";
+import rootSaga from '../sagas/root-sagas'
 
 export default function configureStore(history, initialState) {
     const reducers = {
-        //users: reducerForSaga.usersReducer,
-        //schedule: ScheduleReducer.scheduleReducer
-        //form: formReducer.formReducer,
-        tableGroups: groupsReducer.tableReducer,
-        group: groupReducer.groupReducer,
-        schedule: scheduleReducer.scheduleReducer,
-        user: userReducer.userReducer,
+        group: groupReducer,
+        schedule: scheduleReducer,
+        user: userReducer,
         attendance: attendanceReducer,
         payments: paymentsReducer
     };
 
     const sagaMiddleware = createSagaMiddleware();
+
     const middleware = [
         routerMiddleware(history),
         sagaMiddleware
@@ -47,7 +40,7 @@ export default function configureStore(history, initialState) {
         initialState,
         compose(applyMiddleware(...middleware), ...enhancers)
     );
-    sagaMiddleware.run(mainTableSagas);
+    sagaMiddleware.run(rootSaga);
 
     return store;
 }

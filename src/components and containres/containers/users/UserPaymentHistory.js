@@ -17,6 +17,12 @@ export const UserPaymentHistory = (props) => {
                     <tr>
                         <td>{new Date(payment.payday).toString()}</td>
                         <td>{payment.amount}</td>
+                        <div>
+                            <button className="btn btn-danger"
+                                    onClick={props.onDelete.bind(this, payment.id)}>
+                                Удалить
+                            </button>
+                        </div>
                     </tr>
                 ))}
                 </tbody>

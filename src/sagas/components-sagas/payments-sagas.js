@@ -1,6 +1,7 @@
 import {call, put, takeLatest} from "redux-saga/effects";
 //action types
-import {actionTypes} from "../../store/reducers/paymentsReducer";
+// import {actionTypes} from "../../rubbish/paymentsReducer";
+import {actionTypes} from "../../store/redux/payments/actionTypes";
 //url
 const url = "http://localhost:8202";
 
