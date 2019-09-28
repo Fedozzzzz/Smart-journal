@@ -59,7 +59,7 @@ export const paymentsReducer = (state, action) => {
             return {
                 ...state,
                 isLoaded: false,
-                newPayment: action.newPayment
+                newPaymentId: action.newPaymentId
             };
         case actionTypes.addPaymentFailedType:
             return {

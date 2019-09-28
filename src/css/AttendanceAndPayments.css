@@ -8,3 +8,25 @@
 .table__input{
     max-width: 40px;
 }
+
+/*.table th:last-child{*/
+/*    border-right: none;*/
+/*}*/
+
+/*.table div:last-child{*/
+/*    border-right: none;*/
+/*}*/
+.cell_absent{
+    background-color: rgba(181,204,211,0.78);
+}
+
+.cell_attended{
+    background-color: rgba(50,163,211,0.78)
+    /*color: white;*/
+}
+
+.table__button-add-payment{
+    background-color: white;
+    /*border: none;*/
+    border-right: none;
+}

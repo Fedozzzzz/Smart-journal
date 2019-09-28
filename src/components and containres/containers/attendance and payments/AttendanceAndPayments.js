@@ -16,7 +16,8 @@ class AttendanceAndPayments extends Component {
         this.state = {
             selectedGroupId: null,
             currentMonth: new Date(new Date().setDate(1)),
-            scheduleOfGroup: new Map()
+            scheduleOfGroup: new Map(),
+            newAttendance: new Map()
             // currentMonth: new Date(),
             // previousMonth: new Date(),
             // date: String(),
@@ -31,6 +32,8 @@ class AttendanceAndPayments extends Component {
         this.renderScheduleBody = this.renderScheduleBody.bind(this);
         this.renderScheduleHead = this.renderScheduleHead.bind(this);
         this.onEdit = this.onEdit.bind(this);
+        this.onSave = this.onSave.bind(this);
+        this.addPayment = this.addPayment.bind(this);
         // this.clickAttendanceHandler=this.clickAttendanceHandler.bind(this);
     }
 
@@ -67,12 +70,19 @@ class AttendanceAndPayments extends Component {
         if (this.props.attendance.attendance !== prevProps.attendance.attendance
             && this.props.attendance.attendance) {
             let tempMap = new Map();
+            let tempNewAttendance = new Map();
             this.props.attendance.attendance.forEach(el => {
+                let attendance = [];
                 tempMap.set(el.userId, el.attendance);
+                tempNewAttendance.set(el.userId, attendance);
             });
             this.setState({
-                attendance: tempMap
+                attendance: tempMap,
+                newAttendance: tempNewAttendance
             });
+        }
+        if (this.props.payments.newPaymentId !== prevProps.payments.newPaymentId) {
+            this.props.getUsersFromGroup(this.state.selectedGroupId);
         }
     }
 
@@ -88,13 +98,21 @@ class AttendanceAndPayments extends Component {
         this.props.editAttendance();
     }
 
-    clickAttendanceHandler(userId,e){
-        console.log(userId,e.target);
-
+    onSave() {
+        let data = [];
+        console.log(this.state.newAttendance);
+        this.state.newAttendance.forEach((value, key) => {
+            let tempObj = {};
+            tempObj.userId = key;
+            tempObj.updatedAttendance = value;
+            data.push(tempObj);
+        });
+        console.log(data);
+        this.props.saveEditAttendance(this.state.selectedGroupId, data);
     }
 
     renderButtons() {
-        console.log("buttons", this.props.attendance.attendance);
+        // console.log("buttons", this.props.attendance.attendance);
         return (
             <div className="buttons">
                 {this.props.attendance.attendance ?
@@ -124,18 +142,70 @@ class AttendanceAndPayments extends Component {
         return result;
     }
 
+    addPayment(userId) {
+        let amount = window.prompt("Введите сумму платежа в рублях");
+        if (amount) {
+            this.props.addPayment(userId, {
+                amount: amount,
+                payday: new Date().toISOString()
+            });
+        }
+    }
+
+    clickAttendanceHandler(userId, key, e) {
+        // console.log(e.target);
+
+        // let elem = document.getElementById(userId + key + "cell");
+        // console.log(elem);
+        if (this.props.attendance.isEdit) {
+            let mapAttendance = this.state.newAttendance;
+            // console.log(tempMapAttendance);
+            let tempNewAttendance = mapAttendance.get(userId);
+            // console.log(tempNewAttendance);
+            let thisDate = new Date(new Date(this.state.currentMonth).setDate(key)).toISOString();
+            let attendance = tempNewAttendance.find(element => {
+                if (element.date === thisDate) {
+                    return element;
+                }
+            }) || {date: thisDate};
+            // console.log(attendance);
+            if (e.target.className === "cell") {
+                e.target.className = "cell_attended";
+                e.target.innerHTML = "Б";
+                attendance.isAttended = true;
+            } else if (e.target.className === "cell_attended") {
+                e.target.className = "cell_absent";
+                e.target.innerHTML = "Н";
+                attendance.isAttended = false;
+            } else if (e.target.className === "cell_absent") {
+                e.target.className = "cell";
+                e.target.innerHTML = null;
+            }
+            if (tempNewAttendance.indexOf(attendance) === -1) {
+                tempNewAttendance.push(attendance);
+            }
+            mapAttendance.set(userId, tempNewAttendance);
+            // console.log(mapAttendance);
+            this.setState({newAttendance: mapAttendance})
+        }
+    }
+
     renderScheduleBody(userId) {
         let result = [];
         if (this.state.attendance) {
             let attendanceOfUser = this.state.attendance.get(userId);
-            console.log("scb", attendanceOfUser);
-            if(this.props.attendance.isEdit){
-                this.state.scheduleOfGroup.forEach((value, key) => {
-                    result.push(<td className="cell"><input className="table__input"/></td>)})
-            }else {
+            // console.log("scb", attendanceOfUser);
+            // if(this.props.attendance.isEdit){
+            //     this.state.scheduleOfGroup.forEach((value, key) => {
+            //         result.push(<td className="cell"><input className="table__input"/></td>)})
+            // }else {
             this.state.scheduleOfGroup.forEach((value, key) => {
-                result.push(<td className="cell" onClick={this.clickAttendanceHandler.bind(this,userId)}></td>)
-            });}
+                result.push(<td className="cell"
+                                onClick={this.clickAttendanceHandler.bind(this, userId, key)}
+                                id={userId + key + "cell"}
+                >{null}</td>)
+            });
+            // }
             return result;
         }
     }
@@ -155,10 +225,15 @@ class AttendanceAndPayments extends Component {
                 {this.props.group.usersFromGroup ?
                     this.props.group.usersFromGroup.map(user => (
                         <tr>
-                            <td>{user.name}</td>
+                            <td>{user.name} {user.surname}</td>
                             {this.renderScheduleBody(user.guid)}
                             <td>{user.dept}</td>
                             <td>{user.amount}</td>
+                            <div className="table__button-add-payment">
+                                <button className="btn btn-success" onClick={this.addPayment.bind(this, user.guid)}>
+                                    Пополнить счет
+                                </button>
+                            </div>
                         </tr>
                     )) : null}
                 </tbody>
@@ -168,7 +243,7 @@ class AttendanceAndPayments extends Component {
 
     render() {
         console.log("this.state", this.state);
-        console.log("this.props", this.props);
+        // console.log("this.props", this.props);
         return (<div>
             <h3>Управление платежами</h3>
             {/*{this.renderForm()}*/}

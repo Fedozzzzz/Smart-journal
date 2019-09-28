@@ -37,14 +37,14 @@ function* callAddPayment({userId, data}) {
         console.log("saga-add-payment");
         let headers = new Headers();
         headers.append('Content-Type', "application/json");
-        const newPayment = yield call(() => fetch(url + '/payments/' + userId,
+        const newPaymentId = yield call(() => fetch(url + '/payments/' + userId,
             {
                 method: 'POST',
                 headers: headers,
                 body: JSON.stringify(data)
             }).then(response => response.json())
             .catch(error => console.log(error)));
-        yield put({type: actionTypes.addPaymentSucceededType, newPayment})
+        yield put({type: actionTypes.addPaymentSucceededType, newPaymentId})
     } catch (error) {
         console.log(error);
         yield put({type: actionTypes.addPaymentFailedType})

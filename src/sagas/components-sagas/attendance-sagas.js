@@ -38,7 +38,7 @@ export function* editAttendance() {
 function* callEditAttendance({groupId, data}) {
     try {
         let headers = new Headers();
-        console.log("saga-edit-Attendance");
+        console.log("saga-edit-Attendance", data);
         headers.append('Content-Type', "application/json");//
         yield call(() => fetch(url + "/attendance/" + groupId,
             {
