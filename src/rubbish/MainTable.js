@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as actionCreators1 from "../rubbish/tableReducer";
+import * as actionCreators1 from "./tableReducer";
 // import * as actionCreators from "../store/tableReducer"
 
 //import * as actionCreators2 from "../store/formReducer"
@@ -775,3 +775,43 @@ export default connect(
 // )(FetchData);
 
 
+// renderTableSchedule() {
+//     let size = this.props.groups.size;
+//     // console.log(size);
+//     let out = [];
+//     for (let i = 1; i <= size; i++) {
+//         //console.log(this.props.groups.get(i).weekSchedule.days);
+//         console.log(this.props.groups.get(i.toString()));
+//         out.push(<tr>
+//             <td>{this.props.groups.get(i.toString()).id}</td>
+//             {this.props.groups.get(i.toString()).weekSchedule.days !== null ?//week schedule must be not null
+//                 this.props.groups.get(i.toString()).weekSchedule.days.map(day => (
+//                     day ? <td>+</td> : <td>-</td>
+//                 )) : null}
+//         </tr>);
+//     }
+//     return (out);
+// }
+//
+// renderWeekSchedule() {
+//     console.log('render-week-schedule');
+//     return (
+//         this.props.isLoaded ?
+//             <table className='table table-striped'>
+//                 <thead>
+//                 <tr>
+//                     <th>Группа</th>
+//                     <th>Пн</th>
+//                     <th>Вт</th>
+//                     <th>Ср</th>
+//                     <th>Чт</th>
+//                     <th>Пт</th>
+//                     <th>Сб</th>
+//                     <th>Вс</th>
+//                 </tr>
+//                 </thead>
+//                 <tbody>
+//                 {this.renderTableSchedule()}
+//                 </tbody>
+//             </table> : null)
+// }

@@ -15,7 +15,8 @@ export const attendanceReducer = (state, action) => {
             return {
                 ...state,
                 attendance: action.attendance,
-                isLoaded: true
+                isLoaded: true,
+                isEdited: false
             };
         case actionTypes.getAttendanceFailedType:
             return {

@@ -8,17 +8,8 @@ import "../../../css/AttendanceAndPayments.css"
 import {attendanceActionCreators} from "../../../store/redux/attendance/actionCreators";
 import {paymentsActionCreators} from "../../../store/redux/payments/actionCreators";
 import {EditSaveButtons} from "../../components/EditSaveButtons";
+import * as functions from "../../../functions/index"
 
-
-Date.prototype.getBeginOfMonth = function () {
-    return new Date(this.getFullYear(), this.getMonth(), 1, 0, 0, 0, 0);
-};
-
-Date.prototype.toLocaleISOString = function () { // uses here instead of Date.prototype.toISOString()
-    return this.getFullYear() + "-"
-        + (this.getMonth() + 1 < 10 ? "0" + (this.getMonth() + 1) : (this.getMonth() + 1)) + "-"
-        + (this.getDate() < 10 ? "0" + this.getDate() : this.getDate());
-};
 
 class AttendanceAndPayments extends Component {
 
@@ -82,9 +73,6 @@ class AttendanceAndPayments extends Component {
                 let attendance = new Map();
                 el.attendance.forEach(value => {
                     attendance.set(new Date(value.date).getDate(), value.isPaid);
-                    // let tempObj = {};
-                    // tempObj.date = new Date(value.date).getDate();
-                    // tempObj.isPaid= value.isPaid;
                 });
                 tempMap.set(el.userId, attendance);
                 tempNewAttendance.set(el.userId, []);
@@ -125,14 +113,6 @@ class AttendanceAndPayments extends Component {
             date.setDate(this.state.selectedMonth.daysInMonth());
             let to = date.toLocaleISOString();
             this.props.getAttendance(this.state.selectedGroupId, from, to);
-            // let date = new Date(this.state.selectedMonth);
-            // console.log(date);
-            // let from = date.toISOString().slice(0, 10);
-            // date.setUTCDate(this.state.selectedMonth.daysInMonth());
-            // let to = date.toISOString().slice(0, 10);
-            // console.log(this.state.selectedGroupId, from, to);
-            // // this.props.getAttendance()
-            // this.props.getAttendance(this.state.selectedGroupId, from, to);
         }
     }
 
@@ -160,43 +140,69 @@ class AttendanceAndPayments extends Component {
 
     clickAttendanceHeadHandler(key, e) {
         if (this.props.attendance.isEdit) {
+            let newClassname;
+            let content;
+            let isAttended;
+            switch (e.target.className) {
+                case "cell":
+                    e.target.className = "cell_attended";
+                    newClassname = "table-primary";
+                    content = "Б";
+                    isAttended = true;
+                    break;
+                case "cell_attended":
+                    e.target.className = "cell_absent";
+                    newClassname = "table-secondary";
+                    content = "Н";
+                    isAttended = false;
+                    break;
+                case "cell_absent":
+                    e.target.className = "cell";
+                    newClassname = "table-default";
+                    content = null;
+                    isAttended = null;
+                    break;
+            }
             this.props.group.usersFromGroup.forEach(value => {
                 let elem = document.getElementById(value.guid + key + "cell");
-                console.log(elem);
-                // let mapAttendance = this.state.newAttendance;
-                // // console.log(mapAttendance);
-                // let tempNewAttendance = mapAttendance.get(value.guid);
-                // // console.log(tempNewAttendance);
-                // let thisDate = new Date(new Date(this.state.selectedMonth).setDate(key)).toLocaleISOString();
-                // let attendance = tempNewAttendance.find(element => {
-                //     if (element.date === thisDate) {
-                //         return element;
-                //     }
-                // }) || {date: thisDate};
+                // console.log(elem.className);
+                elem.className = newClassname;
+                elem.innerHTML = content;
+                let mapAttendance = this.state.newAttendance;
+                // console.log(mapAttendance);
+                let tempNewAttendance = mapAttendance.get(value.guid);
+                // console.log(tempNewAttendance);
+                let thisDate = new Date(new Date(this.state.selectedMonth).setDate(key)).toLocaleISOString();
+                let attendance = tempNewAttendance.find(element => {
+                    if (element.date === thisDate) {
+                        return element;
+                    }
+                }) || {date: thisDate};
+                attendance.isAttended = isAttended;
+                if (tempNewAttendance.indexOf(attendance) === -1) {
+                    tempNewAttendance.push(attendance);
+                }
+                mapAttendance.set(value.guid, tempNewAttendance);
+                // console.log(mapAttendance);
+                this.setState({newAttendance: mapAttendance});
                 // let elem = document.getElementById(value.guid + key + "cell");
                 // switch (elem.className) {
                 //     case "table-default":
-                //         e.target.className = "table-primary";
-                //         e.target.innerHTML = "Б";
+                //         elem.className = "table-primary";
+                //         elem.innerHTML = "Б";
                 //         attendance.isAttended = true;
                 //         break;
                 //     case "table-primary":
-                //         e.target.className = "table-secondary";
-                //         e.target.innerHTML = "Н";
+                //         elem.className = "table-secondary";
+                //         elem.innerHTML = "Н";
                 //         attendance.isAttended = false;
                 //         break;
                 //     case "table-secondary":
-                //         e.target.className = "table-default";
-                //         e.target.innerHTML = null;
+                //         elem.className = "table-default";
+                //         elem.innerHTML = null;
                 //         break;
                 // }
-                //
-                // if (tempNewAttendance.indexOf(attendance) === -1) {
-                //     tempNewAttendance.push(attendance);
-                // }
-                // mapAttendance.set(value.guid, tempNewAttendance);
-                // // console.log(mapAttendance);
-                // this.setState({newAttendance: mapAttendance})
+
             })
         }
     }

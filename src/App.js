@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route} from 'react-router-dom';
 import Layout from './components and containres/components/Layout';
-import MainTable from "./components and containres/MainTable"
+import MainTable from "./rubbish/MainTable"
 import Schedule from "./components and containres/containers/schedule/Schedule";
 import Groups from "./components and containres/containers/groups/Groups";
 import Home from "./components and containres/components/Home";

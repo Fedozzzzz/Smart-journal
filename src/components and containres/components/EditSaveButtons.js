@@ -1,6 +1,5 @@
 import React from "react"
 
-
 export const EditSaveButtons = (props) => (
     <div className="buttons">
         {props.isLoaded ?
