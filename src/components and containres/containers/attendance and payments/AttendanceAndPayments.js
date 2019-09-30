@@ -9,6 +9,7 @@ import {attendanceActionCreators} from "../../../store/redux/attendance/actionCr
 import {paymentsActionCreators} from "../../../store/redux/payments/actionCreators";
 import {EditSaveButtons} from "../../components/EditSaveButtons";
 import * as functions from "../../../functions/index"
+import {AttendanceAndPaymentsTable} from "./AttendanceAndPaymentsTable";
 
 
 class AttendanceAndPayments extends Component {
@@ -25,14 +26,11 @@ class AttendanceAndPayments extends Component {
         };
         this.getSelectedDate = this.getSelectedDate.bind(this);
         this.getSelectedGroupId = this.getSelectedGroupId.bind(this);
-        this.renderTable = this.renderTable.bind(this);
-        // this.renderSchedule = this.renderSchedule.bind(this);
-        this.renderScheduleBody = this.renderScheduleBody.bind(this);
-        this.renderScheduleHead = this.renderScheduleHead.bind(this);
         this.onEdit = this.onEdit.bind(this);
         this.onSave = this.onSave.bind(this);
         this.addPayment = this.addPayment.bind(this);
-        // this.clickAttendanceHandler=this.clickAttendanceHandler.bind(this);
+        this.clickAttendanceHeadHandler = this.clickAttendanceHeadHandler.bind(this);
+        this.clickAttendanceHandler = this.clickAttendanceHandler.bind(this);
     }
 
     componentDidMount() {
@@ -207,14 +205,6 @@ class AttendanceAndPayments extends Component {
         }
     }
 
-    renderScheduleHead() {
-        let result = [];
-        this.state.scheduleOfGroup.forEach((value, key) => {
-            result.push(<th className="cell" onClick={this.clickAttendanceHeadHandler.bind(this, key)}>{key}</th>)
-        });
-        return result;
-    }
-
     addPayment(userId) {
         let amount = window.prompt("Введите сумму платежа в рублях");
         if (amount) {
@@ -280,79 +270,6 @@ class AttendanceAndPayments extends Component {
         }
     }
 
-    renderScheduleBody(userId) {
-        let result = [];
-        if (this.props.attendance.isEdit && this.state.attendance) {
-            let attendanceOfUser = this.state.attendance.get(userId);
-            this.state.scheduleOfGroup.forEach((value, key) => {
-                let classname = "table-default";
-                let content;
-                if (attendanceOfUser.has(key)) {
-                    classname = "table-primary";
-                    content = "Б";
-                } else if (key <= this.state.currentDate.getDate()
-                    && this.state.selectedMonth.getMonth() <= this.state.currentDate.getMonth()) {
-                    classname = "table-secondary";
-                    content = "Н";
-                }
-                result.push(<td className={classname}
-                                onClick={this.clickAttendanceHandler.bind(this, userId, key)}
-                                id={userId + key + "cell"}>{content}</td>)
-            });
-            return result;
-        }
-        if (this.state.attendance) {
-            let attendanceOfUser = this.state.attendance.get(userId);
-            this.state.scheduleOfGroup.forEach((value, key) => {
-                let classname = "table-default";
-                let content;
-                if (attendanceOfUser.has(key)) {
-                    classname = attendanceOfUser.get(key) ? "table-success" : "table-danger";
-                    content = "Б";
-                } else if (key <= this.state.currentDate.getDate()
-                    && this.state.selectedMonth.getMonth() <= this.state.currentDate.getMonth()) {
-                    classname = "table-secondary";
-                    content = "Н";
-                }
-                result.push(<td className={classname}
-                                onClick={this.clickAttendanceHandler.bind(this, userId, key)}
-                                id={userId + key + "cell"}>{content}</td>)
-            });
-            return result;
-        }
-    }
-
-    renderTable() {
-        return (<div>
-            <table className='table table-hover table-bordered table-responsive'>
-                <thead>
-                <tr>
-                    <th>Студент</th>
-                    {this.renderScheduleHead()}
-                    <th>Долг</th>
-                    <th>Счет</th>
-                </tr>
-                </thead>
-                <tbody>
-                {this.props.group.usersFromGroup ?
-                    this.props.group.usersFromGroup.map(user => (
-                        <tr>
-                            <td>{user.name} {user.surname}</td>
-                            {this.renderScheduleBody(user.guid)}
-                            <td>{user.dept}</td>
-                            <td>{user.amount}</td>
-                            <div className="table__button-add-payment">
-                                <button className="btn btn-success" onClick={this.addPayment.bind(this, user.guid)}>
-                                    Пополнить счет
-                                </button>
-                            </div>
-                        </tr>
-                    )) : null}
-                </tbody>
-            </table>
-        </div>)
-    }
-
     render() {
         console.log("this.state", this.state);
         // console.log("this.props", this.props);
@@ -368,7 +285,14 @@ class AttendanceAndPayments extends Component {
                     <p>{this.state.groupsMap.get(this.state.selectedGroupId).cost} руб.</p>
                 </div> : null}
             </div>
-            {this.props.group.usersFromGroup.length ? this.renderTable() : null}
+            {this.props.group.usersFromGroup.length ?
+                <AttendanceAndPaymentsTable props={this.state}
+                                            onClickHead={this.clickAttendanceHeadHandler}
+                                            onClickBody={this.clickAttendanceHandler}
+                                            onAddPayment={this.addPayment}
+                                            isAttendanceEdit={this.props.attendance.isEdit}
+                                            usersFromGroup={this.props.group.usersFromGroup}/> : null}
+
         </div>)
     }
 }
