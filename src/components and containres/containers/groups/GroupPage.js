@@ -5,6 +5,10 @@ import {Link} from "react-router-dom";
 import "../../../css/GroupPage.css"
 import Loading from "../../components/Loading"
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
+import {GroupPageProfile} from "./GroupPageProfile";
+import {GroupWeekSchedule} from "./GroupWeekSchedule";
+import {GroupStudents} from "./GroupStudents";
+
 
 class GroupPage extends Component {
 
@@ -29,60 +33,20 @@ class GroupPage extends Component {
         }
     }
 
-    renderSchedule() {
-        let res = [];
-        for (let i = 0; i < 7; i++) {
-            res.push(<td key={i}
-                         className={this.props.groupById.days[i] ? "cell_active" : "cell"}>
-                {this.props.groupById.startTimes[i]}
-            </td>)
-        }
-        return res;
-    }
-
     render() {
         // console.log("render of group page ", this.props.groupById);//should add redirect
-        console.log("props", this.props);
+        // console.log("props", this.props);
         return (
             <div className="container">
                 <div className="group-page__info">
                     <h4>Страница группы</h4>
                     {this.props.groupById ? <div>
                         <div>
-                            <div>Имя: {this.props.groupById.name}</div>
-                            <div>Цена за занятие: {this.props.groupById.cost}</div>
-                            <div>Продолжительность занятия: {this.props.groupById.duration}</div>
-                            <div>Расписание:</div>
-                            <table className='table table-striped table-bordered'>
-                                <thead>
-                                <tr>
-                                    <td>ПН</td>
-                                    <td>ВТ</td>
-                                    <td>СР</td>
-                                    <td>ЧТ</td>
-                                    <td>ПТ</td>
-                                    <td>СБ</td>
-                                    <td>ВС</td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    {this.renderSchedule()}
-                                </tr>
-                                </tbody>
-                            </table>
+                            <GroupPageProfile groupById={this.props.groupById}/>
+                            <GroupWeekSchedule groupById={this.props.groupById}/>
                         </div>
-                        <div>
-                            <h5>Студенты этой группы:</h5>{
-                            this.props.usersFromGroup ?
-                                this.props.usersFromGroup.map(user => (
-                                    <div>
-                                        <Link
-                                            to={`/users/user_${user.guid}`}>{user.name} {user.surname} {user.patronymic}</Link>
-                                    </div>
-                                )) : <Loading/>
-                        }
-                        </div>
+                        {this.props.usersFromGroup ?
+                            <GroupStudents usersFromGroup={this.props.usersFromGroup}/> : <Loading/>}
                         <div>
                             <Link to='/groups/'
                                   className="btn btn-outline-danger"

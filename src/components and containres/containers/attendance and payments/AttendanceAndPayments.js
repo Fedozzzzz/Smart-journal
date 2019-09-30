@@ -22,7 +22,8 @@ class AttendanceAndPayments extends Component {
             scheduleOfGroup: new Map(),
             newAttendance: new Map(),
             groupsMap: new Map(),
-            currentDate: new Date()
+            currentDate: new Date(),
+            attendance: new Map()
         };
         this.getSelectedDate = this.getSelectedDate.bind(this);
         this.getSelectedGroupId = this.getSelectedGroupId.bind(this);

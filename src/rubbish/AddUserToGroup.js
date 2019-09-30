@@ -1,8 +1,8 @@
 import React, {Component} from "react"
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
-import Loading from "../../components/Loading";
+import {groupActionCreators} from "../store/redux/groups/actionCreators";
+import Loading from "../components and containres/components/Loading";
 
 class AddUserToGroup extends Component {
 
@@ -19,12 +19,6 @@ class AddUserToGroup extends Component {
         this.props.getUsersFromGroup(this.props.groupId);
         this.props.getAllUsers();
     }
-
-    // componentDidUpdate(prevProps, prevState, snapshot) {
-    //     if (prevState !== this.state) {
-    //         console.log(this.state)
-    //     }
-    // }
 
     onAddUsersToGroup() {
         this.state.chosenUsers.forEach(((value, key) => {

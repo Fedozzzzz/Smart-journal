@@ -2,10 +2,11 @@ import React, {Component} from "react"
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {Link} from "react-router-dom";
-import AddUserToGroup from "./AddUserToGroup";
+import AddUserToGroup from "../../../rubbish/AddUserToGroup";
 import Loading from "../../components/Loading";
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
+import {GroupAddStudents} from "./GroupAddStudents";
 
 class GroupEdit extends Component {
 
@@ -317,7 +318,6 @@ class GroupEdit extends Component {
                             : null}
                         </tbody>
                     </table>
-
                 </div>
                 <div>
                     <h5>Студенты этой группы:</h5>{
@@ -338,18 +338,7 @@ class GroupEdit extends Component {
                 <div>
                     <h5>Добавьте студентов в группу: </h5>
                     <p>Веберите студентов из списка, чтобы добавить их в группу</p>
-                    {this.props.user.users.map(user => (<div className="form-inline">
-                        <Link to={`/users/user_${user.guid}`}>
-                            {user.name} {user.surname} {user.patronymic}</Link>
-                        < div className="form-check">
-                            < input className="form-check-input"
-                                    type="checkbox"
-                                    value=""
-                                    onChange={this.handleUsersChange}
-                                    id={user.guid}
-                            />
-                        </div>
-                    </div>))}
+                    <GroupAddStudents users={this.props.user.users} handleUsersChange={this.handleUsersChange}/>
                 </div>
                 <div>
                     <button

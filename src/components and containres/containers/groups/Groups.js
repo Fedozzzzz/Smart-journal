@@ -7,7 +7,7 @@ import GroupsList from "./GroupsList";
 import GroupsCreating from "./GroupCreating";
 import GroupsEdit from "./GroupEdit";
 import GroupPage from "./GroupPage";
-import AddUserToGroup from "./AddUserToGroup";
+import AddUserToGroup from "../../../rubbish/AddUserToGroup";
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 
 class Groups extends Component {
