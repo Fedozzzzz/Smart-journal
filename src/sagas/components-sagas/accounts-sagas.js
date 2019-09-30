@@ -2,7 +2,7 @@ import {call, put, takeLatest} from "redux-saga/effects"
 
 import {actionTypes} from "../../store/redux/accounts/actionTypes";
 
-const url = "http://localhost:8202";
+const url = "http://localhost:8200";
 
 export function* getAccountsByGroupId() {
     yield takeLatest(actionTypes.getAccountsByGroupId, callGetAccountsByGroupId);
