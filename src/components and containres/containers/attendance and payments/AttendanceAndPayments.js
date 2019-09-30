@@ -12,7 +12,6 @@ import {attendanceActionCreators} from "../../../store/redux/attendance/actionCr
 // import {paymentsActionCreators} from "../../../rubbish/paymentsReducer";
 import {paymentsActionCreators} from "../../../store/redux/payments/actionCreators";
 import {EditSaveButtons} from "../../components/EditSaveButtons";
-import {accountsActionCreators} from "../../../store/redux/accounts/actionCreators";
 
 
 class AttendanceAndPayments extends Component {
@@ -23,8 +22,7 @@ class AttendanceAndPayments extends Component {
             selectedGroupId: null,
             currentMonth: new Date(new Date().setDate(1)),
             scheduleOfGroup: new Map(),
-            newAttendance: new Map(),
-            accountsFromGroup: new Map()
+            newAttendance: new Map()
             // currentMonth: new Date(),
             // previousMonth: new Date(),
             // date: String(),
@@ -55,14 +53,13 @@ class AttendanceAndPayments extends Component {
         {
             console.log("did-update");
             let date = new Date(this.state.currentMonth);
-            // console.log(date);
+            console.log(date);
             let from = date.toISOString().slice(0, 10);
             date.setUTCDate(this.state.currentMonth.daysInMonth());
             let to = date.toISOString().slice(0, 10);
-            // console.log(this.state.selectedGroupId, from, to);
+            console.log(this.state.selectedGroupId, from, to);
             this.props.getSchedule(this.state.selectedGroupId, from, to);
             this.props.getUsersFromGroup(this.state.selectedGroupId);
-            this.props.getAccountsByGroupId(this.state.selectedGroupId);
             this.props.getAttendance(this.state.selectedGroupId, from, to);
         }
         if (this.props.schedule.schedule !== prevProps.schedule.schedule) {
@@ -80,12 +77,9 @@ class AttendanceAndPayments extends Component {
             let tempMap = new Map();
             let tempNewAttendance = new Map();
             this.props.attendance.attendance.forEach(el => {
-                let attendance = new Map();
-                el.attendance.forEach(el => {
-                    attendance.set(new Date(el.date).getDate(), el.isPaid)
-                });
-                tempMap.set(el.userId, attendance);
-                tempNewAttendance.set(el.userId, []);
+                let attendance = [];
+                tempMap.set(el.userId, el.attendance);
+                tempNewAttendance.set(el.userId, attendance);
             });
             this.setState({
                 attendance: tempMap,
@@ -94,19 +88,6 @@ class AttendanceAndPayments extends Component {
         }
         if (this.props.payments.newPaymentId !== prevProps.payments.newPaymentId) {
             this.props.getUsersFromGroup(this.state.selectedGroupId);
-            this.props.getAccountsByGroupId(this.state.selectedGroupId); //получать только измененные данные
-        }
-        if (this.props.accounts.accountsFromGroup !== prevProps.accounts.accountsFromGroup) {
-            // console.log("accounts got");
-            let tempMap = new Map();
-            this.props.accounts.accountsFromGroup.forEach(value => {
-                let tempObj = {};
-                tempObj.amount = value.amount;
-                tempObj.dept = value.dept;
-                tempObj.updatedAt = value.updatedAt;
-                tempMap.set(value.userId, tempObj);
-            });
-            this.setState({accountsFromGroup: tempMap});
         }
     }
 
@@ -133,12 +114,6 @@ class AttendanceAndPayments extends Component {
         });
         console.log(data);
         this.props.saveEditAttendance(this.state.selectedGroupId, data);
-        let date = new Date(this.state.currentMonth);
-        // console.log(date);
-        let from = date.toISOString().slice(0, 10);
-        date.setUTCDate(this.state.currentMonth.daysInMonth());
-        let to = date.toISOString().slice(0, 10);
-        // this.props.getAttendance(this.state.selectedGroupId, from, to);
     }
 
     // renderButtons() {
@@ -222,7 +197,6 @@ class AttendanceAndPayments extends Component {
 
     renderScheduleBody(userId) {
         let result = [];
-
         if (this.state.attendance) {
             let attendanceOfUser = this.state.attendance.get(userId);
             // console.log("scb", attendanceOfUser);
@@ -231,16 +205,10 @@ class AttendanceAndPayments extends Component {
             //         result.push(<td className="cell"><input className="table__input"/></td>)})
             // }else {
             this.state.scheduleOfGroup.forEach((value, key) => {
-                let cell;
-                if (attendanceOfUser.has(key)) {
-                    let className = attendanceOfUser.get(key) ? "cell_paid" : "cell_dept";
-                    cell = <td className={className} onClick={this.clickAttendanceHandler.bind(this, userId, key)}
-                               id={userId + key + "cell"}>Б</td>
-                } else {
-                    cell = <td className="cell" onClick={this.clickAttendanceHandler.bind(this, userId, key)}
-                               id={userId + key + "cell"}>{null}</td>
-                }
-                result.push(cell);
+                result.push(<td className="cell"
+                                onClick={this.clickAttendanceHandler.bind(this, userId, key)}
+                                id={userId + key + "cell"}
+                >{null}</td>)
             });
             // }
             return result;
@@ -248,7 +216,6 @@ class AttendanceAndPayments extends Component {
     }
 
     renderTable() {
-        // console.log(this.props.accounts.isLoaded);
         return (<div>
             <table className='table table-striped table-bordered'>
                 <thead>
@@ -260,13 +227,13 @@ class AttendanceAndPayments extends Component {
                 </tr>
                 </thead>
                 <tbody>
-                {this.state.accountsFromGroup.size ?
+                {this.props.group.usersFromGroup ?
                     this.props.group.usersFromGroup.map(user => (
                         <tr>
                             <td>{user.name} {user.surname}</td>
                             {this.renderScheduleBody(user.guid)}
-                            <td>{this.state.accountsFromGroup.get(user.guid).dept}</td>
-                            <td>{this.state.accountsFromGroup.get(user.guid).amount}</td>
+                            <td>{user.dept}</td>
+                            <td>{user.amount}</td>
                             <div className="table__button-add-payment">
                                 <button className="btn btn-success" onClick={this.addPayment.bind(this, user.guid)}>
                                     Пополнить счет
@@ -301,12 +268,10 @@ export default connect(
             group: state.group,
             schedule: state.schedule,
             attendance: state.attendance,
-            payments: state.payments,
-            accounts: state.accounts
+            payments: state.payments
         }
     },
     dispatch => bindActionCreators(Object.assign({}, groupActionCreators,
-        scheduleActionCreators, attendanceActionCreators, paymentsActionCreators,
-        accountsActionCreators), dispatch)
+        scheduleActionCreators, attendanceActionCreators, paymentsActionCreators), dispatch)
 )
 (AttendanceAndPayments)
