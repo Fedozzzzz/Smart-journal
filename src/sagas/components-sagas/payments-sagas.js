@@ -3,7 +3,7 @@ import {call, put, takeLatest} from "redux-saga/effects";
 // import {actionTypes} from "../../rubbish/paymentsReducer";
 import {actionTypes} from "../../store/redux/payments/actionTypes";
 //url
-const url = "http://localhost:8202";
+const url = "http://localhost:8200";
 
 
 export function* getPayments() {

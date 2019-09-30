@@ -4,7 +4,7 @@ import {call, put, takeLatest} from "redux-saga/effects"
 // import {actionTypes} from "../../store/reducers/attendanceReducer";
 import {actionTypes} from "../../store/redux/attendance/actionTypes";
 //url
-const url = "http://localhost:8202";
+const url = "http://localhost:8200";
 
 export function* getAttendance() {
     yield takeLatest(actionTypes.getAttendanceType, callGetAttendance);
