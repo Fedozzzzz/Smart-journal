@@ -1,18 +1,24 @@
 import React, {Component} from "react"
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-// import {groupActionCreators} from "../../../rubbish/groupReducer";
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 import Form from "../../components/Form";
-// import {scheduleActionCreators} from "../../../rubbish/scheduleReducer";
 import {scheduleActionCreators} from "../../../store/redux/schedule/actionCreators";
 import "../../../css/AttendanceAndPayments.css"
-// import {attendanceActionCreators} from "../../../store/reducers/attendanceReducer";
 import {attendanceActionCreators} from "../../../store/redux/attendance/actionCreators";
-// import {paymentsActionCreators} from "../../../rubbish/paymentsReducer";
 import {paymentsActionCreators} from "../../../store/redux/payments/actionCreators";
 import {EditSaveButtons} from "../../components/EditSaveButtons";
 
+
+Date.prototype.getBeginOfMonth = function () {
+    return new Date(this.getFullYear(), this.getMonth(), 1, 0, 0, 0, 0);
+};
+
+Date.prototype.toLocaleISOString = function () { // uses here instead of Date.prototype.toISOString()
+    return this.getFullYear() + "-"
+        + (this.getMonth() + 1 < 10 ? "0" + (this.getMonth() + 1) : (this.getMonth() + 1)) + "-"
+        + (this.getDate() < 10 ? "0" + this.getDate() : this.getDate());
+};
 
 class AttendanceAndPayments extends Component {
 
@@ -20,17 +26,13 @@ class AttendanceAndPayments extends Component {
         super(props, ctx);
         this.state = {
             selectedGroupId: null,
-            currentMonth: new Date(new Date().setDate(1)),
+            selectedMonth: new Date().getBeginOfMonth(),
             scheduleOfGroup: new Map(),
-            newAttendance: new Map()
-            // currentMonth: new Date(),
-            // previousMonth: new Date(),
-            // date: String(),
-            // nextMonth
-            // isSelected: false,
-            // newSchedule: new Map()
+            newAttendance: new Map(),
+            groupsMap: new Map(),
+            currentDate: new Date()
         };
-        this.getCurrentDate = this.getCurrentDate.bind(this);
+        this.getSelectedDate = this.getSelectedDate.bind(this);
         this.getSelectedGroupId = this.getSelectedGroupId.bind(this);
         this.renderTable = this.renderTable.bind(this);
         // this.renderSchedule = this.renderSchedule.bind(this);
@@ -47,17 +49,17 @@ class AttendanceAndPayments extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if ((this.state.selectedGroupId !== prevState.selectedGroupId) && this.state.currentMonth
-            || (this.state.currentMonth !== prevState.currentMonth) && this.state.selectedGroupId)
-        // || (!this.props.schedule.isLoaded && this.state.currentMonth && this.state.selectedGroupId))
+        if ((this.state.selectedGroupId !== prevState.selectedGroupId) && this.state.selectedMonth
+            || (this.state.selectedMonth !== prevState.selectedMonth) && this.state.selectedGroupId)
+        // || (!this.props.schedule.isLoaded && this.state.selectedMonth && this.state.selectedGroupId))
         {
             console.log("did-update");
-            let date = new Date(this.state.currentMonth);
-            console.log(date);
-            let from = date.toISOString().slice(0, 10);
-            date.setUTCDate(this.state.currentMonth.daysInMonth());
-            let to = date.toISOString().slice(0, 10);
-            console.log(this.state.selectedGroupId, from, to);
+            let date = new Date(this.state.selectedMonth);
+            // console.log(date);
+            let from = date.toLocaleISOString();
+            date.setDate(this.state.selectedMonth.daysInMonth());
+            let to = date.toLocaleISOString();
+            // console.log(this.state.selectedGroupId, from, to);
             this.props.getSchedule(this.state.selectedGroupId, from, to);
             this.props.getUsersFromGroup(this.state.selectedGroupId);
             this.props.getAttendance(this.state.selectedGroupId, from, to);
@@ -77,22 +79,65 @@ class AttendanceAndPayments extends Component {
             let tempMap = new Map();
             let tempNewAttendance = new Map();
             this.props.attendance.attendance.forEach(el => {
-                let attendance = [];
-                tempMap.set(el.userId, el.attendance);
-                tempNewAttendance.set(el.userId, attendance);
+                let attendance = new Map();
+                el.attendance.forEach(value => {
+                    attendance.set(new Date(value.date).getDate(), value.isPaid);
+                    // let tempObj = {};
+                    // tempObj.date = new Date(value.date).getDate();
+                    // tempObj.isPaid= value.isPaid;
+                });
+                tempMap.set(el.userId, attendance);
+                tempNewAttendance.set(el.userId, []);
             });
             this.setState({
                 attendance: tempMap,
                 newAttendance: tempNewAttendance
             });
         }
+        if (this.props.attendance.isEdited && this.state.selectedGroupId) {
+            let date = new Date(this.state.selectedMonth);
+            // console.log(date);
+            let from = date.toLocaleISOString();
+            date.setDate(this.state.selectedMonth.daysInMonth());
+            let to = date.toLocaleISOString();
+            this.props.getAttendance(this.state.selectedGroupId, from, to);
+        }
+        if (this.props.group.groups !== prevProps.group.groups) {
+            let tempGroupsMap = new Map();
+            this.props.group.groups.forEach(value => {
+                tempGroupsMap.set(value.guid, {
+                    name: value.name,
+                    days: value.days,
+                    startTimes: value.startTimes,
+                    duration: value.duration,
+                    cost: value.cost
+                })
+            });
+            this.setState({
+                groupsMap: tempGroupsMap
+            })
+        }
         if (this.props.payments.newPaymentId !== prevProps.payments.newPaymentId) {
             this.props.getUsersFromGroup(this.state.selectedGroupId);
+            let date = new Date(this.state.selectedMonth);
+            // console.log(date);
+            let from = date.toLocaleISOString();
+            date.setDate(this.state.selectedMonth.daysInMonth());
+            let to = date.toLocaleISOString();
+            this.props.getAttendance(this.state.selectedGroupId, from, to);
+            // let date = new Date(this.state.selectedMonth);
+            // console.log(date);
+            // let from = date.toISOString().slice(0, 10);
+            // date.setUTCDate(this.state.selectedMonth.daysInMonth());
+            // let to = date.toISOString().slice(0, 10);
+            // console.log(this.state.selectedGroupId, from, to);
+            // // this.props.getAttendance()
+            // this.props.getAttendance(this.state.selectedGroupId, from, to);
         }
     }
 
-    getCurrentDate(value) {
-        this.setState({currentMonth: value});
+    getSelectedDate(value) {
+        this.setState({selectedMonth: new Date(value).getBeginOfMonth()});
     }
 
     getSelectedGroupId(value) {
@@ -107,42 +152,59 @@ class AttendanceAndPayments extends Component {
         let data = [];
         console.log(this.state.newAttendance);
         this.state.newAttendance.forEach((value, key) => {
-            let tempObj = {};
-            tempObj.userId = key;
-            tempObj.updatedAttendance = value;
-            data.push(tempObj);
+            data.push({userId: key, updatedAttendance: value});
         });
-        console.log(data);
+        // console.log(data);
         this.props.saveEditAttendance(this.state.selectedGroupId, data);
     }
 
-    // renderButtons() {
-    //     // console.log("buttons", this.props.attendance.attendance);
-    //     return (
-    //         <div className="buttons">
-    //             {this.props.attendance.attendance ?
-    //                 <button
-    //                     onClick={this.onEdit}
-    //                     type="redact"
-    //                     className="btn btn-info"
-    //                 >Редактировать таблицу
-    //                 </button>
-    //                 : null}
-    //             {this.props.attendance.isEdit ?
-    //                 <button
-    //                     onClick={this.onSave}
-    //                     type="save"
-    //                     className="btn btn-success"
-    //                 >Сохранить
-    //                 </button> : null
-    //             }
-    //         </div>)
-    // }
+    clickAttendanceHeadHandler(key, e) {
+        if (this.props.attendance.isEdit) {
+            this.props.group.usersFromGroup.forEach(value => {
+                let elem = document.getElementById(value.guid + key + "cell");
+                console.log(elem);
+                // let mapAttendance = this.state.newAttendance;
+                // // console.log(mapAttendance);
+                // let tempNewAttendance = mapAttendance.get(value.guid);
+                // // console.log(tempNewAttendance);
+                // let thisDate = new Date(new Date(this.state.selectedMonth).setDate(key)).toLocaleISOString();
+                // let attendance = tempNewAttendance.find(element => {
+                //     if (element.date === thisDate) {
+                //         return element;
+                //     }
+                // }) || {date: thisDate};
+                // let elem = document.getElementById(value.guid + key + "cell");
+                // switch (elem.className) {
+                //     case "table-default":
+                //         e.target.className = "table-primary";
+                //         e.target.innerHTML = "Б";
+                //         attendance.isAttended = true;
+                //         break;
+                //     case "table-primary":
+                //         e.target.className = "table-secondary";
+                //         e.target.innerHTML = "Н";
+                //         attendance.isAttended = false;
+                //         break;
+                //     case "table-secondary":
+                //         e.target.className = "table-default";
+                //         e.target.innerHTML = null;
+                //         break;
+                // }
+                //
+                // if (tempNewAttendance.indexOf(attendance) === -1) {
+                //     tempNewAttendance.push(attendance);
+                // }
+                // mapAttendance.set(value.guid, tempNewAttendance);
+                // // console.log(mapAttendance);
+                // this.setState({newAttendance: mapAttendance})
+            })
+        }
+    }
 
     renderScheduleHead() {
         let result = [];
         this.state.scheduleOfGroup.forEach((value, key) => {
-            result.push(<th className="cell">{key}</th>)
+            result.push(<th className="cell" onClick={this.clickAttendanceHeadHandler.bind(this, key)}>{key}</th>)
         });
         return result;
     }
@@ -159,33 +221,50 @@ class AttendanceAndPayments extends Component {
 
     clickAttendanceHandler(userId, key, e) {
         // console.log(e.target);
-
         // let elem = document.getElementById(userId + key + "cell");
         // console.log(elem);
         if (this.props.attendance.isEdit) {
             let mapAttendance = this.state.newAttendance;
-            // console.log(tempMapAttendance);
+            // console.log(mapAttendance);
             let tempNewAttendance = mapAttendance.get(userId);
             // console.log(tempNewAttendance);
-            let thisDate = new Date(new Date(this.state.currentMonth).setDate(key)).toISOString();
+            let thisDate = new Date(new Date(this.state.selectedMonth).setDate(key)).toLocaleISOString();
             let attendance = tempNewAttendance.find(element => {
                 if (element.date === thisDate) {
                     return element;
                 }
             }) || {date: thisDate};
+            // let attendance = {date: thisDate};
             // console.log(attendance);
-            if (e.target.className === "cell") {
-                e.target.className = "cell_attended";
-                e.target.innerHTML = "Б";
-                attendance.isAttended = true;
-            } else if (e.target.className === "cell_attended") {
-                e.target.className = "cell_absent";
-                e.target.innerHTML = "Н";
-                attendance.isAttended = false;
-            } else if (e.target.className === "cell_absent") {
-                e.target.className = "cell";
-                e.target.innerHTML = null;
+            // e.target.userSelect="none";
+            switch (e.target.className) {
+                case "table-default":
+                    e.target.className = "table-primary";
+                    e.target.innerHTML = "Б";
+                    attendance.isAttended = true;
+                    break;
+                case "table-primary":
+                    e.target.className = "table-secondary";
+                    e.target.innerHTML = "Н";
+                    attendance.isAttended = false;
+                    break;
+                case "table-secondary":
+                    e.target.className = "table-default";
+                    e.target.innerHTML = null;
+                    break;
             }
+            // if (e.target.className === "cell") {
+            //     e.target.className = "cell_attended";
+            //     e.target.innerHTML = "Б";
+            //     attendance.isAttended = true;
+            // } else if (e.target.className === "cell_attended") {
+            //     e.target.className = "cell_absent";
+            //     e.target.innerHTML = "Н";
+            //     attendance.isAttended = false;
+            // } else if (e.target.className === "cell_absent") {
+            //     e.target.className = "cell";
+            //     e.target.innerHTML = null;
+            // }
             if (tempNewAttendance.indexOf(attendance) === -1) {
                 tempNewAttendance.push(attendance);
             }
@@ -197,27 +276,49 @@ class AttendanceAndPayments extends Component {
 
     renderScheduleBody(userId) {
         let result = [];
+        if (this.props.attendance.isEdit && this.state.attendance) {
+            let attendanceOfUser = this.state.attendance.get(userId);
+            this.state.scheduleOfGroup.forEach((value, key) => {
+                let classname = "table-default";
+                let content;
+                if (attendanceOfUser.has(key)) {
+                    classname = "table-primary";
+                    content = "Б";
+                } else if (key <= this.state.currentDate.getDate()
+                    && this.state.selectedMonth.getMonth() <= this.state.currentDate.getMonth()) {
+                    classname = "table-secondary";
+                    content = "Н";
+                }
+                result.push(<td className={classname}
+                                onClick={this.clickAttendanceHandler.bind(this, userId, key)}
+                                id={userId + key + "cell"}>{content}</td>)
+            });
+            return result;
+        }
         if (this.state.attendance) {
             let attendanceOfUser = this.state.attendance.get(userId);
-            // console.log("scb", attendanceOfUser);
-            // if(this.props.attendance.isEdit){
-            //     this.state.scheduleOfGroup.forEach((value, key) => {
-            //         result.push(<td className="cell"><input className="table__input"/></td>)})
-            // }else {
             this.state.scheduleOfGroup.forEach((value, key) => {
-                result.push(<td className="cell"
+                let classname = "table-default";
+                let content;
+                if (attendanceOfUser.has(key)) {
+                    classname = attendanceOfUser.get(key) ? "table-success" : "table-danger";
+                    content = "Б";
+                } else if (key <= this.state.currentDate.getDate()
+                    && this.state.selectedMonth.getMonth() <= this.state.currentDate.getMonth()) {
+                    classname = "table-secondary";
+                    content = "Н";
+                }
+                result.push(<td className={classname}
                                 onClick={this.clickAttendanceHandler.bind(this, userId, key)}
-                                id={userId + key + "cell"}
-                >{null}</td>)
+                                id={userId + key + "cell"}>{content}</td>)
             });
-            // }
             return result;
         }
     }
 
     renderTable() {
         return (<div>
-            <table className='table table-striped table-bordered'>
+            <table className='table table-hover table-bordered table-responsive'>
                 <thead>
                 <tr>
                     <th>Студент</th>
@@ -251,13 +352,17 @@ class AttendanceAndPayments extends Component {
         // console.log("this.props", this.props);
         return (<div>
             <h3>Управление платежами</h3>
-            {/*{this.renderForm()}*/}
-            <Form getSelectedGroupId={this.getSelectedGroupId} getCurrentDate={this.getCurrentDate}
+            <Form getSelectedGroupId={this.getSelectedGroupId} getSelectedDate={this.getSelectedDate}
                   groups={this.props.group.groups}/>
-            {/*{this.renderButtons()}*/}
             <EditSaveButtons isLoaded={this.props.attendance.isLoaded} isEdit={this.props.attendance.isEdit}
                              onEdit={this.onEdit} onSave={this.onSave}/>
-            {this.props.group.usersFromGroup ? this.renderTable() : null}
+            <div>{this.state.groupsMap.size && this.state.selectedGroupId ?
+                <div>
+                    <h6>Цена за одно занятие:</h6>
+                    <p>{this.state.groupsMap.get(this.state.selectedGroupId).cost} руб.</p>
+                </div> : null}
+            </div>
+            {this.props.group.usersFromGroup.length ? this.renderTable() : null}
         </div>)
     }
 }

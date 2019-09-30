@@ -2,7 +2,7 @@ import React, {Component} from "react"
 
 class Form extends Component {
 
-    //getSelectedGroupId, getCurrentDate and groups should be passed with props
+    //getSelectedGroupId, getSelectedDate and groups should be passed with props
 
     constructor(props, ctx) {
         super(props, ctx);
@@ -20,7 +20,7 @@ class Form extends Component {
             this.props.getSelectedGroupId(this.state.selectedGroupId)
         }
         if (this.state.currentMonth !== prevState.currentMonth) {
-            this.props.getCurrentDate(this.state.currentMonth);
+            this.props.getSelectedDate(this.state.currentMonth);
         }
     }
 
@@ -54,13 +54,17 @@ class Form extends Component {
                                 onChange={this.onDateChange}
                             />
                         </div>
-                        <select className="custom-select" onChange={this.onSelectGroup}
-                                value={this.state.selectedGroupId || undefined}>
-                            <option value={undefined}>Выберите группу</option>
-                            {this.props.groups.map(group => (
-                                <option value={group.guid} key={group.guid}>{group.name}</option>
-                            ))}
-                        </select>
+                        <div className="form-group">
+                            <label htmlFor="customSelect">Группа    </label>
+                            <select className="custom-select form-control" onChange={this.onSelectGroup}
+                                    value={this.state.selectedGroupId || undefined}
+                                    id="customSelect">
+                                <option value={undefined}>Выберите группу</option>
+                                {this.props.groups.map(group => (
+                                    <option value={group.guid} key={group.guid}>{group.name}</option>
+                                ))}
+                            </select>
+                        </div>
                     </form>
                 </div>
             </div>

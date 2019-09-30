@@ -35,7 +35,7 @@ class Schedule extends Component {
         this.onSelectGroup = this.onSelectGroup.bind(this);
         // this.renderButtons = this.renderButtons.bind(this);
         this.getSelectedGroupId = this.getSelectedGroupId.bind(this);
-        this.getCurrentDate = this.getCurrentDate.bind(this);
+        this.getSelectedDate = this.getSelectedDate.bind(this);
         // this.onSubmit = this.onSubmit.bind(this);
     }
 
@@ -262,7 +262,7 @@ class Schedule extends Component {
         }
     }
 
-    getCurrentDate(value) {
+    getSelectedDate(value) {
         // this.setState({selectedGroupId: value});
         let previousMonth = new Date(new Date(value).setMonth(new Date(value).getMonth() - 1));
         console.log("getCurDate", previousMonth);
@@ -293,7 +293,7 @@ class Schedule extends Component {
                 <div className="schedule">
                     <h3>Расписание</h3>
                     <Form getSelectedGroupId={this.getSelectedGroupId} groups={this.props.group.groups}
-                          getCurrentDate={this.getCurrentDate}/>
+                          getSelectedDate={this.getSelectedDate}/>
                     <EditSaveButtons isLoaded={this.props.schedule.isLoaded} isEdit={this.props.schedule.isEdit}
                                      onEdit={this.onEdit} onSave={this.onSave}/>
                     {this.props.schedule.schedule ? this.renderTrueSchedule() : null}

@@ -7,7 +7,8 @@ const initialState = {
     onCreatingGroup: false,
     onCreatingUser: false,
     error: '',
-    isUsersAddedToGroup: false
+    isUsersAddedToGroup: false,
+    usersFromGroup:[]
 };
 
 export const groupReducer = (state, action) => {

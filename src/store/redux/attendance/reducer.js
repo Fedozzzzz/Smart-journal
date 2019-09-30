@@ -2,7 +2,9 @@ import {actionTypes} from "./actionTypes";
 
 const initialState = {
     attendance: null,
-    isEdit: false
+    isEdit: false,
+    isLoaded: false,
+    isEdited: false
 };
 
 export const attendanceReducer = (state, action) => {
@@ -30,6 +32,8 @@ export const attendanceReducer = (state, action) => {
             return {
                 ...state,
                 isEdit: false,
+                isLoaded: false,
+                isEdited: true
             };
         case actionTypes.editAttendanceFailedType:
             return {
