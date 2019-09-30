@@ -35,7 +35,7 @@ export default class NavMenu extends Component {
     render() {
         return (
             <header>
-                <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light>
+                <Navbar className=" navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light>
                     <Container>
                         <NavbarBrand tag={Link} to="/">SMART JOURNAL</NavbarBrand>
                         <NavbarToggler onClick={this.toggle} className="mr-2"/>

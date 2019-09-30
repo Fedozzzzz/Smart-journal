@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
+import {UserEditInputs} from "./UserEditInputs";
 
 class UserEdit extends Component {
 
@@ -29,31 +30,11 @@ class UserEdit extends Component {
                     surname: nextProps.userById.surname || null,
                     patronymic: nextProps.userById.patronymic || null,
                     email: nextProps.userById.email || null,
-                    phoneNumber: nextProps .userById.phoneNumber || null
+                    phoneNumber: nextProps.userById.phoneNumber || null
                 }
             )
         }
     }
-
-    // onSaveEditUser() {
-    //     let cash = {
-    //         "name": "",
-    //         "surname": "",
-    //         "patronymic": "",
-    //         "email": "",
-    //         "phoneNumber": ""
-    //     };
-    //     cash.name = document.getElementById('editedUserName').value || this.props.userById.name;
-    //     //console.log('name ', document.getElementById('userName').value);
-    //     cash.surname = document.getElementById('editedUserSurname').value || this.props.userById.surname; //
-    //     cash.patronymic = document.getElementById('editedUserPatronymic').value || this.props.userById.patronymic;
-    //     cash.email = document.getElementById("editedEmail-input").value || this.props.userById.email;
-    //     cash.phoneNumber = document.getElementById("editedTel-input").value || this.props.userById.phoneNumber;
-    //     console.log("user-data: ", cash);
-    //     console.log(this.props.userId);
-    //     this.props.editUserSubmit(this.props.userId, cash);
-    //     this.props.history.goBack();
-    // }
 
     onSaveEditUser() {
         console.log("this.state OK!", this.state);
@@ -83,81 +64,11 @@ class UserEdit extends Component {
     }
 
     render() {
-        console.log("this.state", this.state);
+        // console.log("this.state", this.state);
         return (
             <div>
                 <div>
-                    <form className="form-inline">
-                        <div className="form-group">
-                            <label htmlFor="example-text-input" className="col-xs-2 col-form-label">Имя</label>
-                            <div className="col-xs-10">
-                                <input className="form-control"
-                                       type="text"
-                                       onChange={this.handleChange}
-                                       defaultValue={this.props.userById ? this.props.userById.name : null}
-                                       placeholder="Введите имя"
-                                       id='editedUserName'
-                                />
-                            </div>
-                        </div>
-                    </form>
-                    <form className="form-inline">
-                        <div className="form-group">
-                            <label htmlFor="example-text-input" className="col-xs-2 col-form-label">Фамилия</label>
-                            <div className="col-xs-10">
-                                <input className="form-control"
-                                       type="text"
-                                       onChange={this.handleChange}
-                                       defaultValue={this.props.userById ? this.props.userById.surname : null}
-                                       placeholder="Введите фамилию"
-                                       id='editedUserSurname'
-                                />
-                            </div>
-                        </div>
-                    </form>
-                    <form className="form-inline">
-                        <div className="form-group">
-                            <label htmlFor="example-text-input" className="col-xs-2 col-form-label">Отчество</label>
-                            <div className="col-xs-10">
-                                <input className="form-control"
-                                       type="text"
-                                       onChange={this.handleChange}
-                                       defaultValue={this.props.userById ? this.props.userById.patronymic : null}
-                                       placeholder="Введите отчество"
-                                       id='editedUserPatronymic'
-                                />
-                            </div>
-                        </div>
-                    </form>
-                    <form className="form-inline">
-                        <div className="form-group">
-                            <label htmlFor="example-email-input" className="col-xs-2 col-form-label">Email</label>
-                            <div className="col-xs-10">
-                                <input className="form-control"
-                                       type="email"
-                                       onChange={this.handleChange}
-                                       defaultValue={this.props.userById ? this.props.userById.email : null}
-                                       placeholder="ivanov.ii@example.com"
-                                       id="editedEmail-input"
-                                />
-                            </div>
-                        </div>
-                    </form>
-                    <form className="form-inline">
-                        <div className="form-group">
-                            <label htmlFor="example-tel-input" className="col-xs-2 col-form-label">Номер
-                                телефона</label>
-                            <div className="col-xs-10">
-                                <input className="form-control"
-                                       type="tel"
-                                       onChange={this.handleChange}
-                                       defaultValue={this.props.userById ? this.props.userById.phoneNumber : null}
-                                       placeholder={"1-(555)-555-5555"}
-                                       id="editedTel-input"
-                                />
-                            </div>
-                        </div>
-                    </form>
+                    <UserEditInputs handler={this.handleChange} userById={this.props.userById || null}/>
                     <div>
                         <button className='btn btn-success' onClick={this.onSaveEditUser}>Сохранить</button>
                     </div>
@@ -166,7 +77,6 @@ class UserEdit extends Component {
         )
     }
 }
-
 
 export default connect(
     state => state.user,

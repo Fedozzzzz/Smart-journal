@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
+import {UserCreatingInputs} from "./UserCreatingInputs";
 
 class UserCreating extends Component {
 
@@ -45,78 +46,12 @@ class UserCreating extends Component {
     }
 
     render() {
-        console.log(this.state);
+        // console.log(this.state);
         return (
             <div>
-                <form className="form-inline">
-                    <div className="form-group">
-                        <label htmlFor="example-text-input" className="col-xs-2 col-form-label">Имя</label>
-                        <div className="col-xs-10">
-                            <input className="form-control"
-                                   type="text"
-                                   placeholder="Введите имя"
-                                   id='userName'
-                                   onChange={this.handleChange}
-                            />
-                        </div>
-                    </div>
-                </form>
-                <form className="form-inline">
-                    <div className="form-group">
-                        <label htmlFor="example-text-input" className="col-xs-2 col-form-label">Фамилия</label>
-                        <div className="col-xs-10">
-                            <input className="form-control"
-                                   type="text"
-                                   placeholder="Введите фамилию"
-                                   id='userSurname'
-                                   onChange={this.handleChange}
-                            />
-                        </div>
-                    </div>
-                </form>
-                <form className="form-inline">
-                    <div className="form-group">
-                        <label htmlFor="example-text-input" className="col-xs-2 col-form-label">Отчество</label>
-                        <div className="col-xs-10">
-                            <input className="form-control"
-                                   type="text"
-                                   placeholder="Введите отчество"
-                                   id='userPatronymic'
-                                   onChange={this.handleChange}
-                            />
-                        </div>
-                    </div>
-                </form>
-                <form className="form-inline">
-                    <div className="form-group">
-                        <label htmlFor="example-email-input" className="col-xs-2 col-form-label">Email</label>
-                        <div className="col-xs-10">
-                            <input className="form-control"
-                                   type="email"
-                                   placeholder="ivanov.ii@example.com"
-                                   id="email-input"
-                                   onChange={this.handleChange}
-                            />
-                        </div>
-                    </div>
-                </form>
-                <form className="form-inline">
-                    <div className="form-group">
-                        <label htmlFor="example-tel-input" className="col-xs-2 col-form-label">Номер
-                            телефона</label>
-                        <div className="col-xs-10">
-                            <input className="form-control"
-                                   type="tel"
-                                   placeholder="1-(555)-555-5555"
-                                   id="tel-input"
-                                   onChange={this.handleChange}
-                            />
-                        </div>
-                    </div>
-                </form>
+                <UserCreatingInputs handler={this.handleChange}/>
                 <div>
                     <button
-                        // to="/groups/user_list"
                         className='btn btn-success'
                         onClick={this.onSaveUser}>Сохранить
                     </button>

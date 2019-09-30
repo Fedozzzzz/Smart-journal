@@ -10,7 +10,7 @@ import UserPage from "./UserPage";
 import UserEdit from "./UserEdit";
 
 
-class Users extends Component {
+class UsersRoute extends Component {
     render() {
         return (
             <div>
@@ -30,4 +30,4 @@ class Users extends Component {
 export default connect(
     state => state.user,
     dispatch => bindActionCreators(userActionCreators, dispatch)
-)(Users);
+)(UsersRoute);

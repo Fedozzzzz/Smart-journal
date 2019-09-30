@@ -14,24 +14,11 @@ class UsersList extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        // console.log("this.props:", this.props.ok);
-        // console.log("prev.props:", prevProps.ok);
-        // if (this.props.newUser !== prevProps.newUser
-        //     || this.props.ok) {
-        //     this.props.getAllUsers();
-        // }
-
         if (!this.props.isLoaded) {
             console.log("additional get method");
             this.props.getAllUsers();
         }
-
-        // // else
-        // if (this.props.status !== prevProps.status) {
-        //     this.props.getAllUsers();
-        // }
     }
-
 
     render() {
         console.log("render-users-list");
