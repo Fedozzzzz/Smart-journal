@@ -5,6 +5,7 @@ import {bindActionCreators} from "redux";
 import {Link} from "react-router-dom";
 import Loading from "../../components/Loading";
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
+import Search from "../../components/Search";
 
 class GroupsList extends Component {
 
@@ -31,6 +32,7 @@ class GroupsList extends Component {
         return (
             <div>
                 <h3>Группы</h3>
+                <Search/>
                 {this.props.groups ?
                     this.props.groups.map(group => (
                         <div>

@@ -3,7 +3,7 @@ import {Route} from 'react-router-dom';
 import Layout from './components and containres/components/Layout';
 import MainTable from "./rubbish/MainTable"
 import Schedule from "./components and containres/containers/schedule/Schedule";
-import Groups from "./components and containres/containers/groups/Groups";
+import Groups from "./components and containres/containers/groups/GroupsRoute";
 import Home from "./components and containres/components/Home";
 import Users from "./components and containres/containers/users/UsersRoute";
 import AttendanceAndPayments from "./components and containres/containers/attendance and payments/AttendanceAndPayments";

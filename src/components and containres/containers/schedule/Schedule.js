@@ -7,7 +7,7 @@ import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 import Form from "../../components/Form"
 import {EditSaveButtons} from "../../components/EditSaveButtons";
 import {MonthlySchedule} from "./MonthlySchedule"
-
+import ModalSetStartTime from "../../components/modal/ModalSetStartTime";
 
 class Schedule extends Component {
 
@@ -28,6 +28,9 @@ class Schedule extends Component {
         this.getSelectedGroupId = this.getSelectedGroupId.bind(this);
         this.getSelectedDate = this.getSelectedDate.bind(this);
         this.onClick = this.onClick.bind(this);
+        // this.toggle = this.toggle.bind(this);
+        this.getNewScheduleDay = this.getNewScheduleDay.bind(this);
+        this.toggleCallback = this.toggleCallback.bind(this);
     }
 
     componentDidMount(prevProps, prevState, snapshot) {
@@ -103,32 +106,62 @@ class Schedule extends Component {
         this.props.editSchedule();
     }
 
+    toggleCallback(isOpen) {
+        this.setState({isOpen: isOpen})
+    }
+
     onClick(day, e) {
         console.log("onclick");
         let elem = document.getElementById(day + "cell");
         console.log(elem.className);
         if (this.props.schedule.isEdit) {
-            let tempMap = this.state.newSchedule;
-            if (elem.className === "table-warning") {
-                elem.className = "table-light";
-                tempMap.set(day, {toDelete: true, startTime: this.state.scheduleOfGroup.get(day)});
-                this.setState({newSchedule: tempMap});
-            } else if (elem.className === "table-info") {
-                elem.className = "table-light";
-                let answ = window.confirm("Вы уверены, что хотите удалить этот день из расписания?");
-                if (answ) {
-                    tempMap.set(day, {toDelete: true, startTime: this.state.scheduleOfGroup.get(day)});
-                    this.setState({newSchedule: tempMap});
-                }
-            } else {
-                let startTime = prompt("Введите время занятия в формате --:--");
-                if (startTime) {
-                    elem.className = "table-warning";
-                    tempMap.set(day, {toDelete: false, startTime: startTime});
-                    this.setState({newSchedule: tempMap});
-                }
-            }
+            this.setState({
+                isOpen: true,
+                htmlElement: elem,
+                day: day,
+                oldStartTime: this.state.scheduleOfGroup.get(day)
+            });
         }
+        // if (this.props.schedule.isEdit) {
+        //     let tempMap = this.state.newSchedule;
+        //     if (elem.className === "table-info") {
+        //         elem.className = "table-light";
+        //         // let answ = window.confirm("Вы уверены, что хотите удалить этот день из расписания?");
+        //         // if (answ) {
+        //         this.setState({
+        //             isOpen: true,
+        //             oldStartTime: this.state.scheduleOfGroup.get(day)
+        //         });
+        //         // tempMap.set(day, {toDelete: true, startTime: this.state.scheduleOfGroup.get(day)});
+        //         // this.setState({newSchedule: tempMap});
+        //         // }
+        //     }
+        // }
+
+
+        // if (this.props.schedule.isEdit) {
+        //     let tempMap = this.state.newSchedule;
+        //     if (elem.className === "table-warning") {
+        //         elem.className = "table-light";
+        //         tempMap.set(day, {toDelete: true, startTime: this.state.scheduleOfGroup.get(day)});
+        //         this.setState({newSchedule: tempMap});
+        //     } else if (elem.className === "table-info") {
+        //         elem.className = "table-light";
+        //         let answ = window.confirm("Вы уверены, что хотите удалить этот день из расписания?");
+        //         if (answ) {
+        //             tempMap.set(day, {toDelete: true, startTime: this.state.scheduleOfGroup.get(day)});
+        //             this.setState({newSchedule: tempMap});
+        //         }
+        //     } else {
+        //         let startTime = prompt("Введите время занятия в формате --:--");
+        //         if (startTime) {
+        //             elem.className = "table-warning";
+        //             tempMap.set(day, {toDelete: false, startTime: startTime});
+        //             this.setState({newSchedule: tempMap});
+        //         }
+        //     }
+        // }
+        // return <ModalSetStartTime/>
     }
 
     onSave(e) {
@@ -147,58 +180,48 @@ class Schedule extends Component {
         this.setState({newSchedule: new Map()});
     }
 
+    getNewScheduleDay(value) {
+        this.setState({newSchedule: value});
+    }
 
     getSelectedGroupId(value) {
-        // this.setState({selectedGroupId: value});
-        if (this.state.newSchedule.size) {
-            if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
-                this.setState({
-                    selectedGroupId: value,
-                    isSelected: true,
-                    newSchedule: new Map()
-                });
-                this.props.saveSchedule();
-            }
-        } else {
-            this.setState({
-                selectedGroupId: value,
-                isSelected: true
-            });
-        }
+        this.setState({
+            selectedGroupId: value,
+            isSelected: true,
+            newSchedule: new Map()
+        });
     }
 
     getSelectedDate(value) {
         // this.setState({selectedGroupId: value});
         let previousMonth = new Date(new Date(value).setMonth(new Date(value).getMonth() - 1));
-        console.log("getCurDate", previousMonth);
-        if (this.state.newSchedule.size) {
-            if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
-                this.setState({
-                    selectedMonth: new Date(value),
-                    previousMonth: previousMonth,
-                    nextMonth: new Date(new Date(value).setMonth(new Date(value).getMonth() + 1)),
-                });
-            }
-        } else {
-            this.setState({
-                selectedMonth: new Date(value),
-                previousMonth: new Date(new Date(value).setMonth(new Date(value).getMonth() - 1)),
-                nextMonth: new Date(new Date(value).setMonth(new Date(value).getMonth() + 1)),
-            });
-        }
+        this.setState({
+            selectedMonth: new Date(value),
+            previousMonth: previousMonth,
+            nextMonth: new Date(new Date(value).setMonth(new Date(value).getMonth() + 1)),
+        });
     }
+    ;
 
     render() {
         // console.log("render");
-        // console.log("this.state", this.state);
+        console.log("this.state", this.state);
         // console.log("this.props", this.props);
         // console.log("this.props.children", this.props.children);
         return (
             <div>
                 <div className="schedule">
+                    <ModalSetStartTime isOpen={this.state.isOpen}
+                        // toggle={this.toggle}
+                                       oldStartTime={this.state.oldStartTime}
+                                       toggleCallback={this.toggleCallback}
+                                       htmlElement={this.state.htmlElement}
+                                       day={this.state.day}
+                                       newSchedule={this.state.newSchedule}
+                                       getNewScheduleDay={this.getNewScheduleDay}/>
                     <h3>Расписание</h3>
                     <Form getSelectedGroupId={this.getSelectedGroupId} groups={this.props.group.groups}
-                          getSelectedDate={this.getSelectedDate}/>
+                          getSelectedDate={this.getSelectedDate} isEdit={this.props.schedule.isEdit}/>
                     <EditSaveButtons isLoaded={this.props.schedule.isLoaded} isEdit={this.props.schedule.isEdit}
                                      onEdit={this.onEdit} onSave={this.onSave}/>
                     {this.props.schedule.schedule ?
@@ -211,7 +234,6 @@ class Schedule extends Component {
 }
 
 
-
 export default connect(
     state => {
         return {
@@ -220,4 +242,5 @@ export default connect(
         }
     },
     dispatch => bindActionCreators(Object.assign({}, scheduleActionCreators, groupActionCreators), dispatch)
-)(Schedule);
+)
+(Schedule);

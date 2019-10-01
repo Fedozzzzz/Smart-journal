@@ -116,11 +116,19 @@ class AttendanceAndPayments extends Component {
     }
 
     getSelectedDate(value) {
+        // if (this.props.attendance.isEdit) {
+        //     if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
         this.setState({selectedMonth: new Date(value).getBeginOfMonth()});
+        // }
+        // } else this.setState({selectedMonth: new Date(value).getBeginOfMonth()});
     }
 
     getSelectedGroupId(value) {
+        // if (this.props.attendance.isEdit) {
+        //     if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
         this.setState({selectedGroupId: value});
+        // }
+        // } else this.setState({selectedGroupId: value});
     }
 
     onEdit() {
@@ -277,7 +285,7 @@ class AttendanceAndPayments extends Component {
         return (<div>
             <h3>Управление платежами</h3>
             <Form getSelectedGroupId={this.getSelectedGroupId} getSelectedDate={this.getSelectedDate}
-                  groups={this.props.group.groups}/>
+                  groups={this.props.group.groups} isEdit={this.props.attendance.isEdit}/>
             <EditSaveButtons isLoaded={this.props.attendance.isLoaded} isEdit={this.props.attendance.isEdit}
                              onEdit={this.onEdit} onSave={this.onSave}/>
             <div>{this.state.groupsMap.size && this.state.selectedGroupId ?
@@ -286,7 +294,7 @@ class AttendanceAndPayments extends Component {
                     <p>{this.state.groupsMap.get(this.state.selectedGroupId).cost} руб.</p>
                 </div> : null}
             </div>
-            {this.props.group.usersFromGroup.length ?
+            {this.props.attendance.isLoaded ?
                 <AttendanceAndPaymentsTable props={this.state}
                                             onClickHead={this.clickAttendanceHeadHandler}
                                             onClickBody={this.clickAttendanceHandler}

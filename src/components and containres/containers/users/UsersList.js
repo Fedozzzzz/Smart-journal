@@ -4,6 +4,7 @@ import {bindActionCreators} from "redux";
 import {Link} from "react-router-dom";
 import Loading from "../../components/Loading";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
+import Search from "../../components/Search";
 
 class UsersList extends Component {
 
@@ -26,6 +27,7 @@ class UsersList extends Component {
         return (
             <div>
                 <h3>Студенты</h3>
+                <Search/>
                 {this.props.users ?
                     this.props.users.map(user => (
                         <div key={user.guid}>

@@ -10,7 +10,7 @@ import GroupPage from "./GroupPage";
 import AddUserToGroup from "../../../rubbish/AddUserToGroup";
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 
-class Groups extends Component {
+class GroupsRoute extends Component {
 
     render() {
         // console.log('render');
@@ -35,4 +35,4 @@ class Groups extends Component {
 export default connect(
     state => state.group,
     dispatch => bindActionCreators(groupActionCreators, dispatch)
-)(Groups);
+)(GroupsRoute);
