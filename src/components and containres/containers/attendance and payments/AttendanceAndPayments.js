@@ -10,6 +10,7 @@ import {paymentsActionCreators} from "../../../store/redux/payments/actionCreato
 import {EditSaveButtons} from "../../components/EditSaveButtons";
 import * as functions from "../../../functions/index"
 import {AttendanceAndPaymentsTable} from "./AttendanceAndPaymentsTable";
+import ModalAddPayment from "../../components/modal/ModalAddPayment";
 
 
 class AttendanceAndPayments extends Component {
@@ -23,7 +24,8 @@ class AttendanceAndPayments extends Component {
             newAttendance: new Map(),
             groupsMap: new Map(),
             currentDate: new Date(),
-            attendance: new Map()
+            attendance: new Map(),
+            isPaymentModalOpen: false
         };
         this.getSelectedDate = this.getSelectedDate.bind(this);
         this.getSelectedGroupId = this.getSelectedGroupId.bind(this);
@@ -32,6 +34,8 @@ class AttendanceAndPayments extends Component {
         this.addPayment = this.addPayment.bind(this);
         this.clickAttendanceHeadHandler = this.clickAttendanceHeadHandler.bind(this);
         this.clickAttendanceHandler = this.clickAttendanceHandler.bind(this);
+        this.paymentModalToggle = this.paymentModalToggle.bind(this);
+        this.paymentModalCallback = this.paymentModalCallback.bind(this);
     }
 
     componentDidMount() {
@@ -214,14 +218,29 @@ class AttendanceAndPayments extends Component {
         }
     }
 
-    addPayment(userId) {
-        let amount = window.prompt("Введите сумму платежа в рублях");
-        if (amount) {
-            this.props.addPayment(userId, {
-                amount: amount,
+    paymentModalToggle(isOpen) {
+        this.setState({isPaymentModalOpen: isOpen});
+    }
+
+    paymentModalCallback(value) {
+        console.log(value);
+        if (value) {
+            this.props.addPayment(this.state.userId, {
+                amount: value,
                 payday: new Date().toISOString()
             });
         }
+    }
+
+    addPayment(userId) {
+        this.setState({isPaymentModalOpen: true, userId: userId});
+        // let amount = window.prompt("Введите сумму платежа в рублях");
+        // if (amount) {
+        //     this.props.addPayment(userId, {
+        //         amount: amount,
+        //         payday: new Date().toISOString()
+        //     });
+        // }
     }
 
     clickAttendanceHandler(userId, key, e) {
@@ -283,26 +302,31 @@ class AttendanceAndPayments extends Component {
         console.log("this.state", this.state);
         // console.log("this.props", this.props);
         return (<div>
-            <h3>Управление платежами</h3>
-            <Form getSelectedGroupId={this.getSelectedGroupId} getSelectedDate={this.getSelectedDate}
-                  groups={this.props.group.groups} isEdit={this.props.attendance.isEdit}/>
-            <EditSaveButtons isLoaded={this.props.attendance.isLoaded} isEdit={this.props.attendance.isEdit}
-                             onEdit={this.onEdit} onSave={this.onSave}/>
-            <div>{this.state.groupsMap.size && this.state.selectedGroupId ?
-                <div>
-                    <h6>Цена за одно занятие:</h6>
-                    <p>{this.state.groupsMap.get(this.state.selectedGroupId).cost} руб.</p>
-                </div> : null}
-            </div>
-            {this.props.attendance.isLoaded ?
-                <AttendanceAndPaymentsTable props={this.state}
-                                            onClickHead={this.clickAttendanceHeadHandler}
-                                            onClickBody={this.clickAttendanceHandler}
-                                            onAddPayment={this.addPayment}
-                                            isAttendanceEdit={this.props.attendance.isEdit}
-                                            usersFromGroup={this.props.group.usersFromGroup}/> : null}
+                <ModalAddPayment isOpen={this.state.isPaymentModalOpen}
+                                 paymentModalCallback={this.paymentModalCallback}
+                                 paymentModalToggle={this.paymentModalToggle}
+                />
+                <h3>Управление платежами</h3>
+                <Form getSelectedGroupId={this.getSelectedGroupId} getSelectedDate={this.getSelectedDate}
+                      groups={this.props.group.groups} isEdit={this.props.attendance.isEdit}/>
+                <EditSaveButtons isLoaded={this.props.attendance.isLoaded} isEdit={this.props.attendance.isEdit}
+                                 onEdit={this.onEdit} onSave={this.onSave}/>
+                <div>{this.state.groupsMap.size && this.state.selectedGroupId ?
+                    <div>
+                        <h6>Цена за одно занятие:</h6>
+                        <p>{this.state.groupsMap.get(this.state.selectedGroupId).cost} руб.</p>
+                    </div> : null}
+                </div>
+                {this.props.attendance.isLoaded ?
+                    <AttendanceAndPaymentsTable props={this.state}
+                                                onClickHead={this.clickAttendanceHeadHandler}
+                                                onClickBody={this.clickAttendanceHandler}
+                                                onAddPayment={this.addPayment}
+                                                isAttendanceEdit={this.props.attendance.isEdit}
+                                                usersFromGroup={this.props.group.usersFromGroup}/> : null}
 
-        </div>)
+            </div>
+        )
     }
 }
 
