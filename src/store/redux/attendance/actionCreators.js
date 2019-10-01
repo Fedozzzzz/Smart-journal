@@ -12,5 +12,8 @@ export const attendanceActionCreators = {
     saveEditAttendance: (groupId, data) => ({
         type: actionTypes.editAttendanceSubmitType,
         groupId, data
+    }),
+    cancelEditAttendance: () => ({
+        type: actionTypes.editAttendanceFailedType
     })
 };

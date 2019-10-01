@@ -39,7 +39,7 @@ class Form extends Component {
     warningCallback(value) {
         if (value) {
             this.setState({
-                selectedMonth: new Date(this.state.tempMonth) || this.state.selectedMonth,
+                selectedMonth: this.state.tempMonth || this.state.selectedMonth,
                 selectedGroupId: this.state.tempGroupId || this.state.selectedGroupId,
             });
         }
@@ -81,10 +81,11 @@ class Form extends Component {
     }
 
     renderForm() {
+        // console.log("form state", this.state);
         return (
             <div className="container">
                 <ModalWarning isOpen={this.state.isWarningOpen} warningCallback={this.warningCallback}
-                    warningToggle={this.warningToggle}/>
+                              warningToggle={this.warningToggle}/>
                 <div className="form">
                     <form>
                         <div className="form-group">

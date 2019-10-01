@@ -3,7 +3,7 @@ import React from "react"
 
 export const AttendanceAndPaymentsTableBodySchedule = (props, userId) => {
     let result = [];
-    console.log("tbody", props);
+    // console.log("tbody", props);
     if (props.isAttendanceEdit && props.props.attendance) {
         let attendanceOfUser = props.props.attendance.get(userId);
         props.props.scheduleOfGroup.forEach((value, key) => {

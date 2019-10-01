@@ -13,5 +13,8 @@ export const scheduleActionCreators = {
         type: actionTypes.editScheduleSubmitType,
         groupId,
         data
+    }),
+    cancelEditSchedule:()=>({
+        type: actionTypes.editScheduleFailedType,
     })
 };

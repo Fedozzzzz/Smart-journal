@@ -12,6 +12,7 @@ class ModalWarning extends Component {
         };
         this.toggle = this.toggle.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.onCancel = this.onCancel.bind(this);
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -20,17 +21,20 @@ class ModalWarning extends Component {
         })
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.state.modal !== prevState.modal) {
-            // this.props.paymentModalCallback(this.state.sum);
-            this.props.warningToggle(this.state.modal);
-        }
-    }
+    // componentDidUpdate(prevProps, prevState, snapshot) {
+    //     if (this.state.modal !== prevState.modal) {
+    //         // this.props.paymentModalCallback(this.state.sum);
+    //         // console.log("warning did update");
+    //         // console.log(this.state.modal);
+    //         this.props.warningToggle(false);
+    //     }
+    // }
 
     toggle() {
         this.setState(prevState => ({
             modal: !prevState.modal
         }));
+        this.props.warningToggle(false);
     }
 
     onSubmit() {

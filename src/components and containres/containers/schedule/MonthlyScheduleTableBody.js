@@ -11,7 +11,7 @@ export const MonthlyScheduleTableBody = (props) => {
     let daysInNextMonth = 1;
     let day = 0;
     // console.log(props.props.newSchedule)
-    if (props.props.scheduleOfGroup) {
+    if (props.props.editedScheduleOfGroup) {
         for (let i = 1; i < endOfTable + 1; i++) {
             if (i < beginOfWeek) {
                 week.push(<td className="opacity-cell table-secondary">
@@ -23,8 +23,9 @@ export const MonthlyScheduleTableBody = (props) => {
                 week.push(day < props.props.selectedMonth.daysInMonth() ?
                     <td className={className} onClick={props.clickHandler.bind(this, day + 1)} id={day + 1 + "cell"}>
                         <div>{++day}</div>
-                        <p>{props.props.scheduleOfGroup.has(day) ? props.props.scheduleOfGroup.get(day)
-                            : props.props.newSchedule.has(day) ? props.props.newSchedule.get(day).startTime : null}</p>
+                        <p>{props.props.editedScheduleOfGroup.has(day) ? props.props.editedScheduleOfGroup.get(day)
+                            // : props.props.newSchedule.has(day) ? props.props.newSchedule.get(day).startTime
+                            : null}</p>
                     </td> :
                     <td className="opacity-cell table-secondary">
                         <div>{daysInNextMonth++}</div>

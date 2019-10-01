@@ -9,6 +9,7 @@ import {EditSaveButtons} from "../../components/EditSaveButtons";
 import {MonthlySchedule} from "./MonthlySchedule"
 import ModalSetStartTime from "../../components/modal/ModalSetStartTime";
 
+
 class Schedule extends Component {
 
     constructor(props, ctx) {
@@ -18,6 +19,7 @@ class Schedule extends Component {
             selectedMonth: new Date().getBeginOfMonth(),
             previousMonth: new Date(new Date(new Date().getBeginOfMonth()).setMonth(new Date().getMonth() - 1)),
             scheduleOfGroup: new Map(),
+            editedScheduleOfGroup: new Map(),
             isSelected: false,
             newSchedule: new Map()
         };
@@ -28,7 +30,6 @@ class Schedule extends Component {
         this.getSelectedGroupId = this.getSelectedGroupId.bind(this);
         this.getSelectedDate = this.getSelectedDate.bind(this);
         this.onClick = this.onClick.bind(this);
-        // this.toggle = this.toggle.bind(this);
         this.getNewScheduleDay = this.getNewScheduleDay.bind(this);
         this.getNewStartTime = this.getNewStartTime.bind(this);
         this.toggleCallback = this.toggleCallback.bind(this);
@@ -48,59 +49,40 @@ class Schedule extends Component {
             });
             this.setState({
                 scheduleOfGroup: scheduleOfGroup,
+                editedScheduleOfGroup: new Map(scheduleOfGroup)
             });
         }
         if ((this.state.selectedGroupId !== prevState.selectedGroupId) && this.state.selectedMonth
             || (this.state.selectedMonth !== prevState.selectedMonth) && this.state.selectedGroupId
             || (!this.props.schedule.isLoaded && this.state.selectedMonth && this.state.selectedGroupId)) {
             let date = new Date(this.state.selectedMonth);
-            // console.log(date);
             let from = date.toLocaleISOString();
             date.setDate(this.state.selectedMonth.daysInMonth());
             let to = date.toLocaleISOString();
-            // console.log(this.state.selectedGroupId, from, to);
             this.props.getSchedule(this.state.selectedGroupId, from, to);
+            if (this.props.schedule.isEdit) {
+                this.props.cancelEditSchedule();
+            }
         }
-        // console.log(this.state);
     }
 
     onDateChange(e) {
         // console.log(e.target.value);
         let date = e.target.value;
-        if (this.state.newSchedule.size) {
-            if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
-                this.setState({
-                    selectedMonth: new Date(date),
-                    previousMonth: new Date(new Date(date).setMonth(new Date(date).getMonth() - 1)),
-                    nextMonth: new Date(new Date(date).setMonth(new Date(date).getMonth() + 1)),
-                });
-            }
-        } else {
-            this.setState({
-                selectedMonth: new Date(date),
-                previousMonth: new Date(new Date(date).setMonth(new Date(date).getMonth() - 1)),
-                nextMonth: new Date(new Date(date).setMonth(new Date(date).getMonth() + 1)),
-            });
-        }
+        this.setState({
+            selectedMonth: new Date(date),
+            previousMonth: new Date(new Date(date).setMonth(new Date(date).getMonth() - 1)),
+            nextMonth: new Date(new Date(date).setMonth(new Date(date).getMonth() + 1)),
+        });
     }
 
     onSelectGroup(e) {
         let groupId = e.target.value;
-        if (this.state.newSchedule.size) {
-            if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
-                this.setState({
-                    selectedGroupId: groupId,
-                    isSelected: true,
-                    newSchedule: new Map()
-                });
-                this.props.saveSchedule();
-            }
-        } else {
-            this.setState({
-                selectedGroupId: groupId,
-                isSelected: true
-            });
-        }
+        this.setState({
+            selectedGroupId: groupId,
+            isSelected: true,
+            newSchedule: new Map()
+        });
     }
 
     onEdit(e) {
@@ -117,37 +99,39 @@ class Schedule extends Component {
         console.log("value", value);
         // console.log(this.state);
         let element = this.state.htmlElement;
-        // let tempScheduleOfGroup = this.state.scheduleOfGroup;
+        let tempScheduleOfGroup = new Map(this.state.editedScheduleOfGroup);
         // if (element) {
-        // console.log(value.toDelete);
+        console.log(tempScheduleOfGroup);
         switch (element.className) {
             case "table-warning":
                 if (value.toDelete) {
                     element.className = "table-light";
-                    // tempScheduleOfGroup.delete(this.state.day);
+                    tempScheduleOfGroup.delete(this.state.day);
+                } else {
+                    tempScheduleOfGroup.set(this.state.day, value.newStartTime);
                 }
                 break;
             case "table-info" :
                 if (value.toDelete) {
                     element.className = "table-light";
-                    // tempScheduleOfGroup.delete(this.state.day);
+                    tempScheduleOfGroup.delete(this.state.day);
+                } else {
+                    tempScheduleOfGroup.set(this.state.day, value.newStartTime);
                 }
                 break;
             case "table-light":
                 element.className = "table-warning";
-                // tempScheduleOfGroup.set(this.state.day, value.newStartTime);
+                tempScheduleOfGroup.set(this.state.day, value.newStartTime);
                 break;
         }
-        // }
-        let tempMap = this.state.newSchedule;
+        let tempMap = new Map(this.state.newSchedule);
         tempMap.set(this.state.day, {startTime: value.newStartTime, toDelete: value.toDelete});
-        // console.log(tempScheduleOfGroup);
+        console.log(tempScheduleOfGroup);
         this.setState({
             newSchedule: tempMap,
-            // scheduleOfGroup: tempScheduleOfGroup,
+            editedScheduleOfGroup: tempScheduleOfGroup,
             isOpen: false
-        })
-        ;
+        });
     }
 
     onClick(day, e) {
@@ -164,23 +148,6 @@ class Schedule extends Component {
                 oldStartTime: oldStartTime
             });
         }
-        // if (this.props.schedule.isEdit) {
-        //     let tempMap = this.state.newSchedule;
-        //     if (elem.className === "table-info") {
-        //         elem.className = "table-light";
-        //         // let answ = window.confirm("Вы уверены, что хотите удалить этот день из расписания?");
-        //         // if (answ) {
-        //         this.setState({
-        //             isOpen: true,
-        //             oldStartTime: this.state.scheduleOfGroup.get(day)
-        //         });
-        //         // tempMap.set(day, {toDelete: true, startTime: this.state.scheduleOfGroup.get(day)});
-        //         // this.setState({newSchedule: tempMap});
-        //         // }
-        //     }
-        // }
-
-
         // if (this.props.schedule.isEdit) {
         //     let tempMap = this.state.newSchedule;
         //     if (elem.className === "table-warning") {
@@ -242,8 +209,7 @@ class Schedule extends Component {
             previousMonth: previousMonth,
             nextMonth: new Date(new Date(value).setMonth(new Date(value).getMonth() + 1)),
         });
-    }
-    ;
+    };
 
     render() {
         // console.log("render");
@@ -259,18 +225,15 @@ class Schedule extends Component {
                         // || this.state.newSchedule.get(this.state.day) ? this.state.newSchedule.get(this.state.day).startTime : null}
                                        toggleCallback={this.toggleCallback}
                                        getNewStartTime={this.getNewStartTime}
-                                       toDelete={this.state.toDelete}
-                        // htmlElement={this.state.htmlElement}
-                        // day={this.state.day}
-                        // newSchedule={this.state.newSchedule}
-                        // getNewScheduleDay={this.getNewScheduleDay}
-                    />
+                                       toDelete={this.state.toDelete}/>
                     <h3>Расписание</h3>
                     <Form getSelectedGroupId={this.getSelectedGroupId} groups={this.props.group.groups}
                           getSelectedDate={this.getSelectedDate} isEdit={this.props.schedule.isEdit}/>
-                    <EditSaveButtons isLoaded={this.props.schedule.isLoaded} isEdit={this.props.schedule.isEdit}
-                                     onEdit={this.onEdit} onSave={this.onSave}/>
-                    {this.props.schedule.schedule ?
+                    <EditSaveButtons
+                        isLoaded={this.props.schedule.isLoaded && this.state.selectedGroupId && this.state.selectedMonth}
+                        isEdit={this.props.schedule.isEdit}
+                        onEdit={this.onEdit} onSave={this.onSave}/>
+                    {this.props.schedule.isLoaded && this.state.selectedGroupId && this.state.selectedMonth ?
                         <MonthlySchedule props={this.state} clickHandler={this.onClick}/> : null}
 
                 </div>
