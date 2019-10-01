@@ -10,7 +10,8 @@ class ModalSetStartTime extends Component {
             newStartTime: null,
             modal: false,
             isNestedModalOpen: false,
-            closeAll: false
+            // closeAll: false,
+            toDelete: false
         };
         this.toggle = this.toggle.bind(this);
         this.toggleCallback = this.toggleCallback.bind(this);
@@ -20,27 +21,46 @@ class ModalSetStartTime extends Component {
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
-        console.log("receive props");
-        this.setState({modal: nextProps.isOpen})
+        // console.log("receive props");
+        // console.log(nextProps);
+        this.setState({
+            modal: nextProps.isOpen,
+            newStartTime: nextProps.oldStartTime,
+            toDelete: nextProps.toDelete
+        })
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.state.newSchedule !== prevState.newSchedule) {
-            this.props.getNewScheduleDay(this.state.newSchedule);
+        // console.log(this.state.modal);
+        // console.log(prevState.modal);
+        if (this.state.modal !== prevState.modal) {
+            // this.props.getNewScheduleDay(this.state.newSchedule);
+            // console.log("did update", this.state.modal !== prevState.modal);
+            if (this.state.newStartTime) {
+                this.props.getNewStartTime({newStartTime: this.state.newStartTime, toDelete: this.state.toDelete});
+            }
             this.props.toggleCallback(this.state.modal);
         }
+        // if (this.state.closeAll !== prevState.closeAll) {
+        //     console.log("сука вызовись уже нахуй");
+        //     this.props.getNewStartTime({newStartTime: this.state.newStartTime, toDelete: this.state.toDelete});
+        // }
     }
 
     toggle() {
+        // console.log("toggle, this.state", this.state.modal);
         this.setState(prevState => ({
             modal: !prevState.modal
         }));
+        // console.log("toggle, this.state", this.state.modal);
     }
 
-    toggleCallback(isOpen, closeAll) {
+    toggleCallback(isOpen, closeAll, toDelete) {
+        // console.log(isOpen, closeAll, toDelete);
         this.setState({
             isNestedModalOpen: isOpen,
-            modal: closeAll
+            modal: !closeAll,
+            toDelete: toDelete
         });
     }
 
@@ -49,30 +69,39 @@ class ModalSetStartTime extends Component {
     }
 
     onSave() {
-        let tempMap = this.props.newSchedule;
-        if (this.props.htmlElement.className === "table-warning") {
-            this.props.htmlElement.className = "table-light";
-            tempMap.set(this.props.day, {toDelete: true, startTime: this.props.scheduleOfGroup.get(this.props.day)});
-            this.setState({newSchedule: tempMap});
-        } else if (this.props.htmlElement.className === "table-info") {
-            this.props.htmlElement.className = "table-light";
-            let answ = window.confirm("Вы уверены, что хотите удалить этот день из расписания?");
-            if (answ) {
-                tempMap.set(this.props.day, {
-                    toDelete: true,
-                    startTime: this.state.scheduleOfGroup.get(this.props.day)
-                });
-                this.setState({newSchedule: tempMap});
-            }
-        } else {
-            // let startTime = prompt("Введите время занятия в формате --:--");
-            // if (startTime) {
-            this.props.htmlElement.className = "table-warning";
-            tempMap.set(this.props.day, {toDelete: false, startTime: this.state.newStartTime});
-            this.setState({newSchedule: tempMap});
-            // }
-        }
+        console.log(this.state);
+        this.props.getNewStartTime({newStartTime: this.state.newStartTime, toDelete: this.state.toDelete});
         this.toggle();
+        // this.setState(prevState => ({
+        //     modal: !prevState.modal
+        // }));
+        // this.props.toggleCallback(this.state.modal);
+
+        // let tempMap = this.props.newSchedule;
+        // if (this.props.htmlElement.className === "table-warning") {
+        //     this.props.htmlElement.className = "table-light";
+        //     tempMap.set(this.props.day, {toDelete: true, startTime: this.props.scheduleOfGroup.get(this.props.day)});
+        //     this.setState({newSchedule: tempMap});
+        // } else if (this.props.htmlElement.className === "table-info") {
+        //     this.props.htmlElement.className = "table-light";
+        //     let answ = window.confirm("Вы уверены, что хотите удалить этот день из расписания?");
+        //     if (answ) {
+        //         tempMap.set(this.props.day, {
+        //             toDelete: true,
+        //             startTime: this.state.scheduleOfGroup.get(this.props.day)
+        //         });
+        //         this.setState({newSchedule: tempMap});
+        //     }
+        // } else {
+        //     // let startTime = prompt("Введите время занятия в формате --:--");
+        //     // if (startTime) {
+        //     this.props.htmlElement.className = "table-warning";
+        //     tempMap.set(this.props.day, {toDelete: false, startTime: this.state.newStartTime});
+        //     this.setState({newSchedule: tempMap});
+        //     // }
+        // }
+        // this.props.toggleCallback(this.state.modal);
+        // this.props.toggleCallback(this.state.modal);
     }
 
     onDelete() {
@@ -80,10 +109,11 @@ class ModalSetStartTime extends Component {
     }
 
     render() {
-        console.log(this.props);
-        console.log("modal state", this.state);
+        // console.log(this.props);
+        // console.log("modal state", this.state.modal);
         return (
-            <Modal isOpen={this.state.modal} toggle={this.toggle}>
+            <Modal isOpen={this.state.modal} toggle={this.toggle}
+                   onClosed={this.state.closeAll ? this.toggle : undefined}>
                 <ModalHeader toggle={this.toggle}>Время занятия</ModalHeader>
                 <ModalBody>
                     <FormGroup>

@@ -30,6 +30,7 @@ class Schedule extends Component {
         this.onClick = this.onClick.bind(this);
         // this.toggle = this.toggle.bind(this);
         this.getNewScheduleDay = this.getNewScheduleDay.bind(this);
+        this.getNewStartTime = this.getNewStartTime.bind(this);
         this.toggleCallback = this.toggleCallback.bind(this);
     }
 
@@ -107,19 +108,60 @@ class Schedule extends Component {
     }
 
     toggleCallback(isOpen) {
+        // console.log("togglecallback schedule");
         this.setState({isOpen: isOpen})
     }
 
+    getNewStartTime(value) {
+        // if (this.props.schedule.isEdit) {
+        console.log("value", value);
+        // console.log(this.state);
+        let element = this.state.htmlElement;
+        // let tempScheduleOfGroup = this.state.scheduleOfGroup;
+        // if (element) {
+        // console.log(value.toDelete);
+        switch (element.className) {
+            case "table-warning":
+                if (value.toDelete) {
+                    element.className = "table-light";
+                    // tempScheduleOfGroup.delete(this.state.day);
+                }
+                break;
+            case "table-info" :
+                if (value.toDelete) {
+                    element.className = "table-light";
+                    // tempScheduleOfGroup.delete(this.state.day);
+                }
+                break;
+            case "table-light":
+                element.className = "table-warning";
+                // tempScheduleOfGroup.set(this.state.day, value.newStartTime);
+                break;
+        }
+        // }
+        let tempMap = this.state.newSchedule;
+        tempMap.set(this.state.day, {startTime: value.newStartTime, toDelete: value.toDelete});
+        // console.log(tempScheduleOfGroup);
+        this.setState({
+            newSchedule: tempMap,
+            // scheduleOfGroup: tempScheduleOfGroup,
+            isOpen: false
+        })
+        ;
+    }
+
     onClick(day, e) {
-        console.log("onclick");
+        // console.log("onclick");
         let elem = document.getElementById(day + "cell");
-        console.log(elem.className);
+        // console.log(elem.className);
         if (this.props.schedule.isEdit) {
+            let oldStartTime = this.state.newSchedule.get(day) ? this.state.newSchedule.get(day).startTime : this.state.scheduleOfGroup.get(day)
             this.setState({
                 isOpen: true,
                 htmlElement: elem,
                 day: day,
-                oldStartTime: this.state.scheduleOfGroup.get(day)
+                toDelete: false,
+                oldStartTime: oldStartTime
             });
         }
         // if (this.props.schedule.isEdit) {
@@ -214,11 +256,15 @@ class Schedule extends Component {
                     <ModalSetStartTime isOpen={this.state.isOpen}
                         // toggle={this.toggle}
                                        oldStartTime={this.state.oldStartTime}
+                        // || this.state.newSchedule.get(this.state.day) ? this.state.newSchedule.get(this.state.day).startTime : null}
                                        toggleCallback={this.toggleCallback}
-                                       htmlElement={this.state.htmlElement}
-                                       day={this.state.day}
-                                       newSchedule={this.state.newSchedule}
-                                       getNewScheduleDay={this.getNewScheduleDay}/>
+                                       getNewStartTime={this.getNewStartTime}
+                                       toDelete={this.state.toDelete}
+                        // htmlElement={this.state.htmlElement}
+                        // day={this.state.day}
+                        // newSchedule={this.state.newSchedule}
+                        // getNewScheduleDay={this.getNewScheduleDay}
+                    />
                     <h3>Расписание</h3>
                     <Form getSelectedGroupId={this.getSelectedGroupId} groups={this.props.group.groups}
                           getSelectedDate={this.getSelectedDate} isEdit={this.props.schedule.isEdit}/>

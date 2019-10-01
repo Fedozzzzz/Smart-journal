@@ -9,7 +9,8 @@ class ModalAskSchedule extends Component {
         this.state = {
             modal: false,
             // nestedModal: false,
-            closeAll: false
+            closeAll: false,
+            toDelete: false
         };
 
         this.toggle = this.toggle.bind(this);
@@ -18,17 +19,17 @@ class ModalAskSchedule extends Component {
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
-        console.log("receive props");
+        // console.log("receive props");
         this.setState({modal: nextProps.isOpen})
     }
 
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.state.newSchedule !== prevState.newSchedule) {
-            // this.props.getNewScheduleDay(this.state.newSchedule);
-            this.props.toggleCallback(this.state.modal);
-        }
-    }
+    // componentDidUpdate(prevProps, prevState, snapshot) {
+    //     if (this.state.modal !== prevState.modal) {
+    //         // this.props.getNewScheduleDay(this.state.newSchedule);
+    //         this.props.toggleCallback(this.state.modal, this.state.closeAll, this.state.toDelete);
+    //     }
+    // }
 
     toggle() {
         this.setState(prevState => ({
@@ -39,7 +40,8 @@ class ModalAskSchedule extends Component {
     toggleAll() {
         this.setState(prevState => ({
             modal: !prevState.modal,
-            closeAll: true
+            closeAll: true,
+            toDelete: true
         }))
     }
 
@@ -47,7 +49,7 @@ class ModalAskSchedule extends Component {
         return (
             <Modal isOpen={this.state.modal}
                    toggle={this.toggle}
-                   onClosed={this.state.closeAll ? () => this.props.toggleCallback(this.state.modal)
+                   onClosed={this.state.closeAll ? () => this.props.toggleCallback(this.state.modal, this.state.closeAll, this.state.toDelete)
                        : undefined}>
                 <ModalHeader>Внимание!</ModalHeader>
                 <ModalBody>

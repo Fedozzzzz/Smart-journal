@@ -10,6 +10,7 @@ export const MonthlyScheduleTableBody = (props) => {
     let endOfTable = 42;
     let daysInNextMonth = 1;
     let day = 0;
+    // console.log(props.props.newSchedule)
     if (props.props.scheduleOfGroup) {
         for (let i = 1; i < endOfTable + 1; i++) {
             if (i < beginOfWeek) {
