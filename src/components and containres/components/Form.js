@@ -1,4 +1,5 @@
 import React, {Component} from "react"
+import ModalWarning from "./modal/ModalWarning";
 
 class Form extends Component {
 
@@ -9,14 +10,15 @@ class Form extends Component {
         this.state = {
             selectedGroupId: null,
             selectedMonth: new Date(),
+            isWarningOpen: false,
         };
         this.renderForm = this.renderForm.bind(this);
         this.onDateChange = this.onDateChange.bind(this);
         this.onSelectGroup = this.onSelectGroup.bind(this);
+        this.warningToggle = this.warningToggle.bind(this);
+        this.warningCallback = this.warningCallback.bind(this);
     }
 
-    componentWillReceiveProps(nextProps, nextContext) {
-    }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.state.selectedGroupId !== prevState.selectedGroupId && this.state.selectedGroupId !== "Выберите группу") {
@@ -27,13 +29,35 @@ class Form extends Component {
         }
     }
 
+    warningToggle(isOpen) {
+        this.setState({
+            isWarningOpen: isOpen
+        })
+    }
+
+
+    warningCallback(value) {
+        if (value) {
+            this.setState({
+                selectedMonth: new Date(this.state.tempMonth) || this.state.selectedMonth,
+                selectedGroupId: this.state.tempGroupId || this.state.selectedGroupId,
+            });
+        }
+    }
+
+
     onDateChange(e) {
         if (this.props.isEdit) {
-            if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
-                this.setState({
-                    selectedMonth: new Date(e.target.value),
-                });
-            }
+            this.setState({
+                tempMonth: new Date(e.target.value),
+                isWarningOpen: true
+            })
+            //
+            // if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
+            //     this.setState({
+            //         selectedMonth: new Date(e.target.value),
+            //     });
+            // }
         } else this.setState({
             selectedMonth: new Date(e.target.value),
         });
@@ -42,11 +66,15 @@ class Form extends Component {
     onSelectGroup(e) {
         let groupId = e.target.value;
         if (this.props.isEdit) {
-            if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
-                this.setState({
-                    selectedGroupId: groupId,
-                });
-            }
+            // if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
+            //     this.setState({
+            //         selectedGroupId: groupId,
+            //     });
+            // }
+            this.setState({
+                tempGroupId: groupId,
+                isWarningOpen: true
+            })
         } else this.setState({
             selectedGroupId: groupId,
         });
@@ -55,6 +83,8 @@ class Form extends Component {
     renderForm() {
         return (
             <div className="container">
+                <ModalWarning isOpen={this.state.isWarningOpen} warningCallback={this.warningCallback}
+                    warningToggle={this.warningToggle}/>
                 <div className="form">
                     <form>
                         <div className="form-group">
