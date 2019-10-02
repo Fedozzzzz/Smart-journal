@@ -25,13 +25,13 @@ class ModalSetStartTime extends Component {
         console.log(nextProps);
         this.setState({
             modal: nextProps.isOpen,
-            newStartTime: nextProps.oldStartTime,
+            oldStartTime: nextProps.oldStartTime,
+            // newStartTime: nextProps.oldStartTime,
             toDelete: nextProps.toDelete,
             // closeAll: !nextProps.isOpen
         })
     }
 
-    //допилить обновление времени в таблице
     componentDidUpdate(prevProps, prevState, snapshot) {
         // console.log(this.state.modal);
         // console.log(prevState.modal);
@@ -41,13 +41,26 @@ class ModalSetStartTime extends Component {
         // console.log(prevState.closeAll);
         // if (this.state.closeAll !== prevState.closeAll) {
         // console.log("did update", this.state.modal !== prevState.modal);
-        if (this.state.modal !== prevState.modal) {
+        // console.log("did update");
+        // console.log(this.state.toDelete && this.state.modal !== prevState.modal);
+        if (this.state.modal !== prevState.modal && this.state.closeAll) {
             if (this.state.newStartTime) {
                 this.props.getNewStartTime({newStartTime: this.state.newStartTime, toDelete: this.state.toDelete});
+            } else {
+                this.props.getNewStartTime({newStartTime: this.state.oldStartTime, toDelete: this.state.toDelete});
             }
             this.props.toggleCallback(this.state.modal);
             // this.setState({closeAll:!this.state.closeAll});
+        } else if (this.state.toDelete && this.state.modal !== prevState.modal) {
+            if (this.state.newStartTime) {
+                this.props.getNewStartTime({newStartTime: this.state.newStartTime, toDelete: this.state.toDelete});
+            } else {
+                this.props.getNewStartTime({newStartTime: this.state.oldStartTime, toDelete: this.state.toDelete});
+            }
+            // this.props.toggleCallback(this.state.modal);
         }
+        // console.log(this.state.toDelete && this.state.modal !== prevState.modal);
+
         // if (this.state.closeAll !== prevState.closeAll) {
         //     this.props.getNewStartTime({newStartTime: this.state.newStartTime, toDelete: this.state.toDelete});
         // }
@@ -75,7 +88,7 @@ class ModalSetStartTime extends Component {
     }
 
     onSave() {
-        console.log("onSave", this.state);
+        // console.log("onSave", this.state);
         this.props.getNewStartTime({newStartTime: this.state.newStartTime, toDelete: this.state.toDelete});
         this.toggle();
     }
@@ -86,7 +99,7 @@ class ModalSetStartTime extends Component {
 
     render() {
         // console.log(this.props);
-        console.log("modal state", this.state);
+        // console.log("modal state", this.state);
         return (
             <Modal isOpen={this.state.modal} toggle={this.toggle}
                 // onClosed={this.state.closeAll ? this.toggle : undefined}
