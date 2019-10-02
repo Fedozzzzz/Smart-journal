@@ -36,14 +36,17 @@ function renderCheckBoxes(props) {
     let result = [];
     for (let i = 0; i < 7; i++) {
         result.push(<td>
-            <form>
-                <input className="form-check-input"
+            <div className="custom-control custom-checkbox">
+                <input className="custom-control-input"
                        type="checkbox"
                        onChange={props.handleCheckboxesChange}
                        id={i + "cb"}
                        name="cbName"
                        aria-label="..."/>
-            </form>
+                <label className="custom-control-label" htmlFor={i + "cb"}>
+                    <span className="text-hide">Never</span>
+                </label>
+            </div>
         </td>)
     }
     return result;

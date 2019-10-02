@@ -328,7 +328,7 @@ class GroupEdit extends Component {
                                     to={`/users/user_${user.guid}`}>
                                     {user.name} {user.surname} {user.patronymic}
                                 </Link>
-                                <button className="btn btn-danger" onClick={this.onDeleteUserFromGroup}
+                                <button className="btn btn-danger btn-sm" onClick={this.onDeleteUserFromGroup}
                                         id={user.guid}>Удалить
                                 </button>
                             </div>
