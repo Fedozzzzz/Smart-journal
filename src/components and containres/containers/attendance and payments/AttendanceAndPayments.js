@@ -10,7 +10,7 @@ import {paymentsActionCreators} from "../../../store/redux/payments/actionCreato
 import {EditSaveButtons} from "../../components/EditSaveButtons";
 import * as functions from "../../../functions/index"
 import {AttendanceAndPaymentsTable} from "./AttendanceAndPaymentsTable";
-import ModalAddPayment from "../../components/modal/ModalAddPayment";
+import ModalAddPayment from "../../components/modals/ModalAddPayment";
 
 
 class AttendanceAndPayments extends Component {

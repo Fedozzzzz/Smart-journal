@@ -6,9 +6,19 @@ import {paymentsActionCreators} from "../../../store/redux/payments/actionCreato
 import {UserPaymentHistory} from "./UserPaymentHistory";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
 import {UserPageProfile} from "./UserPageProfile";
+import ModalDeletePaymentWarning from "../../components/modals/ModalDeletePaymentWarning";
 
 
 class UserPage extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            isWarningOpen: false
+        };
+        this.warningToggle = this.warningToggle.bind(this);
+        this.warningCallback = this.warningCallback.bind(this);
+    }
 
     componentDidMount() {
         this.props.getUserById(this.props.userId);
@@ -28,8 +38,24 @@ class UserPage extends Component {
         }
     }
 
+    warningToggle(isOpen) {
+        this.setState({
+            isWarningOpen: isOpen
+        })
+    }
+
+    warningCallback(value) {
+        if (value) {
+            this.props.cancelPayment(this.props.userId, this.state.paymentId);
+        }
+    }
+
     onDelete(paymentId) {
-        this.props.cancelPayment(this.props.userId, paymentId);
+        // this.props.cancelPayment(this.props.userId, paymentId);
+        this.setState({
+            isWarningOpen: true,
+            paymentId: paymentId
+        })
     }
 
     onDeleteUser() {
@@ -43,6 +69,8 @@ class UserPage extends Component {
     render() {
         return (
             <div className="container">
+                <ModalDeletePaymentWarning isOpen={this.state.isWarningOpen} warningToggle={this.warningToggle}
+                                           warningCallback={this.warningCallback}/>
                 <div className="user-page__info">
                     <h4>Страница ученика</h4>
                     {this.props.user.userById ?

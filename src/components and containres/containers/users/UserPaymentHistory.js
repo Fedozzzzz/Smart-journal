@@ -5,11 +5,12 @@ export const UserPaymentHistory = (props) => {
     return (
         <div>
             <h5>История платежей студента</h5>
-            <table className="table table-bordered table-bordered">
+            <table className="table table-bordered table-bordered table-hover">
                 <thead>
                 <tr>
                     <th>Дата</th>
                     <th>Сумма</th>
+                    <th>Действие</th>
                 </tr>
                 </thead>
                 <tbody>

@@ -33,16 +33,16 @@ class ModalSetStartTime extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        // console.log(this.state.modal);
-        // console.log(prevState.modal);
-        // if (this.state.modal !== prevState.modal) {
+        // console.log(this.state.modals);
+        // console.log(prevState.modals);
+        // if (this.state.modals !== prevState.modals) {
         // this.props.getNewScheduleDay(this.state.newSchedule);
         // console.log(this.state.closeAll);
         // console.log(prevState.closeAll);
         // if (this.state.closeAll !== prevState.closeAll) {
-        // console.log("did update", this.state.modal !== prevState.modal);
+        // console.log("did update", this.state.modals !== prevState.modals);
         // console.log("did update");
-        // console.log(this.state.toDelete && this.state.modal !== prevState.modal);
+        // console.log(this.state.toDelete && this.state.modals !== prevState.modals);
         if (this.state.modal !== prevState.modal && this.state.closeAll) {
             if (this.state.newStartTime) {
                 this.props.getNewStartTime({newStartTime: this.state.newStartTime, toDelete: this.state.toDelete});
@@ -57,9 +57,9 @@ class ModalSetStartTime extends Component {
             } else {
                 this.props.getNewStartTime({newStartTime: this.state.oldStartTime, toDelete: this.state.toDelete});
             }
-            // this.props.toggleCallback(this.state.modal);
+            // this.props.toggleCallback(this.state.modals);
         }
-        // console.log(this.state.toDelete && this.state.modal !== prevState.modal);
+        // console.log(this.state.toDelete && this.state.modals !== prevState.modals);
 
         // if (this.state.closeAll !== prevState.closeAll) {
         //     this.props.getNewStartTime({newStartTime: this.state.newStartTime, toDelete: this.state.toDelete});
@@ -99,7 +99,7 @@ class ModalSetStartTime extends Component {
 
     render() {
         // console.log(this.props);
-        // console.log("modal state", this.state);
+        // console.log("modals state", this.state);
         return (
             <Modal isOpen={this.state.modal} toggle={this.toggle}
                 // onClosed={this.state.closeAll ? this.toggle : undefined}

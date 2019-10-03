@@ -1,8 +1,8 @@
 import React, {Component} from "react"
-import {Button, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, ModalFooter} from "reactstrap";
+import {Button, Modal, ModalBody, ModalHeader, ModalFooter} from "reactstrap";
 
 
-class ModalWarning extends Component {
+class ModalDeletePaymentWarning extends Component {
 
     constructor(props) {
         super(props);
@@ -22,10 +22,10 @@ class ModalWarning extends Component {
     }
 
     // componentDidUpdate(prevProps, prevState, snapshot) {
-    //     if (this.state.modal !== prevState.modal) {
+    //     if (this.state.modals !== prevState.modals) {
     //         // this.props.paymentModalCallback(this.state.sum);
     //         // console.log("warning did update");
-    //         // console.log(this.state.modal);
+    //         // console.log(this.state.modals);
     //         this.props.warningToggle(false);
     //     }
     // }
@@ -53,10 +53,10 @@ class ModalWarning extends Component {
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Внимание!</ModalHeader>
                     <ModalBody>
-                        <h6>Текущие изменения не сохранятся!</h6>
+                        <h6>Вы уверены, что хотите удалить платеж?</h6>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="danger" onClick={this.onSubmit}>Продолжить</Button>
+                        <Button color="danger" onClick={this.onSubmit}>Удалить</Button>
                         <Button color="secondary" onClick={this.onCancel}>Отмена</Button>
                     </ModalFooter>
                 </Modal>
@@ -65,4 +65,4 @@ class ModalWarning extends Component {
     }
 }
 
-export default ModalWarning;
+export default ModalDeletePaymentWarning;

@@ -25,9 +25,9 @@ class ModalAskSchedule extends Component {
 
 
     // componentDidUpdate(prevProps, prevState, snapshot) {
-    //     if (this.state.modal !== prevState.modal) {
+    //     if (this.state.modals !== prevState.modals) {
     //         // this.props.getNewScheduleDay(this.state.newSchedule);
-    //         this.props.toggleCallback(this.state.modal, this.state.closeAll, this.state.toDelete);
+    //         this.props.toggleCallback(this.state.modals, this.state.closeAll, this.state.toDelete);
     //     }
     // }
 

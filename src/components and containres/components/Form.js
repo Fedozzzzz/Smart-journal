@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import ModalWarning from "./modal/ModalWarning";
+import ModalWarning from "./modals/ModalWarning";
 
 class Form extends Component {
 

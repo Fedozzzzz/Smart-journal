@@ -66,7 +66,9 @@ class UserEdit extends Component {
     render() {
         // console.log("this.state", this.state);
         return (
-            <div>
+            <div
+                // className="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content" role="main"
+            >
                 <div>
                     <UserEditInputs handler={this.handleChange} userById={this.props.userById || null}/>
                     <div>

@@ -7,7 +7,7 @@ import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 import Form from "../../components/Form"
 import {EditSaveButtons} from "../../components/EditSaveButtons";
 import {MonthlySchedule} from "./MonthlySchedule"
-import ModalSetStartTime from "../../components/modal/ModalSetStartTime";
+import ModalSetStartTime from "../../components/modals/ModalSetStartTime";
 
 
 class Schedule extends Component {
