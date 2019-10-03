@@ -11,7 +11,7 @@ export const AttendanceAndPaymentsTableBody = (props) => {
                 <td>{user.dept}</td>
                 <td>{user.amount}</td>
                 <div className="table__button-add-payment">
-                    <button className="btn btn-success" onClick={props.onAddPayment.bind(this, user.guid)}>
+                    <button className="btn btn-success btn-sm" onClick={props.onAddPayment.bind(this, user.guid)}>
                         Пополнить счет
                     </button>
                 </div>

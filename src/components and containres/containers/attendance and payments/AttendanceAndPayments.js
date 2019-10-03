@@ -98,6 +98,7 @@ class AttendanceAndPayments extends Component {
             date.setDate(this.state.selectedMonth.daysInMonth());
             let to = date.toLocaleISOString();
             this.props.getAttendance(this.state.selectedGroupId, from, to);
+            this.props.getUsersFromGroup(this.state.selectedGroupId);
         }
         if (this.props.group.groups !== prevProps.group.groups) {
             let tempGroupsMap = new Map();
