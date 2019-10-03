@@ -123,6 +123,9 @@ class GroupCreating extends Component {
         return (<div className="container-fluid">
                 <h4>Создание группы</h4>
                 <GroupCreatingProfile handleInputChange={this.handleInputChange}/>
+                <label
+                    htmlFor="example-text-input"
+                    className="col-xs-2 col-form-label"> Расписание :</label>
                 <GroupCreatingWeekSchedule props={this.state} handleCheckboxesChange={this.handleCheckboxesChange}
                                            handleStartTimesInputsChange={this.handleStartTimesInputsChange}/>
                 <div>

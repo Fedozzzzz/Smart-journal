@@ -1,10 +1,8 @@
 import React from "react"
 
 export const GroupCreatingWeekSchedule = (props) => {
+    console.log("week sch props",props);
     return (<div>
-        <label
-            htmlFor="example-text-input"
-            className="col-xs-2 col-form-label"> Расписание :</label>
         <div className="create-group__schedule-table">
             <table className='table table-striped table-bordered'>
                 <thead>
@@ -42,7 +40,9 @@ function renderCheckBoxes(props) {
                        onChange={props.handleCheckboxesChange}
                        id={i + "cb"}
                        name="cbName"
-                       aria-label="..."/>
+                       aria-label="..."
+                       defaultChecked={props.groupById ? props.groupById.days[i] : null}
+                />
                 <label className="custom-control-label" htmlFor={i + "cb"}>
                     <span className="text-hide">Never</span>
                 </label>
@@ -64,6 +64,7 @@ function renderStartTimeInputs(props) {
                 name="startTimes"
                 disabled={!props.props.checkboxes.get(i + "cb")}
                 onChange={props.handleStartTimesInputsChange}
+                defaultValue={props.props.checkboxes.get(i + "cb") ? props.groupById.startTimes[i] : null}
             />
         </td>)
     }
