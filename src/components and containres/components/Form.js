@@ -11,6 +11,7 @@ class Form extends Component {
             selectedGroupId: null,
             selectedMonth: new Date(),
             isWarningOpen: false,
+            warningMessage: "Текущие изменения не сохранятся!"
         };
         this.renderForm = this.renderForm.bind(this);
         this.onDateChange = this.onDateChange.bind(this);
@@ -85,7 +86,7 @@ class Form extends Component {
         return (
             <div className="container">
                 <ModalWarning isOpen={this.state.isWarningOpen} warningCallback={this.warningCallback}
-                              warningToggle={this.warningToggle}/>
+                              warningToggle={this.warningToggle} warningMessage={this.state.warningMessage}/>
                 <div className="form">
                     <form>
                         <div className="form-group">

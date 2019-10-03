@@ -6,7 +6,7 @@ import {paymentsActionCreators} from "../../../store/redux/payments/actionCreato
 import {UserPaymentHistory} from "./UserPaymentHistory";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
 import {UserPageProfile} from "./UserPageProfile";
-import ModalDeletePaymentWarning from "../../components/modals/ModalDeletePaymentWarning";
+import ModalWarning from "../../components/modals/ModalWarning";
 
 
 class UserPage extends Component {
@@ -14,7 +14,8 @@ class UserPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isWarningOpen: false
+            isWarningOpen: false,
+            warningMessage: "Вы уверены, что хотите удалить платеж?"
         };
         this.warningToggle = this.warningToggle.bind(this);
         this.warningCallback = this.warningCallback.bind(this);
@@ -69,8 +70,9 @@ class UserPage extends Component {
     render() {
         return (
             <div className="container">
-                <ModalDeletePaymentWarning isOpen={this.state.isWarningOpen} warningToggle={this.warningToggle}
-                                           warningCallback={this.warningCallback}/>
+                <ModalWarning warningMessage={this.state.warningMessage} isOpen={this.state.isWarningOpen}
+                              warningToggle={this.warningToggle}
+                              warningCallback={this.warningCallback}/>
                 <div className="user-page__info">
                     <h4>Страница ученика</h4>
                     {this.props.user.userById ?

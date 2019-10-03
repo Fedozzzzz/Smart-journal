@@ -45,6 +45,7 @@ class GroupPage extends Component {
                             <GroupPageProfile groupById={this.props.groupById}/>
                             <GroupWeekSchedule groupById={this.props.groupById}/>
                         </div>
+                        <h5>Студенты этой группы:</h5>
                         {this.props.usersFromGroup ?
                             <GroupStudents usersFromGroup={this.props.usersFromGroup}/> : <Loading/>}
                         <div>

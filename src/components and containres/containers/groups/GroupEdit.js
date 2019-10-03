@@ -8,6 +8,7 @@ import {GroupAddStudents} from "./GroupAddStudents";
 import {GroupCreatingProfile} from "./GroupCreatingProfile";
 import {GroupCreatingWeekSchedule} from "./GroupCreatingWeekSchedule";
 import {GroupStudentsRemove} from "./GroupStudentsRemove";
+import ModalWarning from "../../components/modals/ModalWarning";
 
 
 class GroupEdit extends Component {
@@ -30,13 +31,14 @@ class GroupEdit extends Component {
                 cost: null,
                 days: [],
                 startTimes: []
-            }
-
+            },
+            warningMessage: "Вы уверены, что хотите удалить студента из группы?",
+            isWarningOpen: false
         };
         this.onSaveEditGroup = this.onSaveEditGroup.bind(this);
         this.onDeleteUserFromGroup = this.onDeleteUserFromGroup.bind(this);
-        // this.renderCheckBoxes = this.renderCheckBoxes.bind(this);
-        // this.renderStartTimeInputs = this.renderStartTimeInputs.bind(this);
+        this.warningToggle = this.warningToggle.bind(this);
+        this.warningCallback = this.warningCallback.bind(this);
         this.handleCheckboxesChange = this.handleCheckboxesChange.bind(this);
         this.handleStartTimesInputsChange = this.handleStartTimesInputsChange.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -148,10 +150,25 @@ class GroupEdit extends Component {
         }
     }
 
+    warningToggle(isOpen) {
+        this.setState({
+            isWarningOpen: isOpen
+        })
+    }
+
+    warningCallback(value) {
+        if (value) {
+            // this.props.cancelPayment(this.props.userId, this.state.paymentId);
+            this.props.deleteUserFromGroup(this.props.groupId, this.state.userIdToDelete);
+        }
+    }
 
     onDeleteUserFromGroup(e) {
         // console.log(e.target.id);
-        this.props.deleteUserFromGroup(this.props.groupId, e.target.id);
+        this.setState({
+            isWarningOpen: true,
+            userIdToDelete: e.target.id
+        });
     }
 
     render() {
@@ -161,6 +178,9 @@ class GroupEdit extends Component {
         // console.log("this.props", this.props.group.usersFromGroup);
         return (
             <div>
+                <ModalWarning warningMessage={this.state.warningMessage} isOpen={this.state.isWarningOpen}
+                              warningToggle={this.warningToggle}
+                              warningCallback={this.warningCallback}/>
                 <GroupCreatingProfile groupById={this.props.group.groupById}
                                       handleInputChange={this.handleInputChange}/>
                 <label htmlFor="example-text-input" className="col-xs-2 col-form-label">Расписание:</label>

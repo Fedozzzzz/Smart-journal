@@ -53,7 +53,7 @@ class ModalWarning extends Component {
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Внимание!</ModalHeader>
                     <ModalBody>
-                        <h6>Текущие изменения не сохранятся!</h6>
+                        <h6>{this.props.warningMessage}</h6>
                     </ModalBody>
                     <ModalFooter>
                         <Button color="danger" onClick={this.onSubmit}>Продолжить</Button>
