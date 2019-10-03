@@ -158,7 +158,6 @@ class GroupEdit extends Component {
 
     warningCallback(value) {
         if (value) {
-            // this.props.cancelPayment(this.props.userId, this.state.paymentId);
             this.props.deleteUserFromGroup(this.props.groupId, this.state.userIdToDelete);
         }
     }
