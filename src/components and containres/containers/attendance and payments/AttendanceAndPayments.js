@@ -126,6 +126,12 @@ class AttendanceAndPayments extends Component {
         }
     }
 
+    componentWillUnmount() {
+        if (this.props.attendance.isEdit) {
+            this.props.cancelEditAttendance();
+        }
+    }
+
     getSelectedDate(value) {
         this.setState({selectedMonth: new Date(value).getBeginOfMonth()});
     }

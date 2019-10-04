@@ -6,7 +6,7 @@ import {
     editGroup,
     getGroupById,
     addUserToGroup, addUserToGroupSubmit, getUsersFromGroup, deleteUserFromGroup,
-} from "./components-sagas/groups-sagas";
+} from "./groups";
 import {editSchedule, getSchedule} from "./components-sagas/schedule-sagas";
 import {createUser, deleteUser, editUser, getAllUsers, getUser,} from "./components-sagas/user-sagas";
 import {editAttendance, getAttendance} from "./components-sagas/attendance-sagas";

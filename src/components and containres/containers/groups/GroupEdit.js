@@ -180,9 +180,10 @@ class GroupEdit extends Component {
                 <ModalWarning warningMessage={this.state.warningMessage} isOpen={this.state.isWarningOpen}
                               warningToggle={this.warningToggle}
                               warningCallback={this.warningCallback}/>
+                <h4>Редактирование группы</h4>
                 <GroupCreatingProfile groupById={this.props.group.groupById}
                                       handleInputChange={this.handleInputChange}/>
-                <label htmlFor="example-text-input" className="col-xs-2 col-form-label">Расписание:</label>
+                <h6>Расписание:</h6>
                 <GroupCreatingWeekSchedule props={this.state} groupById={this.props.group.groupById}
                                            handleCheckboxesChange={this.handleCheckboxesChange}
                                            handleStartTimesInputsChange={this.handleStartTimesInputsChange}/>

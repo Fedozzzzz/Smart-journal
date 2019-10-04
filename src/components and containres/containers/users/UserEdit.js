@@ -73,8 +73,10 @@ class UserEdit extends Component {
                     {/*<UserEditInputs handler={this.handleChange} userById={this.props.userById || null}/>*/}
                     <h4>Редактирование профиля студента</h4>
                     <UserCreatingInputs handler={this.handleChange} userById={this.props.userById || null}/>
-                    <div>
-                        <button className='btn btn-success' onClick={this.onSaveEditUser}>Сохранить</button>
+                    <div className="container">
+                        <div className="form-group row col-8">
+                            <button className='btn btn-success' onClick={this.onSaveEditUser}>Сохранить</button>
+                        </div>
                     </div>
                 </div>
             </div>

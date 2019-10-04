@@ -114,7 +114,27 @@ function* callGetGroupById({guid}) {
                 headers: headers
             }).then(response => response.json())
             .catch(error => console.error(error)));
+        //http://localhost:3000/groups/group_fae2c0bc-9b51-4277-ad39-5b72ab90618a
+
+
+        // const response = yield call(() => fetch(url + '/groups/' + guid.toString(),
+        //     {
+        //         method: 'GET',
+        //         headers: headers
+        //     }).then(response => {
+        //         console.log(response);
+        //         return response.json();
+        //     }
+        // )
+        //     .catch(error => console.error(error)));
         // console.log("group data fom saga:", groupById);
+        // console.log(response);
+        // if (response.errorCode === undefined) {
+        //     yield put({type: actionTypes.getGroupByIdSucceededType, groupById: response});
+        // } else {
+        //     yield put({type: actionTypes.getGroupByIdFailedType, error: response.message});
+        // }
+
         yield put({type: actionTypes.getGroupByIdSucceededType, groupById});
     } catch (error) {
         console.log(error);

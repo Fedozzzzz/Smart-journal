@@ -50,7 +50,7 @@ class UserCreating extends Component {
         return (
             <div>
                 <h4>Создание профиля студента</h4>
-                <UserCreatingInputs handler={this.handleChange}/>
+                <UserCreatingInputs  handler={this.handleChange}/>
                 <div className="container-fluid">
                     <div className="form-group row col-8">
                         <button

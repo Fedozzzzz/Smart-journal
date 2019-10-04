@@ -66,6 +66,12 @@ class Schedule extends Component {
         }
     }
 
+    componentWillUnmount() {
+        if (this.props.schedule.isEdit) {
+            this.props.cancelEditSchedule();
+        }
+    }
+
     onDateChange(e) {
         // console.log(e.target.value);
         let date = e.target.value;

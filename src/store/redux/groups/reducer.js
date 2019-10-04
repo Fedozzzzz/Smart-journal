@@ -8,7 +8,7 @@ const initialState = {
     onCreatingUser: false,
     error: '',
     isUsersAddedToGroup: false,
-    usersFromGroup:[]
+    usersFromGroup: []
 };
 
 export const groupReducer = (state, action) => {
@@ -80,9 +80,10 @@ export const groupReducer = (state, action) => {
                 groupById: action.groupById
             };
         case actionTypes.getGroupByIdFailedType: {
+            console.log(action.error);
             return {
                 ...state,
-                error: action.payload
+                error: action.error
             }
         }
         case actionTypes.getUsersFromGroupSucceededType: {

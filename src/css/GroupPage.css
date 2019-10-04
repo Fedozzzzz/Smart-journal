@@ -4,8 +4,8 @@
 
 .create-group__schedule-table{
     width: 100%;
-    display: flex;
-    justify-content: center;
+    /*display: flex;*/
+    /*justify-content: center;*/
     text-align: center;
 }
 

@@ -25,7 +25,7 @@ export const actionTypes = {
 //get group by id
     getGroupByIdType: 'GET_GROUPS_BY_ID',
     getGroupByIdSucceededType: 'GET_GROUPS_BY_ID_SUCCEEDED',
-    getGroupByIdFailedType: 'GET_GROUPS_BY_ID_SUCCEEDED',
+    getGroupByIdFailedType: 'GET_GROUPS_BY_ID_FAILED',
 
     //get users from group
     getUsersFromGroupType: 'GET_USERS_FROM_GROUP',
