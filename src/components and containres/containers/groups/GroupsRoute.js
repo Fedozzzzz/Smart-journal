@@ -13,14 +13,12 @@ import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 class GroupsRoute extends Component {
 
     render() {
-        // console.log('render');
         return (
             <div>
-                {/*<Route exact path='/groups' component={GroupsMenu}/>*/}
                 <Route exact path='/groups' component={GroupsList}/>
                 <Route path='/groups/creating_group' component={GroupsCreating}/>
                 <Route exact path='/groups/group_:id'
-                       render={({match}) => (<GroupPage groupId={match.params.id}/>)}/>
+                       render={({match}) => (<GroupPage groupId={match.params.id} history={this.props.history}/>)}/>
                 <Route path='/groups/edit_group/group_:id'
                        render={({match}) => (<GroupsEdit groupId={match.params.id} history={this.props.history}/>)}/>
                 <Route path='/groups/edit_group/add_users_to_group_:id'

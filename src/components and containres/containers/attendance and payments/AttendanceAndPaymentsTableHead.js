@@ -10,5 +10,6 @@ export const AttendanceAndPaymentsTableHead=(props)=> {
         {result}
         <th>Долг</th>
         <th>Счет</th>
+        <th>Действие</th>
     </tr>)
 };

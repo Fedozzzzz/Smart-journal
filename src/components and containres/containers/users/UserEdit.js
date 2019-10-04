@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
-import {UserEditInputs} from "./UserEditInputs";
+import {UserCreatingInputs} from "./UserCreatingInputs";
 
 class UserEdit extends Component {
 
@@ -45,19 +45,19 @@ class UserEdit extends Component {
     handleChange(e) {
         // console.log(e.target.id);
         switch (e.target.id) {
-            case 'editedUserName':
+            case 'userName':
                 this.setState({name: e.target.value});
                 break;
-            case 'editedUserSurname':
+            case 'userSurname':
                 this.setState({surname: e.target.value});
                 break;
-            case 'editedUserPatronymic':
+            case 'userPatronymic':
                 this.setState({patronymic: e.target.value});
                 break;
-            case "editedEmail-input":
+            case "email-input":
                 this.setState({email: e.target.value});
                 break;
-            case "editedTel-input":
+            case "tel-input":
                 this.setState({phoneNumber: e.target.value});
                 break;
         }
@@ -70,7 +70,9 @@ class UserEdit extends Component {
                 // className="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content" role="main"
             >
                 <div>
-                    <UserEditInputs handler={this.handleChange} userById={this.props.userById || null}/>
+                    {/*<UserEditInputs handler={this.handleChange} userById={this.props.userById || null}/>*/}
+                    <h4>Редактирование профиля студента</h4>
+                    <UserCreatingInputs handler={this.handleChange} userById={this.props.userById || null}/>
                     <div>
                         <button className='btn btn-success' onClick={this.onSaveEditUser}>Сохранить</button>
                     </div>

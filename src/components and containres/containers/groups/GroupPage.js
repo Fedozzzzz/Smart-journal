@@ -8,6 +8,7 @@ import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 import {GroupPageProfile} from "./GroupPageProfile";
 import {GroupWeekSchedule} from "./GroupWeekSchedule";
 import {GroupStudents} from "./GroupStudents";
+import ModalWarning from "../../components/modals/ModalWarning";
 
 
 class GroupPage extends Component {
@@ -15,13 +16,16 @@ class GroupPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // isLoaded: false,
-            userById: null
-        }
+            isWarningOpen: false,
+            userById: null,
+            warningMessage: "Вы уверены, что хотите удалить группу? Вся информация о ней не сохранится!"
+        };
+        this.warningToggle = this.warningToggle.bind(this);
+        this.warningCallback = this.warningCallback.bind(this);
+        this.onDeleteGroup = this.onDeleteGroup.bind(this);
     }
 
     componentDidMount() {
-        // console.log("props user:", this.props.userById);
         this.props.getGroupById(this.props.groupId);
         this.props.getUsersFromGroup(this.props.groupId);
     }
@@ -33,11 +37,34 @@ class GroupPage extends Component {
         }
     }
 
+    warningToggle(isOpen) {
+        this.setState({
+            isWarningOpen: isOpen
+        })
+    }
+
+    warningCallback(value) {
+        if (value) {
+            this.props.deleteGroup(this.props.groupId);
+            this.props.history.goBack();
+        }
+    }
+
+    onDeleteGroup() {
+        this.setState({
+            isWarningOpen: true
+        })
+    }
+
     render() {
         // console.log("render of group page ", this.props.groupById);//should add redirect
         // console.log("props", this.props);
         return (
             <div className="container">
+                {/*<ModalWarning isOpen={this.state.isWarningOpen}/>*/}
+                <ModalWarning warningMessage={this.state.warningMessage} isOpen={this.state.isWarningOpen}
+                              warningToggle={this.warningToggle}
+                              warningCallback={this.warningCallback}/>
                 <div className="group-page__info">
                     <h4>Страница группы</h4>
                     {this.props.groupById ? <div>
@@ -49,9 +76,10 @@ class GroupPage extends Component {
                         {this.props.usersFromGroup ?
                             <GroupStudents usersFromGroup={this.props.usersFromGroup}/> : <Loading/>}
                         <div>
-                            <Link to='/groups/'
-                                  className="btn btn-outline-danger"
-                                  onClick={() => this.props.deleteGroup(this.props.groupId)}>Удалить</Link>
+                            <button
+                                className="btn btn-outline-danger"
+                                onClick={this.onDeleteGroup}>Удалить
+                            </button>
                             <Link to={`/groups/edit_group/group_${this.props.groupId}`}
                                   className="btn btn-outline-warning"
                                   onClick={() => this.props.editGroup(this.props.groupId.guid)}>Редактировать</Link>

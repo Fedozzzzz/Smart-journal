@@ -277,18 +277,6 @@ class AttendanceAndPayments extends Component {
                     e.target.innerHTML = null;
                     break;
             }
-            // if (e.target.className === "cell") {
-            //     e.target.className = "cell_attended";
-            //     e.target.innerHTML = "Б";
-            //     attendance.isAttended = true;
-            // } else if (e.target.className === "cell_attended") {
-            //     e.target.className = "cell_absent";
-            //     e.target.innerHTML = "Н";
-            //     attendance.isAttended = false;
-            // } else if (e.target.className === "cell_absent") {
-            //     e.target.className = "cell";
-            //     e.target.innerHTML = null;
-            // }
             if (tempNewAttendance.indexOf(attendance) === -1) {
                 tempNewAttendance.push(attendance);
             }

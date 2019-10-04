@@ -12,6 +12,7 @@ export const UserCreatingInputs = (props) => (<div className="container-fluid">
                    type="text"
                    placeholder="Введите имя"
                    id='userName'
+                   defaultValue={props.userById.name}
                    onChange={props.handler}
             />
             {/*</div>*/}
@@ -26,6 +27,7 @@ export const UserCreatingInputs = (props) => (<div className="container-fluid">
                    placeholder="Введите фамилию"
                    id='userSurname'
                    onChange={props.handler}
+                   defaultValue={props.userById.surname}
             />
             {/*</div>*/}
         </div>
@@ -39,8 +41,21 @@ export const UserCreatingInputs = (props) => (<div className="container-fluid">
                    placeholder="Введите отчество"
                    id='userPatronymic'
                    onChange={props.handler}
+                   defaultValue={props.userById.patronymic}
             />
             {/*</div>*/}
+        </div>
+        <div className="form-group row col-md-8">
+            <label htmlFor="tel-input" className="col-xs-2 col-form-label ">Номер
+                телефона</label>
+            {/*<div className="col-xs-10">*/}
+            <input className="form-control col-xs-10 m-0"
+                   type="tel"
+                   placeholder="1-(555)-555-5555"
+                   id="tel-input"
+                   onChange={props.handler}
+                   defaultValue={props.userById.phoneNumber}
+            />
         </div>
         {/*</form>*/}
         {/*<form className="form-inline">*/}
@@ -52,22 +67,13 @@ export const UserCreatingInputs = (props) => (<div className="container-fluid">
                    placeholder="ivanov.ii@example.com"
                    id="email-input"
                    onChange={props.handler}
+                   defaultValue={props.userById.email}
             />
             {/*</div>*/}
         </div>
         {/*</form>*/}
         {/*<form className="form-inline">*/}
-        <div className="form-group row col-md-8">
-            <label htmlFor="tel-input" className="col-xs-2 col-form-label ">Номер
-                телефона</label>
-            {/*<div className="col-xs-10">*/}
-            <input className="form-control col-xs-10 m-0"
-                   type="tel"
-                   placeholder="1-(555)-555-5555"
-                   id="tel-input"
-                   onChange={props.handler}
-            />
-        </div>
+
         {/*</div>*/}
     </form>
     {/*</div>*/}

@@ -7,6 +7,7 @@ import {UserPaymentHistory} from "./UserPaymentHistory";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
 import {UserPageProfile} from "./UserPageProfile";
 import ModalWarning from "../../components/modals/ModalWarning";
+import {Link} from "react-router-dom";
 
 
 class UserPage extends Component {
@@ -15,10 +16,13 @@ class UserPage extends Component {
         super(props);
         this.state = {
             isWarningOpen: false,
-            warningMessage: "Вы уверены, что хотите удалить платеж?"
+            warningMessage: String(),
+            warningDeleteUser: false,
+            warningDeletePayment: false
         };
         this.warningToggle = this.warningToggle.bind(this);
         this.warningCallback = this.warningCallback.bind(this);
+        this.onDeleteUser = this.onDeleteUser.bind(this);
     }
 
     componentDidMount() {
@@ -41,13 +45,22 @@ class UserPage extends Component {
 
     warningToggle(isOpen) {
         this.setState({
-            isWarningOpen: isOpen
+            isWarningOpen: isOpen,
+            warningDeletePayment: isOpen,
+            warningDeleteUser: isOpen,
         })
     }
 
     warningCallback(value) {
         if (value) {
-            this.props.cancelPayment(this.props.userId, this.state.paymentId);
+            if (this.state.warningDeletePayment) {
+                this.props.cancelPayment(this.props.userId, this.state.paymentId);
+                // this.setState({warningDeletePayment: false})
+            } else if (this.state.warningDeleteUser) {
+                this.props.deleteUser(this.props.userId);
+                this.props.history.goBack();
+                // this.setState({warningDeleteUser: false})
+            }
         }
     }
 
@@ -55,12 +68,19 @@ class UserPage extends Component {
         // this.props.cancelPayment(this.props.userId, paymentId);
         this.setState({
             isWarningOpen: true,
-            paymentId: paymentId
+            warningDeletePayment: true,
+            paymentId: paymentId,
+            warningMessage: "Вы уверены, что хотите удалить платеж?",
         })
     }
 
     onDeleteUser() {
-        this.props.deleteUser(this.props.userId);
+        this.setState({
+            isWarningOpen: true,
+            warningDeleteUser: true,
+            // paymentId: paymentId,
+            warningMessage: "Вы уверены, что хотите удалить пользователя? Вся информация о нем станет недоступна.",
+        })
     }
 
     onEditUser() {
@@ -68,6 +88,8 @@ class UserPage extends Component {
     }
 
     render() {
+        console.log("state", this.state);
+        console.log("props", this.props);
         return (
             <div className="container">
                 <ModalWarning warningMessage={this.state.warningMessage} isOpen={this.state.isWarningOpen}
@@ -76,10 +98,18 @@ class UserPage extends Component {
                 <div className="user-page__info">
                     <h4>Страница ученика</h4>
                     {this.props.user.userById ?
-                        <UserPageProfile userById={this.props.user.userById}
-                                         onDeleteUser={this.onDeleteUser.bind(this)}
-                                         onEditUser={this.onEditUser.bind(this)}
-                                         userId={this.props.userId}/> : <Loading/>}
+                        <div>
+                            <UserPageProfile userById={this.props.user.userById}
+                                // onDeleteUser={this.onDeleteUser}
+                                // onEditUser={this.onEditUser.bind(this)}
+                                // userId={this.props.userId}
+                            />
+                            <button className="btn btn-outline-danger"
+                                    onClick={this.onDeleteUser}>Удалить
+                            </button>
+                            <Link to={`/users/edit_user/user_${this.props.userId}`}
+                                  className="btn btn-outline-warning"
+                                  onClick={this.props.onEditUser}>Редактировать</Link></div> : <Loading/>}
                     {this.props.payments.isLoaded ?
                         <UserPaymentHistory payments={this.props.payments.payments}
                                             onDelete={this.onDelete.bind(this)}/>
