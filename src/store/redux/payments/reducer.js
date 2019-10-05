@@ -18,7 +18,7 @@ export const paymentsReducer = (state, action) => {
             return {
                 ...state,
                 // isLoaded: false,
-                error: action.payload
+                error: action.error
             };
         case actionTypes.addPaymentSucceededType:
             return {
@@ -29,7 +29,7 @@ export const paymentsReducer = (state, action) => {
         case actionTypes.addPaymentFailedType:
             return {
                 ...state,
-                error: action.payload
+                error: action.error
             };
         case actionTypes.cancelPaymentSucceededType:
             return {
@@ -39,7 +39,7 @@ export const paymentsReducer = (state, action) => {
         case actionTypes.cancelPaymentFailedType:
             return {
                 ...state,
-                error: action.payload
+                error: action.error
                 // isLoaded: false
             };
         default :

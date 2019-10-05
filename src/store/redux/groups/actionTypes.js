@@ -3,7 +3,7 @@ export const actionTypes = {
 //get list of groups
     getAllGroupsType: 'GET_ALL_GROUPS',
     getAllGroupsSucceededType: 'GET_ALL_GROUPS_SUCCEEDED',
-    getAllGroupsFailedType: 'GET_ALL_GROUPS_SUCCEEDED',
+    getAllGroupsFailedType: 'GET_ALL_GROUPS_FAILED',
 
 //creating group
     createGroupType: 'CREATE_GROUP',

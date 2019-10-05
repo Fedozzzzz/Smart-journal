@@ -17,6 +17,11 @@ export const userReducer = (state, action) => {
                 userById: action.userById,
                 isLoaded: true
             };
+        case actionTypes.getUserFailedType:
+            return {
+                ...state,
+                error: action.error
+            };
         case actionTypes.createUserType:
             return {
                 ...state,
@@ -27,6 +32,11 @@ export const userReducer = (state, action) => {
                 ...state,
                 onCreatingUser: false
             };
+        case actionTypes.createUserFailedType:
+            return {
+                ...state,
+                error: action.error
+            };
         case actionTypes.deleteUserSucceededType:
             return {
                 ...state,
@@ -35,7 +45,8 @@ export const userReducer = (state, action) => {
         case actionTypes.deleteUserFailedType:
             return {
                 ...state,
-                isLoaded: false
+                isLoaded: false,
+                error: action.error
             };
         case actionTypes.createUserSucceededType:
             // console.log(action.user);
@@ -57,7 +68,8 @@ export const userReducer = (state, action) => {
             // console.log(action.payload);
             return {
                 ...state,
-                error: action.payload
+                error: action.error
+                // error: action.payload
                 // isLoaded:
             };
         case actionTypes.editUserSucceededType: {
@@ -69,6 +81,7 @@ export const userReducer = (state, action) => {
         case actionTypes.editUserFailedType: {
             return {
                 ...state,
+                error: action.error
                 // ok: action.ok,
             }
         }

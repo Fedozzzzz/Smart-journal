@@ -1,7 +1,6 @@
 import React from "react"
 import "../../../css/userCreating.css"
 
-
 export const UserCreatingInputs = (props) => (<div className="container-fluid">
     <div className="create-user">
         <form>

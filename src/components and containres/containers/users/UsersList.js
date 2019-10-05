@@ -2,9 +2,11 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {Link} from "react-router-dom";
-import Loading from "../../components/Loading";
+// import Loading from "../../components/Loading";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
-import Search from "../../components/Search";
+import Search from "../../components/other/Search";
+import Spinner from "../../components/other/Spinner";
+
 
 class UsersList extends Component {
 
@@ -33,7 +35,7 @@ class UsersList extends Component {
                         <div key={user.guid}>
                             <h5><Link to={`/users/user_${user.guid}`}>{user.name} {user.surname}</Link></h5>
                         </div>
-                    )) : <Loading/>}
+                    )) : <Spinner/>}
                 <Link to='/users/creating_user'
                       className='btn btn-primary'
                       onClick={this.addUser}>

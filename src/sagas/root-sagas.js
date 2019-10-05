@@ -7,10 +7,10 @@ import {
     getGroupById,
     addUserToGroup, addUserToGroupSubmit, getUsersFromGroup, deleteUserFromGroup,
 } from "./groups";
-import {editSchedule, getSchedule} from "./components-sagas/schedule-sagas";
-import {createUser, deleteUser, editUser, getAllUsers, getUser,} from "./components-sagas/user-sagas";
-import {editAttendance, getAttendance} from "./components-sagas/attendance-sagas";
-import {addPayment, cancelPayment, getPayments} from "./components-sagas/payments-sagas";
+import {editSchedule, getSchedule} from "./shedule";
+import {createUser, deleteUser, editUser, getAllUsers, getUser,} from "./users";
+import {editAttendance, getAttendance} from "./attendance";
+import {addPayment, cancelPayment, getPayments} from "./payments";
 
 export default function* rootSaga() {
     console.log('hello-from-root-saga!!!');

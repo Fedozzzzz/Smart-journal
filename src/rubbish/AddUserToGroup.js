@@ -2,7 +2,7 @@ import React, {Component} from "react"
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {groupActionCreators} from "../store/redux/groups/actionCreators";
-import Loading from "../components and containres/components/Loading";
+import Loading from "./Loading";
 
 class AddUserToGroup extends Component {
 

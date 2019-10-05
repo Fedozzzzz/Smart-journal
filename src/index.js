@@ -2,7 +2,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import ReactDOM, {unmountComponentAtNode} from 'react-dom';
 import {Provider} from 'react-redux';
-// import {ConnectedRouter} from "connected-react-router";
 import {BrowserRouter} from "react-router-dom";
 import {createBrowserHistory} from 'history';
 import configureStore from './store/configureStore';
@@ -36,11 +35,9 @@ function rerender(App) {
     ReactDOM.render(
         <AppContainer>
             <Provider store={store}>
-                {/*<ConnectedRouter history={history}>*/}
                 <BrowserRouter>
                     <App/>
                 </BrowserRouter>
-                {/*</ConnectedRouter>*/}
             </Provider>
         </AppContainer>,
         rootElement)

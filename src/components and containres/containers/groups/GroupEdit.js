@@ -1,14 +1,15 @@
 import React, {Component} from "react"
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import Loading from "../../components/Loading";
+import Loading from "../../../rubbish/Loading";
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
-import {GroupAddStudents} from "./GroupAddStudents";
-import {GroupCreatingProfile} from "./GroupCreatingProfile";
-import {GroupCreatingWeekSchedule} from "./GroupCreatingWeekSchedule";
-import {GroupStudentsRemove} from "./GroupStudentsRemove";
+import {GroupAddStudents} from "../../components/groups/GroupAddStudents";
+import {GroupCreatingProfile} from "../../components/groups/GroupCreatingProfile";
+import {GroupCreatingWeekSchedule} from "../../components/groups/GroupCreatingWeekSchedule";
+import {GroupStudentsRemove} from "../../components/groups/GroupStudentsRemove";
 import ModalWarning from "../../components/modals/ModalWarning";
+import Spinner from "../../components/other/Spinner";
 
 
 class GroupEdit extends Component {
@@ -191,14 +192,15 @@ class GroupEdit extends Component {
                     <h5>Студенты этой группы:</h5>{
                     this.props.group.usersFromGroup ?
                         <GroupStudentsRemove usersFromGroup={this.props.group.usersFromGroup}
-                                             onDeleteUserFromGroup={this.onDeleteUserFromGroup}/> : <Loading/>
+                                             onDeleteUserFromGroup={this.onDeleteUserFromGroup}/> : <Spinner/>
                 }
                 </div>
-                <div>
-                    <h5>Добавьте студентов в группу: </h5>
-                    <p>Веберите студентов из списка, чтобы добавить их в группу</p>
-                    <GroupAddStudents users={this.props.user.users} handleUsersChange={this.handleUsersChange}/>
-                </div>
+                {this.props.user.users ?
+                    <div>
+                        <h5>Добавьте студентов в группу: </h5>
+                        <p>Веберите студентов из списка, чтобы добавить их в группу</p>
+                        <GroupAddStudents users={this.props.user.users} handleUsersChange={this.handleUsersChange}/>
+                    </div> : <Spinner/>}
                 <div>
                     <button
                         // to='/groups/group_list'

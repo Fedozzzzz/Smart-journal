@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
-import {UserCreatingInputs} from "./UserCreatingInputs";
+import {UserCreatingInputs} from "../../components/users/UserCreatingInputs";
 
 class UserEdit extends Component {
 

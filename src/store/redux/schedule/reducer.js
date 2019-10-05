@@ -24,7 +24,7 @@ export const scheduleReducer = (state, action) => {//action.type===????
         case actionTypes.getScheduleFailedType:
             return {
                 ...state,
-                error: action.payload
+                error: action.error
             };
         case actionTypes.editScheduleType:
             return {
@@ -45,7 +45,7 @@ export const scheduleReducer = (state, action) => {//action.type===????
                 ...state,
                 isEdit: false,
                 // isEdited: false,
-                error: action.payload
+                error: action.error
             };
         default :
             return state;

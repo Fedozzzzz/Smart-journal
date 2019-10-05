@@ -3,9 +3,10 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 // import {actionCreators} from "../../store/reducers/groupReducer";
 import {Link} from "react-router-dom";
-import Loading from "../../components/Loading";
+import Loading from "../../../rubbish/Loading";
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
-import Search from "../../components/Search";
+import Search from "../../components/other/Search";
+import Spinner from "../../components/other/Spinner";
 
 class GroupsList extends Component {
 
@@ -18,10 +19,10 @@ class GroupsList extends Component {
         if (this.props.isLoaded === false) {
             this.props.getAllGroups();
         }
-        if (this.props.newGroup!==prevProps.newGroup) {
+        if (this.props.newGroup !== prevProps.newGroup) {
             // if (!this.props.isUsersAddedToGroup) {
-                console.log("addUserToGroup");
-                this.props.addUsersToGroupSubmit(this.props.newGroup.guid, this.props.usersToGroup);
+            console.log("addUserToGroup");
+            this.props.addUsersToGroupSubmit(this.props.newGroup.guid, this.props.usersToGroup);
             // }
         }
     }
@@ -38,7 +39,7 @@ class GroupsList extends Component {
                         <div>
                             <h5><Link to={`/groups/group_${group.guid}`}>{group.name}</Link></h5>
                         </div>
-                    )) : <Loading/>}
+                    )) : <Spinner/>}
                 <div>
                     <Link to='/groups/creating_group'
                           className='btn btn-primary' onClick={this.props.createGroup}>+Добавить

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
-import {UserCreatingInputs} from "./UserCreatingInputs";
+import {UserCreatingInputs} from "../../components/users/UserCreatingInputs";
 
 class UserCreating extends Component {
 
@@ -54,7 +54,7 @@ class UserCreating extends Component {
                 <div className="container-fluid">
                     <div className="form-group row col-8">
                         <button
-                            className='btn btn-success m-0'
+                            className='btn btn-success'
                             onClick={this.onSaveUser}>Сохранить
                         </button>
                     </div>

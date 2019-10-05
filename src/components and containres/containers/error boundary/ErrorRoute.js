@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import {Route} from "react-router-dom";
 import {connect} from "react-redux";
-import {ErrorPage} from "./ErrorPage";
+import {ErrorPage} from "../../components/error boundary/ErrorPage";
 
 
 class ErrorRoute extends Component {

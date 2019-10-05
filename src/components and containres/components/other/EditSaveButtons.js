@@ -13,7 +13,7 @@ export const EditSaveButtons = (props) => (
             <button
                 onClick={props.onSave}
                 type="save"
-                className="btn btn-success"
+                className="btn btn-success "
             >Сохранить
             </button> : null
         }

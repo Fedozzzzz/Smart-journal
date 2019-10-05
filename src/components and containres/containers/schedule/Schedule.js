@@ -4,11 +4,11 @@ import {connect} from 'react-redux';
 import "../../../css/Schedule.css";
 import {scheduleActionCreators} from "../../../store/redux/schedule/actionCreators";
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
-import Form from "../../components/Form"
-import {EditSaveButtons} from "../../components/EditSaveButtons";
-import {MonthlySchedule} from "./MonthlySchedule"
+import Form from "../../components/other/Form"
+import {EditSaveButtons} from "../../components/other/EditSaveButtons";
+import {MonthlySchedule} from "../../components/schedule/MonthlySchedule"
 import ModalSetStartTime from "../../components/modals/ModalSetStartTime";
-
+import Spinner from "../../components/other/Spinner";
 
 class Schedule extends Component {
 
@@ -21,7 +21,8 @@ class Schedule extends Component {
             scheduleOfGroup: new Map(),
             editedScheduleOfGroup: new Map(),
             isSelected: false,
-            newSchedule: new Map()
+            newSchedule: new Map(),
+            isOpen: false
         };
         this.onDateChange = this.onDateChange.bind(this);
         this.onEdit = this.onEdit.bind(this);
@@ -154,29 +155,6 @@ class Schedule extends Component {
                 oldStartTime: oldStartTime
             });
         }
-        // if (this.props.schedule.isEdit) {
-        //     let tempMap = this.state.newSchedule;
-        //     if (elem.className === "table-warning") {
-        //         elem.className = "table-light";
-        //         tempMap.set(day, {toDelete: true, startTime: this.state.scheduleOfGroup.get(day)});
-        //         this.setState({newSchedule: tempMap});
-        //     } else if (elem.className === "table-info") {
-        //         elem.className = "table-light";
-        //         let answ = window.confirm("Вы уверены, что хотите удалить этот день из расписания?");
-        //         if (answ) {
-        //             tempMap.set(day, {toDelete: true, startTime: this.state.scheduleOfGroup.get(day)});
-        //             this.setState({newSchedule: tempMap});
-        //         }
-        //     } else {
-        //         let startTime = prompt("Введите время занятия в формате --:--");
-        //         if (startTime) {
-        //             elem.className = "table-warning";
-        //             tempMap.set(day, {toDelete: false, startTime: startTime});
-        //             this.setState({newSchedule: tempMap});
-        //         }
-        //     }
-        // }
-        // return <ModalSetStartTime/>
     }
 
     onSave(e) {

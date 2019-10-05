@@ -3,9 +3,10 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
-import {GroupCreatingProfile} from "./GroupCreatingProfile";
-import {GroupCreatingWeekSchedule} from "./GroupCreatingWeekSchedule";
-import {GroupAddStudents} from "./GroupAddStudents";
+import {GroupCreatingProfile} from "../../components/groups/GroupCreatingProfile";
+import {GroupCreatingWeekSchedule} from "../../components/groups/GroupCreatingWeekSchedule";
+import {GroupAddStudents} from "../../components/groups/GroupAddStudents";
+import Spinner from "../../components/other/Spinner";
 
 class GroupCreating extends Component {
 
@@ -133,7 +134,7 @@ class GroupCreating extends Component {
                         <h5>Добавьте студентов в группу:</h5>
                         <GroupAddStudents users={this.props.user.users}
                                           handleUsersChange={this.handleUsersChange}/>
-                    </div> : null}
+                    </div> : <Spinner/>}
                 </div>
                 <div>
                     <button className='btn btn-success'

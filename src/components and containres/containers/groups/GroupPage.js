@@ -3,12 +3,13 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {Link} from "react-router-dom";
 import "../../../css/GroupPage.css"
-import Loading from "../../components/Loading"
+import Loading from "../../../rubbish/Loading"
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
-import {GroupPageProfile} from "./GroupPageProfile";
-import {GroupWeekSchedule} from "./GroupWeekSchedule";
-import {GroupStudents} from "./GroupStudents";
+import {GroupPageProfile} from "../../components/groups/GroupPageProfile";
+import {GroupWeekSchedule} from "../../components/groups/GroupWeekSchedule";
+import {GroupStudents} from "../../components/groups/GroupStudents";
 import ModalWarning from "../../components/modals/ModalWarning";
+import Spinner from "../../components/other/Spinner";
 
 
 class GroupPage extends Component {
@@ -61,7 +62,6 @@ class GroupPage extends Component {
         // console.log("props", this.props);
         return (
             <div className="container">
-                {/*<ModalWarning isOpen={this.state.isWarningOpen}/>*/}
                 <ModalWarning warningMessage={this.state.warningMessage} isOpen={this.state.isWarningOpen}
                               warningToggle={this.warningToggle}
                               warningCallback={this.warningCallback}/>
@@ -74,7 +74,7 @@ class GroupPage extends Component {
                         </div>
                         <h5>Студенты этой группы:</h5>
                         {this.props.usersFromGroup ?
-                            <GroupStudents usersFromGroup={this.props.usersFromGroup}/> : <Loading/>}
+                            <GroupStudents usersFromGroup={this.props.usersFromGroup}/> : <Spinner/>}
                         <div>
                             <button
                                 className="btn btn-outline-danger"
@@ -84,7 +84,7 @@ class GroupPage extends Component {
                                   className="btn btn-outline-warning"
                                   onClick={() => this.props.editGroup(this.props.groupId.guid)}>Редактировать</Link>
                         </div>
-                    </div> : <Loading/>}
+                    </div> : <Spinner/>}
                 </div>
             </div>
         )

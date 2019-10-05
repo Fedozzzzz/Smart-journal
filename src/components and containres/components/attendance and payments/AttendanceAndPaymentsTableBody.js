@@ -10,11 +10,13 @@ export const AttendanceAndPaymentsTableBody = (props) => {
                 {AttendanceAndPaymentsTableBodySchedule(props, user.guid)}
                 <td>{user.dept}</td>
                 <td>{user.amount}</td>
-                <div className="table__button-add-payment">
-                    <button className="btn btn-success btn-sm" onClick={props.onAddPayment.bind(this, user.guid)}>
+                {/*<div className="table__button-add-payment">*/}
+                <td>
+                    <button className="btn btn-success btn-sm table__button-add-payment" onClick={props.onAddPayment.bind(this, user.guid)}>
                         Пополнить счет
                     </button>
-                </div>
+                </td>
+                {/*</div>*/}
             </tr>
         )) : null)
 };

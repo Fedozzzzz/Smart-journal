@@ -2,14 +2,14 @@ import React, {Component} from "react"
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
-import Form from "../../components/Form";
+import Form from "../../components/other/Form";
 import {scheduleActionCreators} from "../../../store/redux/schedule/actionCreators";
 import "../../../css/AttendanceAndPayments.css"
 import {attendanceActionCreators} from "../../../store/redux/attendance/actionCreators";
 import {paymentsActionCreators} from "../../../store/redux/payments/actionCreators";
-import {EditSaveButtons} from "../../components/EditSaveButtons";
+import {EditSaveButtons} from "../../components/other/EditSaveButtons";
 import * as functions from "../../../functions/index"
-import {AttendanceAndPaymentsTable} from "./AttendanceAndPaymentsTable";
+import {AttendanceAndPaymentsTable} from "../../components/attendance and payments/AttendanceAndPaymentsTable";
 import ModalAddPayment from "../../components/modals/ModalAddPayment";
 
 
@@ -61,9 +61,6 @@ class AttendanceAndPayments extends Component {
                 this.props.cancelEditAttendance();
             }
         }
-        // if ((this.state.selectedGroupId !== prevState.selectedGroupId)|| (this.state.selectedMonth !== prevState.selectedMonth)){
-        //     this.setState({})
-        // }
         if (this.props.schedule.schedule !== prevProps.schedule.schedule) {
             let scheduleOfGroup = new Map();
             this.props.schedule.schedule.map((day) => {
@@ -298,8 +295,7 @@ class AttendanceAndPayments extends Component {
         return (<div>
                 <ModalAddPayment isOpen={this.state.isPaymentModalOpen}
                                  paymentModalCallback={this.paymentModalCallback}
-                                 paymentModalToggle={this.paymentModalToggle}
-                />
+                                 paymentModalToggle={this.paymentModalToggle}/>
                 <h3>Управление платежами</h3>
                 <Form getSelectedGroupId={this.getSelectedGroupId} getSelectedDate={this.getSelectedDate}
                       groups={this.props.group.groups} isEdit={this.props.attendance.isEdit}/>

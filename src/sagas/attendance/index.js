@@ -1,0 +1,58 @@
+import {call, put, takeLatest} from "redux-saga/effects"
+
+//action types
+// import {actionTypes} from "../../store/reducers/attendanceReducer";
+import {actionTypes} from "../../store/redux/attendance/actionTypes";
+import {httpRequest} from "../../functions/httpRequest";
+//url
+const url = "http://localhost:8200";
+
+export function* getAttendance() {
+    yield takeLatest(actionTypes.getAttendanceType, callGetAttendance);
+}
+
+function* callGetAttendance({groupId, from, to}) {
+    try {
+        console.log('saga-get-Attendance');
+        let headers = new Headers();
+        headers.append('Content-Type', "application/json");
+        // const attendance = yield call(() => fetch(url + "/attendance/" + groupId
+        //     + "?from=" + from + "&to=" + to,
+        //     {
+        //         method: "GET",
+        //         headers: headers
+        //     })
+        //     .then(res => res.json())
+        //     .catch(err => console.log(err)));
+        const response = yield call(httpRequest, "get", url + "/attendance/" + groupId
+            + "?from=" + from + "&to=" + to, headers);
+        yield put({type: actionTypes.getAttendanceSucceededType, attendance: response.data})
+    } catch (error) {
+        console.log(error);
+        yield put({type: actionTypes.getAttendanceFailedType, error});
+    }
+}
+
+//edit attendance
+export function* editAttendance() {
+    yield takeLatest(actionTypes.editAttendanceSubmitType, callEditAttendance)
+}
+
+function* callEditAttendance({groupId, data}) {
+    try {
+        let headers = new Headers();
+        console.log("saga-edit-Attendance", data);
+        headers.append('Content-Type', "application/json");//
+        // yield call(() => fetch(url + "/attendance/" + groupId,
+        //     {
+        //         method: 'PUT',
+        //         headers: headers,
+        //         body: JSON.stringify(data)
+        //     }).catch(error => console.log(error)));
+        yield call(httpRequest, "put", url + "/attendance/" + groupId, headers, data);
+        yield put({type: actionTypes.editAttendanceSucceededType})
+    } catch (error) {
+        console.log(error);
+        yield put({type: actionTypes.editAttendanceFailedType, error})
+    }
+}

@@ -25,7 +25,7 @@ export const groupReducer = (state, action) => {
             return {
                 ...state,
                 isLoaded: false,
-                error: action.payload
+                error: action.error
             };
         // case actionTypes.createGroupType:
         //     return {
@@ -51,7 +51,7 @@ export const groupReducer = (state, action) => {
         case actionTypes.createGroupFailedType:
             return {
                 ...state,
-                error: action.payload
+                error: action.error
             };//delete + edit
         case actionTypes.editGroupSucceededType:
             return {
@@ -61,7 +61,7 @@ export const groupReducer = (state, action) => {
         case actionTypes.editGroupFailedType:
             return {
                 ...state,
-                error: action.payload
+                error: action.error
             };
         case actionTypes.deleteGroupSucceededType:
             return {
@@ -80,7 +80,7 @@ export const groupReducer = (state, action) => {
                 groupById: action.groupById
             };
         case actionTypes.getGroupByIdFailedType: {
-            console.log(action.error);
+            // console.log("error from reducer", action.error);
             return {
                 ...state,
                 error: action.error
@@ -96,7 +96,8 @@ export const groupReducer = (state, action) => {
         case actionTypes.getUsersFromGroupFailedType: {
             return {
                 ...state,
-                error: action.payload
+                // error: action.payload
+                error: action.error
             }
         }
         case actionTypes.deleteUserFromGroupSucceededType: {
@@ -110,6 +111,7 @@ export const groupReducer = (state, action) => {
             return {
                 ...state,
                 // ok: action.ok,
+                error: action.error
             }
         }
         case actionTypes.addUserToGroupType: {
@@ -127,6 +129,11 @@ export const groupReducer = (state, action) => {
                 isUsersAddedToGroup: true,
             }
         }
+        case actionTypes.addUserToGroupFailedType:
+            return {
+                ...state,
+                error: action.error
+            };
         default :
             return state;
     }

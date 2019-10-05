@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import Loading from "../../components/Loading";
+import Loading from "../../../rubbish/Loading";
 import {paymentsActionCreators} from "../../../store/redux/payments/actionCreators";
-import {UserPaymentHistory} from "./UserPaymentHistory";
+import {UserPaymentHistory} from "../../components/users/UserPaymentHistory";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
-import {UserPageProfile} from "./UserPageProfile";
+import {UserPageProfile} from "../../components/users/UserPageProfile";
 import ModalWarning from "../../components/modals/ModalWarning";
 import {Link} from "react-router-dom";
-
+import Spinner from "../../components/other/Spinner";
 
 class UserPage extends Component {
 
@@ -109,11 +109,11 @@ class UserPage extends Component {
                             </button>
                             <Link to={`/users/edit_user/user_${this.props.userId}`}
                                   className="btn btn-outline-warning"
-                                  onClick={this.props.onEditUser}>Редактировать</Link></div> : <Loading/>}
+                                  onClick={this.props.onEditUser}>Редактировать</Link></div> : <Spinner/>}
                     {this.props.payments.isLoaded ?
                         <UserPaymentHistory payments={this.props.payments.payments}
                                             onDelete={this.onDelete.bind(this)}/>
-                        : null}
+                        : <Spinner/>}
                 </div>
             </div>
         )

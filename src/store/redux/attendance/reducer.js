@@ -21,7 +21,7 @@ export const attendanceReducer = (state, action) => {
         case actionTypes.getAttendanceFailedType:
             return {
                 ...state,
-                error: action.payload
+                error: action.error
             };
         case actionTypes.editAttendanceType:
             return {
@@ -40,7 +40,7 @@ export const attendanceReducer = (state, action) => {
             return {
                 ...state,
                 isEdit: false,
-                error: action.payload
+                error: action.error
             };
         default :
             return state;

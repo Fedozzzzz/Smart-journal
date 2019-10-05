@@ -6,7 +6,7 @@ export const AttendanceAndPaymentsTableHead=(props)=> {
         result.push(<th className="cell" onClick={props.onClickHead.bind(this, key)}>{key}</th>)
     });
     return (<tr>
-        <th>Студент</th>
+        <th className="table__head_student">Студент</th>
         {result}
         <th>Долг</th>
         <th>Счет</th>
