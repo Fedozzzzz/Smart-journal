@@ -1,4 +1,4 @@
-import {call, put, takeLatest} from 'redux-saga/effects'
+import {call, put, takeLatest, all} from 'redux-saga/effects'
 import {actionTypes} from "../../store/redux/users/actionTypes";
 import {httpRequest} from "../../functions/httpRequest";
 //url
@@ -6,7 +6,12 @@ const url = 'http://localhost:8200';
 
 //USERS
 
-export function* createUser() {
+export function* getUsersSaga() {
+    yield all([createUser(),getUser(),getAllUsers(),editUser(),deleteUser()])
+}
+
+
+function* createUser() {
     yield takeLatest(actionTypes.createUserSubmitType, callCreateUser)
 }
 
@@ -31,7 +36,7 @@ function* callCreateUser({data}) {
     }
 }
 
-export function* getUser() {
+function* getUser() {
     yield takeLatest(actionTypes.getUserType, callGetUser)
 }
 
@@ -54,7 +59,7 @@ function* callGetUser({guid}) {
     }
 }
 
-export function* getAllUsers() {
+function* getAllUsers() {
     yield takeLatest(actionTypes.getAllUsersType, callGetAllUsers)
 }
 
@@ -77,7 +82,7 @@ function* callGetAllUsers() {
     }
 }
 
-export function* deleteUser() {
+function* deleteUser() {
     yield takeLatest(actionTypes.deleteUserType, callDeleteUser)
 }
 
@@ -101,7 +106,7 @@ function* callDeleteUser({guid}) {
     }
 }
 
-export function* editUser() {
+function* editUser() {
     yield takeLatest(actionTypes.editUserSubmitType, callEditUser)
 }
 

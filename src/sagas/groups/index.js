@@ -1,13 +1,26 @@
-import {call, put, takeLatest} from 'redux-saga/effects';
-//action types
-import {actionTypes} from "../../store/redux/groups/actionTypes";
+import {call, put, takeLatest, all} from 'redux-saga/effects';
+import {actionTypes} from "../../store/redux/groups/actionTypes";//action types
 import {httpRequest} from "../../functions/httpRequest";
 
-// const axios = require('axios');
 //url
 const url = 'http://localhost:8200';
 
-export function* getGroups() {
+//GROUPS
+
+export function* getGroupsSaga() {
+    yield all([
+        getGroups(),
+        getUsersFromGroup(),
+        deleteUserFromGroup(),
+        deleteGroup(),
+        getGroupById(),
+        createGroup(),
+        editGroup(),
+        addUserToGroupSubmit()
+    ])
+}
+
+function* getGroups() {
     yield takeLatest(actionTypes.getAllGroupsType, callGetGroups)
 }
 
@@ -38,7 +51,7 @@ function* callGetGroups() {
     }
 }
 
-export function* createGroup() {
+function* createGroup() {
     yield takeLatest(actionTypes.createGroupSubmitType, callCreateGroup);
 }
 
@@ -213,11 +226,6 @@ export function* deleteUserFromGroup() {
 function* callDeleteUserFromGroup({groupId, userId, arrayOfUserId}) {
     try {
         let headers = new Headers();
-        const requestBody = {
-            "userIds": arrayOfUserId,
-            "userId": userId,
-            "groupId": groupId
-        };
         // console.log("saga-delete-user-from-group ", groupId, userId, arrayOfUserId);
         // headers.append('Content-Type', "application/json");
         // yield call(() => fetch(url + '/users/assign',
@@ -228,7 +236,11 @@ function* callDeleteUserFromGroup({groupId, userId, arrayOfUserId}) {
         //     })
         // // .then(res => console.log(res))
         //     .catch(error => console.log(error)));
-        yield call(httpRequest, "delete", url + '/users/assign', headers, requestBody);
+        yield call(httpRequest, "delete", url + '/users/assign', headers, {
+            "userIds": arrayOfUserId,
+            "userId": userId,
+            "groupId": groupId
+        });
         yield put({type: actionTypes.deleteUserFromGroupSucceededType})
     } catch (error) {
         console.log(error);

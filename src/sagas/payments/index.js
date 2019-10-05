@@ -1,4 +1,4 @@
-import {call, put, takeLatest} from "redux-saga/effects";
+import {call, put, takeLatest, all} from "redux-saga/effects";
 //action types
 import {actionTypes} from "../../store/redux/payments/actionTypes";
 import {httpRequest} from "../../functions/httpRequest";
@@ -6,7 +6,11 @@ import {httpRequest} from "../../functions/httpRequest";
 const url = "http://localhost:8200";
 
 
-export function* getPayments() {
+export function* getPaymentsSaga() {
+    yield all([getPayments(), cancelPayment(), addPayment()])
+}
+
+function* getPayments() {
     yield takeLatest(actionTypes.getPaymentsType, callGetPayments)
 }
 
@@ -31,7 +35,7 @@ function* callGetPayments({userId, from, to}) {
     }
 }
 
-export function* addPayment() {
+function* addPayment() {
     yield takeLatest(actionTypes.addPaymentSubmitType, callAddPayment);
 }
 
@@ -55,7 +59,7 @@ function* callAddPayment({userId, data}) {
     }
 }
 
-export function* cancelPayment() {
+function* cancelPayment() {
     yield takeLatest(actionTypes.cancelPaymentType, callCancelPayment)
 }
 

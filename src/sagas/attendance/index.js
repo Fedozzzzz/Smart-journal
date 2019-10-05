@@ -1,13 +1,15 @@
-import {call, put, takeLatest} from "redux-saga/effects"
-
-//action types
-// import {actionTypes} from "../../store/reducers/attendanceReducer";
-import {actionTypes} from "../../store/redux/attendance/actionTypes";
+import {call, put, takeLatest, all} from "redux-saga/effects"
+import {actionTypes} from "../../store/redux/attendance/actionTypes";//action types
 import {httpRequest} from "../../functions/httpRequest";
+
 //url
 const url = "http://localhost:8200";
 
-export function* getAttendance() {
+export function* getAttendanceSaga() {
+    yield all([getAttendance(), editAttendance()])
+}
+
+function* getAttendance() {
     yield takeLatest(actionTypes.getAttendanceType, callGetAttendance);
 }
 
@@ -34,7 +36,7 @@ function* callGetAttendance({groupId, from, to}) {
 }
 
 //edit attendance
-export function* editAttendance() {
+function* editAttendance() {
     yield takeLatest(actionTypes.editAttendanceSubmitType, callEditAttendance)
 }
 

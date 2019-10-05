@@ -1,12 +1,18 @@
 import {call, put, takeLatest, all} from 'redux-saga/effects'
 import {actionTypes} from "../../store/redux/schedule/actionTypes";
 import {httpRequest} from "../../functions/httpRequest";
+
+
 //url
 const url = 'http://localhost:8200';
 
-//GET
+//SCHEDULE
 
-export function* getSchedule() {
+export function* getScheduleSaga() {
+    yield all([getSchedule(),editSchedule()])
+}
+
+function* getSchedule() {
     yield takeLatest(actionTypes.getScheduleType, callGetSchedule);
 }
 
@@ -32,7 +38,7 @@ function* callGetSchedule({groupId, from, to}) {
     }
 }
 
-export function* editSchedule() {
+function* editSchedule() {
     yield takeLatest(actionTypes.editScheduleSubmitType, callEditSchedule)
 }
 
