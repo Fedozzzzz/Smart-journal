@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import {Redirect, Route} from "react-router-dom";
+// import {Redirect, Route} from "react-router-dom";
 import {ErrorPage} from "../../components/error boundary/ErrorPage";
 import {connect} from "react-redux";
-import ModalError from "../../components/modals/ModalError";
+// import ModalError from "../../components/modals/ModalError";
 
 class ErrorBoundary extends Component {
     constructor(props) {
@@ -67,7 +67,7 @@ class ErrorBoundary extends Component {
         console.log("props", this.props);
         console.log("error boundary", console.log(this.state));
         return (
-            <Route path="/error_page">{
+            <div>{
                 this.state.hasError ?
                     <div>
                         <ErrorPage error={this.state.error}/>
@@ -77,7 +77,9 @@ class ErrorBoundary extends Component {
                     //     This is a danger alert—check it out!
                     // </div>
                     //                    <ModalError isOpen={this.state.isModalOpen}/>
-                    : this.props.children}</Route>)
+                    : this.props.children}</div>)
+        // </Route>
+        // <Route path="/error_page">)
     }
 }
 
