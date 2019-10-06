@@ -10,6 +10,7 @@ import AttendanceAndPayments
 import ErrorBoundary from "./components and containres/containers/error boundary/ErrorBoundary";
 // import {ErrorComponent} from "./components and containres/components/error boundary/Error"
 import ErrorRoute from "./components and containres/containers/error boundary/ErrorRoute";
+import Statistics from "./components and containres/containers/statistics/Statistics";
 
 export default () => (
     <ErrorBoundary>
@@ -19,6 +20,7 @@ export default () => (
             <Route path='/schedule' component={Schedule}/>
             <Route path='/groups' component={Groups}/>
             <Route path='/users' component={Users}/>
+            <Route path='/statistics' component={Statistics}/>
             <Route exact path='/error_page' component={ErrorRoute}/>
         </Layout>
     </ErrorBoundary>

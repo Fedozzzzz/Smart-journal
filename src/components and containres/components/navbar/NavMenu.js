@@ -54,6 +54,10 @@ export default class NavMenu extends Component {
                                         платежами</NavLink>
                                 </NavItem>
                                 <NavItem>
+                                    <NavLink tag={Link} className="text-dark" to="/statistics"
+                                             onClick={this.closeNavbar}>Статистика</NavLink>
+                                </NavItem>
+                                <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/schedule"
                                              onClick={this.closeNavbar}>Расписание</NavLink>
                                 </NavItem>
