@@ -6,6 +6,7 @@ import {groupReducer} from "./redux/groups/reducer";
 import {userReducer} from "./redux/users/reducer";
 import {paymentsReducer} from "./redux/payments/reducer";
 import {attendanceReducer} from "./redux/attendance/reducer";
+import {statisticsReducer} from "./redux/statistics/reducer";
 import rootSaga from '../sagas/root-saga'
 
 export default function configureStore(history, initialState) {
