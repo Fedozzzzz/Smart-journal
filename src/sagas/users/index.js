@@ -1,13 +1,14 @@
 import {call, put, takeLatest, all} from 'redux-saga/effects'
 import {actionTypes} from "../../store/redux/users/actionTypes";
 import {httpRequest} from "../../functions/httpRequest";
+import {url} from "../../constants";
 //url
-const url = 'http://localhost:8200';
+// const url = 'http://localhost:8200';
 
 //USERS
 
 export function* getUsersSaga() {
-    yield all([createUser(),getUser(),getAllUsers(),editUser(),deleteUser()])
+    yield all([createUser(), getUser(), getAllUsers(), editUser(), deleteUser()])
 }
 
 

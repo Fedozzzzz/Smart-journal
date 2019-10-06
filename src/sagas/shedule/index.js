@@ -1,10 +1,10 @@
 import {call, put, takeLatest, all} from 'redux-saga/effects'
 import {actionTypes} from "../../store/redux/schedule/actionTypes";
 import {httpRequest} from "../../functions/httpRequest";
-
+import {url} from "../../constants";
 
 //url
-const url = 'http://localhost:8200';
+// const url = 'http://localhost:8200';
 
 //SCHEDULE
 

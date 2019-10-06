@@ -21,9 +21,16 @@ export default class NavMenu extends Component {
         super(props);
 
         this.toggle = this.toggle.bind(this);
+        this.closeNavbar = this.closeNavbar.bind(this);
         this.state = {
             isOpen: false
         };
+    }
+
+    closeNavbar() {
+        this.setState({
+            isOpen: false
+        });
     }
 
     toggle() {
@@ -42,10 +49,13 @@ export default class NavMenu extends Component {
                         <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={this.state.isOpen} navbar>
                             <ul className="navbar-nav flex-grow">
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/payment_management">Управление платежами</NavLink>
+                                    <NavLink tag={Link} className="text-dark" to="/payment_management"
+                                             onClick={this.closeNavbar}>Управление
+                                        платежами</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/schedule">Расписание</NavLink>
+                                    <NavLink tag={Link} className="text-dark" to="/schedule"
+                                             onClick={this.closeNavbar}>Расписание</NavLink>
                                 </NavItem>
                                 {/*<UncontrolledDropdown nav inNavbar>*/}
                                 {/*    <DropdownToggle nav caret>*/}
@@ -65,10 +75,12 @@ export default class NavMenu extends Component {
                                 {/*    </DropdownMenu>*/}
                                 {/*</UncontrolledDropdown>*/}
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/groups">Группы</NavLink>
+                                    <NavLink tag={Link} className="text-dark" to="/groups"
+                                             onClick={this.closeNavbar}>Группы</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/users">Студенты</NavLink>
+                                    <NavLink tag={Link} className="text-dark" to="/users"
+                                             onClick={this.closeNavbar}>Студенты</NavLink>
                                 </NavItem>
                             </ul>
                         </Collapse>

@@ -50,7 +50,7 @@ class ModalWarning extends Component {
     render() {
         return (
             <div>
-                <Modal isOpen={this.state.modal} toggle={this.toggle}>
+                <Modal isOpen={this.state.modal} toggle={this.toggle} className="">
                     <ModalHeader toggle={this.toggle}>Внимание!</ModalHeader>
                     <ModalBody>
                         <h6>{this.props.warningMessage}</h6>

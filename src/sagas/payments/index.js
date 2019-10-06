@@ -2,8 +2,9 @@ import {call, put, takeLatest, all} from "redux-saga/effects";
 //action types
 import {actionTypes} from "../../store/redux/payments/actionTypes";
 import {httpRequest} from "../../functions/httpRequest";
+import {url} from "../../constants";
 //url
-const url = "http://localhost:8200";
+// const url = "http://localhost:8200";
 
 
 export function* getPaymentsSaga() {

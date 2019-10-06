@@ -1,9 +1,9 @@
 import {call, put, takeLatest, all} from "redux-saga/effects"
 import {actionTypes} from "../../store/redux/attendance/actionTypes";//action types
 import {httpRequest} from "../../functions/httpRequest";
-
+import {url} from "../../constants";
 //url
-const url = "http://localhost:8200";
+// const url = "http://localhost:8200";
 
 export function* getAttendanceSaga() {
     yield all([getAttendance(), editAttendance()])
