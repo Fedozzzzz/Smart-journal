@@ -16,7 +16,8 @@ export function* getGroupsSaga() {
         getGroupById(),
         createGroup(),
         editGroup(),
-        addUserToGroupSubmit()
+        addUserToGroupSubmit(),
+        addUserToGroup()
     ])
 }
 
@@ -78,7 +79,7 @@ function* callCreateGroup({data}) {
     }
 }
 
-export function* editGroup() {
+function* editGroup() {
     yield takeLatest(actionTypes.editGroupSubmitType, callEditGroup)
 }
 
@@ -103,7 +104,7 @@ function* callEditGroup({guid, data}) {
     }
 }
 
-export function* deleteGroup() {
+function* deleteGroup() {
     yield takeLatest(actionTypes.deleteGroupType, callDeleteGroup)
 }
 
@@ -127,7 +128,7 @@ function* callDeleteGroup({guid}) {
     }
 }
 
-export function* getGroupById() {
+function* getGroupById() {
     yield takeLatest(actionTypes.getGroupByIdType, callGetGroupById)
 }
 
@@ -141,8 +142,7 @@ function* callGetGroupById({guid}) {
         //         headers: headers
         //     }).then(response => response.json())
         //     .catch(error => console.error(error)));
-        //should be rejected:
-        //http://localhost:3000/groups/group_fae2c0bc-9b51-4277-ad39-5b72ab90618a
+
 
         const response = yield call(httpRequest, "get", url + '/groups/' + guid, headers);
         console.log(response);
@@ -154,7 +154,7 @@ function* callGetGroupById({guid}) {
     }
 }
 
-export function* getUsersFromGroup() {
+function* getUsersFromGroup() {
     yield takeLatest(actionTypes.getUsersFromGroupType, callGetUsersFromGroup)
 }
 
@@ -174,7 +174,7 @@ function* callGetUsersFromGroup({groupId}) {
     }
 }
 
-export function* addUserToGroup() {
+function* addUserToGroup() {
     takeLatest(actionTypes.addUserToGroupType, callAddUserToGroup)
 }
 
@@ -185,7 +185,7 @@ function* callAddUserToGroup({userIds}) {//TODO
 }
 
 //add user to group
-export function* addUserToGroupSubmit() {
+function* addUserToGroupSubmit() {
     yield takeLatest(actionTypes.addUserToGroupSubmitType, callAddUserToGroupSubmit)
 }
 
@@ -219,7 +219,7 @@ function* callAddUserToGroupSubmit({groupId, userIds}) {
 
 //delete user from group
 
-export function* deleteUserFromGroup() {
+function* deleteUserFromGroup() {
     yield takeLatest(actionTypes.deleteUserFromGroupSubmitType, callDeleteUserFromGroup)
 }
 

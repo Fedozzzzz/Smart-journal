@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
 import {UserCreatingInputs} from "../../components/users/UserCreatingInputs";
+import UserCreatingForm from "../../components/users/UserCreatingForm";
 
 class UserCreating extends Component {
 
@@ -50,7 +51,8 @@ class UserCreating extends Component {
         return (
             <div>
                 <h4>Создание профиля студента</h4>
-                <UserCreatingInputs  handler={this.handleChange}/>
+                {/*<UserCreatingForm/>*/}
+                <UserCreatingInputs handler={this.handleChange}/>
                 <div className="container-fluid">
                     <div className="form-group row col-8">
                         <button
