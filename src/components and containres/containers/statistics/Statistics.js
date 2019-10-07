@@ -13,14 +13,16 @@ class Statistics extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedMonth: new Date(new Date().setMonth(new Date().getMonth() - 1)).getBeginOfMonth(),
+            selectedMonth: new Date().getBeginOfMonth(),
             selectedGroupId: null
-        }
+        };
+        this.getSelectedDate = this.getSelectedDate.bind(this);
+        this.getSelectedGroupId = this.getSelectedGroupId.bind(this);
     }
 
     componentDidMount() {
         this.props.getAllGroups();
-        this.props.buildStatistics(this.state.selectedMonth.toLocaleISOString().slice(0, 7));
+        this.props.buildStatistics(new Date(new Date(this.state.selectedMonth).setMonth(new Date().getMonth() - 1)).toLocaleISOString().slice(0, 7));
         // console.log("date", this.state.selectedMonth.toLocaleISOString().slice(0, 7));
         // this.props.getAllStatistics(this.state.selectedMonth.toLocaleISOString().slice(0, 7));
     }

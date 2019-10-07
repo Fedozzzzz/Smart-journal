@@ -53,7 +53,7 @@ function* callBuildStatistics({monthDate}) {
         let headers = new Headers();
         console.log("saga-edit-schedule");
         headers.append('Content-Type', "application/json");
-        yield call(httpRequest, "put", url + "/schedule/" +
+        yield call(httpRequest, "post", url + "/statistics/" +
             "?monthDate=" + monthDate, headers);
         yield put({type: actionTypes.buildStatisticsSucceededType})
     } catch (error) {
