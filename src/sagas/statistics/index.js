@@ -15,7 +15,7 @@ function* getAllStatistics() {
 
 function* callGetAllStatistics({monthDate}) {
     try {
-        console.log('saga-get-Statistics');
+        console.log('saga-get-Statistics', monthDate);
         let headers = new Headers();
         headers.append('Content-Type', "application/json");
         const response = yield call(httpRequest, "get", url + "/statistics/" + "?monthDate=" + monthDate, headers);

@@ -7,6 +7,7 @@ export const EditSaveButtons = (props) => (
                 onClick={props.onEdit}
                 type="redact"
                 className="btn btn-info"
+                disabled={props.isEdit}
             >Редактировать таблицу
             </button> : null}
         {props.isEdit ?

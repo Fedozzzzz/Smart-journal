@@ -15,7 +15,8 @@ export default function configureStore(history, initialState) {
         schedule: scheduleReducer,
         user: userReducer,
         attendance: attendanceReducer,
-        payments: paymentsReducer
+        payments: paymentsReducer,
+        statistics: statisticsReducer
     };
 
     const sagaMiddleware = createSagaMiddleware();
