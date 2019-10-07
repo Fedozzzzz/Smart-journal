@@ -1,11 +1,11 @@
 import React, {Component} from "react"
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {statisticsReducer} from "../../../store/redux/statistics/reducer";
 import {statisticsActionCreators} from "../../../store/redux/statistics/actionCreators";
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 import {StatisticsTable} from "../../components/statistics/StatisticsTable";
 import Form from "../../components/other/Form";
+import Spinner from "../../components/other/Spinner";
 
 
 class Statistics extends Component {
@@ -26,7 +26,8 @@ class Statistics extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.state.selectedMonth !== prevState.selectedMonth && this.state.selectedGroupId) {
+        if (this.state.selectedMonth !== prevState.selectedMonth && this.state.selectedGroupId
+            || this.state.selectedGroupId !== prevState.selectedGroupId) {
             this.props.getGroupStatistics(this.state.selectedGroupId)
         }
         if (this.props.group.groups !== prevProps.group.groups) {
@@ -44,8 +45,8 @@ class Statistics extends Component {
                 groupsMap: tempGroupsMap
             })
         }
-        if (this.state.selectedGroupId !== prevState.selectedGroupId) {
-        }
+        // if (this.state.selectedGroupId !== prevState.selectedGroupId) {
+        // }
     }
 
     getSelectedDate(value) {
@@ -62,8 +63,9 @@ class Statistics extends Component {
             <h3>Статистика</h3>
             <Form getSelectedGroupId={this.getSelectedGroupId} getSelectedDate={this.getSelectedDate}
                   groups={this.props.group.groups} isEdit={false}/>
-            <StatisticsTable groupById={this.state.groupsMap.get(this.state.selectedGroupId)}
-                             statistics={this.props.statistics.groupStatistics}/>
+            {this.props.statistics.isLoaded ?
+                <StatisticsTable groupById={this.state.groupsMap.get(this.state.selectedGroupId)}
+                                 statistics={this.props.statistics.groupStatistics}/> : <Spinner/>}
         </div>)
     }
 }
