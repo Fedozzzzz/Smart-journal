@@ -14,7 +14,7 @@ class ErrorBoundary extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
-        console.log("error boundary receive props", nextProps);
+        // console.log("error boundary receive props", nextProps);
         if (nextProps.group.error) {
             this.setState({
                 hasError: true,
@@ -64,8 +64,8 @@ class ErrorBoundary extends Component {
     // }
 
     render() {
-        console.log("props", this.props);
-        console.log("error boundary", console.log(this.state));
+        // console.log("props", this.props);
+        // console.log("error boundary", console.log(this.state));
         return (
             <div>{
                 this.state.hasError ?

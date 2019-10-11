@@ -4,8 +4,9 @@ import {bindActionCreators} from "redux";
 import {statisticsActionCreators} from "../../../store/redux/statistics/actionCreators";
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 import {StatisticsTable} from "../../components/statistics/StatisticsTable";
-import Form from "../../components/other/Form";
+// import Form from "../../components/other/Form";
 import Spinner from "../../components/other/Spinner";
+import StatisticsForm from "../../components/other/StatisticsForm";
 
 
 class Statistics extends Component {
@@ -14,7 +15,8 @@ class Statistics extends Component {
         super(props);
         this.state = {
             selectedMonth: new Date().getBeginOfMonth(),
-            selectedGroupId: null
+            // selectedGroupId: null,
+            groupsMap: new Map()
         };
         this.getSelectedDate = this.getSelectedDate.bind(this);
         this.getSelectedGroupId = this.getSelectedGroupId.bind(this);
@@ -23,26 +25,49 @@ class Statistics extends Component {
     componentDidMount() {
         this.props.getAllGroups();
         this.props.buildStatistics(new Date(new Date(this.state.selectedMonth).setMonth(new Date().getMonth() - 1)).toLocaleISOString().slice(0, 7));
+        // this.props.buildStatistics(this.state.selectedMonth.toLocaleISOString().slice(0, 7));
         // console.log("date", this.state.selectedMonth.toLocaleISOString().slice(0, 7));
-        // this.props.getAllStatistics(this.state.selectedMonth.toLocaleISOString().slice(0, 7));
+        this.props.getAllStatistics(this.state.selectedMonth.toLocaleISOString().slice(0, 7));
+        // this.props.getAllStatistics(new Date(new Date(this.state.selectedMonth).setMonth(new Date().getMonth() - 1)).toLocaleISOString().slice(0, 7));
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.state.selectedMonth !== prevState.selectedMonth && this.state.selectedGroupId
-            || this.state.selectedGroupId !== prevState.selectedGroupId) {
-            this.props.getGroupStatistics(this.state.selectedGroupId)
+        if (this.state.selectedMonth !== prevState.selectedMonth) {
+            // if (this.state.selectedGroupId || this.state.selectedGroupId !== prevState.selectedGroupId) {
+            //     this.props.getGroupStatistics(this.state.selectedGroupId, this.state.selectedMonth.toLocaleISOString().slice(0, 7))
+            // } else {
+            this.props.getAllStatistics(this.state.selectedMonth.toLocaleISOString().slice(0, 7));
+            // }
         }
-        if (this.props.group.groups !== prevProps.group.groups) {
+        if (this.props.group.isLoaded !== prevProps.group.isLoaded && this.props.statistics.isLoaded ||
+            this.props.statistics.isLoaded !== prevProps.statistics.isLoaded && this.props.group.isLoaded) {
             let tempGroupsMap = new Map();
-            this.props.group.groups.forEach(value => {
-                tempGroupsMap.set(value.guid, {
-                    name: value.name,
-                    days: value.days,
-                    startTimes: value.startTimes,
-                    duration: value.duration,
-                    cost: value.cost
+            let {groups} = this.props.group;
+            let {allStatistics} = this.props.statistics;
+            console.log(this.props.group, this.props.statistics);
+            for (let i = 0; i < groups.length; i++) {
+                tempGroupsMap.set(groups[i].guid, {
+                    name: groups[i].name,
+                    days: groups[i].days,
+                    startTimes: groups[i].startTimes,
+                    duration: groups[i].duration,
+                    cost: groups[i].cost,
+                    peopleAmount: allStatistics[i].peopleAmount,
+                    visitsAmount: allStatistics[i].visitsAmount,
+                    attendancePercentage: allStatistics[i].attendancePercentage,
+                    expectedIncome: allStatistics[i].expectedIncome,
                 })
-            });
+            }
+            // this.props.group.groups.forEach(value => {
+            //     tempGroupsMap.set(value.guid, {
+            //         name: value.name,
+            //         days: value.days,
+            //         startTimes: value.startTimes,
+            //         duration: value.duration,
+            //         cost: value.cost,
+            //
+            //     })
+            // });
             this.setState({
                 groupsMap: tempGroupsMap
             })
@@ -61,13 +86,22 @@ class Statistics extends Component {
 
     render() {
         console.log("this.props", this.props);
+        console.log("this.state", this.state);
         return (<div>
             <h3>Статистика</h3>
-            <Form getSelectedGroupId={this.getSelectedGroupId} getSelectedDate={this.getSelectedDate}
-                  groups={this.props.group.groups} isEdit={false}/>
-            {this.props.statistics.isLoaded ?
-                <StatisticsTable groupById={this.state.groupsMap.get(this.state.selectedGroupId)}
-                                 statistics={this.props.statistics.groupStatistics}/> : <Spinner/>}
+            {/*<Form getSelectedGroupId={this.getSelectedGroupId} getSelectedDate={this.getSelectedDate}*/}
+            {/*      groups={this.props.group.groups} isEdit={false}/>*/}
+            <StatisticsForm getSelectedDate={this.getSelectedDate}/>
+            {this.props.statistics.isLoaded && this.props.group.isLoaded ?
+                // !this.state.selectedGroupId
+                // && this.props.statistics.allStatistics.length
+                // ?
+                this.props.statistics.allStatistics.length ?
+                    <StatisticsTable groups={this.state.groupsMap}
+                                     statistics={this.props.statistics.groupStatistics}/>
+                    //{/*<StatisticsTable groups={new Map(this.state.groupsMap.get(this.state.selectedGroupId))}*/}
+                    // statistics={this.props.statistics.groupStatistics}/>
+                    : <Spinner/> : <div><p>Данных о статистике за выбранный месяц еще нет.</p></div>}
         </div>)
     }
 }

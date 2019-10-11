@@ -20,6 +20,12 @@ class Form extends Component {
         this.warningCallback = this.warningCallback.bind(this);
     }
 
+    // UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
+    //     if (nextProps.selectedMonth) {
+    //         this.setState({selectedMonth: nextProps.selectedMonth});
+    //     }
+    // }
+
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.state.selectedGroupId !== prevState.selectedGroupId && this.state.selectedGroupId !== "Выберите группу") {

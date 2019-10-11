@@ -37,7 +37,7 @@ function* callGetGroupStatistics({groupId, monthDate}) {
         headers.append('Content-Type', "application/json");
         const response = yield call(httpRequest, "get", url + "/statistics/" + groupId +
             "?monthDate=" + monthDate, headers);
-        yield put({type: actionTypes.getGroupStatisticsSucceededType, allStatistics: response.data})
+        yield put({type: actionTypes.getGroupStatisticsSucceededType, groupStatistics: response.data})
     } catch (error) {
         console.log(error);
         yield put({type: actionTypes.getGroupStatisticsFailedType, error});
