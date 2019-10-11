@@ -3,13 +3,14 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {Link} from "react-router-dom";
 import "../../../css/GroupPage.css"
-import Loading from "../../../rubbish/Loading"
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 import {GroupPageProfile} from "../../components/groups/GroupPageProfile";
 import {GroupWeekSchedule} from "../../components/groups/GroupWeekSchedule";
 import {GroupStudents} from "../../components/groups/GroupStudents";
 import ModalWarning from "../../components/modals/ModalWarning";
 import Spinner from "../../components/other/Spinner";
+import {statisticsActionCreators} from "../../../store/redux/statistics/actionCreators";
+import {StatisticsTable} from "../../components/statistics/StatisticsTable";
 
 
 class GroupPage extends Component {
@@ -19,7 +20,8 @@ class GroupPage extends Component {
         this.state = {
             isWarningOpen: false,
             userById: null,
-            warningMessage: "Вы уверены, что хотите удалить группу? Вся информация о ней не сохранится!"
+            warningMessage: "Вы уверены, что хотите удалить группу? Вся информация о ней не сохранится!",
+            groupData: new Map()
         };
         this.warningToggle = this.warningToggle.bind(this);
         this.warningCallback = this.warningCallback.bind(this);
@@ -29,12 +31,34 @@ class GroupPage extends Component {
     componentDidMount() {
         this.props.getGroupById(this.props.groupId);
         this.props.getUsersFromGroup(this.props.groupId);
+        let prevMonthDate = new Date(new Date(new Date().getBeginOfMonth()).setMonth(
+            new Date().getMonth() - 1)).toLocaleISOString().slice(0, 7);
+        console.log(prevMonthDate);
+        this.props.getGroupStatistics(this.props.groupId, prevMonthDate);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.isLoaded === false) {
+        if (this.props.group.isLoaded === false) {
             this.props.getGroupById(this.props.groupId);
             this.props.getUsersFromGroup(this.props.groupId);
+        }
+        if (this.props.group.groupById !== prevProps.group.groupById && this.props.statistics.isLoaded
+            || this.props.statistics.isLoaded !== prevProps.statistics.isLoaded && this.props.group.groupById) {
+            let {groupById} = this.props.group;
+            let {groupStatistics} = this.props.statistics;
+            this.setState({
+                groupData: new Map([[groupById.guid, {
+                    name: groupById.name,
+                    days: groupById.days,
+                    startTimes: groupById.startTimes,
+                    duration: groupById.duration,
+                    cost: groupById.cost,
+                    peopleAmount: groupStatistics.peopleAmount,
+                    visitsAmount: groupStatistics.visitsAmount,
+                    attendancePercentage: groupStatistics.attendancePercentage,
+                    expectedIncome: groupStatistics.expectedIncome,
+                }]])
+            });
         }
     }
 
@@ -59,7 +83,7 @@ class GroupPage extends Component {
 
     render() {
         // console.log("render of group page ", this.props.groupById);//should add redirect
-        // console.log("props", this.props);
+        console.log("props", this.props);
         return (
             <div className="container">
                 <ModalWarning warningMessage={this.state.warningMessage} isOpen={this.state.isWarningOpen}
@@ -67,14 +91,14 @@ class GroupPage extends Component {
                               warningCallback={this.warningCallback}/>
                 <div className="group-page__info">
                     <h4>Страница группы</h4>
-                    {this.props.groupById ? <div>
+                    {this.props.group.groupById ? <div>
                         <div>
-                            <GroupPageProfile groupById={this.props.groupById}/>
-                            <GroupWeekSchedule groupById={this.props.groupById}/>
+                            <GroupPageProfile groupById={this.props.group.groupById}/>
+                            <GroupWeekSchedule groupById={this.props.group.groupById}/>
                         </div>
                         <h5>Студенты этой группы:</h5>
-                        {this.props.usersFromGroup ?
-                            <GroupStudents usersFromGroup={this.props.usersFromGroup}/> : <Spinner/>}
+                        {this.props.group.usersFromGroup ?
+                            <GroupStudents usersFromGroup={this.props.group.usersFromGroup}/> : <Spinner/>}
                         <div>
                             <button
                                 className="btn btn-outline-danger"
@@ -85,6 +109,13 @@ class GroupPage extends Component {
                                   onClick={() => this.props.editGroup(this.props.groupId.guid)}>Редактировать</Link>
                         </div>
                     </div> : <Spinner/>}
+                    <h6>Статистика за предыдущий месяц</h6>
+                    {this.props.statistics.groupStatistics ?
+                        Object.keys(this.props.statistics.groupStatistics).length ?
+                            <StatisticsTable groups={this.state.groupData}/> : <Spinner/>
+                        : null
+                    }
+
                 </div>
             </div>
         )
@@ -92,6 +123,11 @@ class GroupPage extends Component {
 }
 
 export default connect(
-    state => state.group,
-    dispatch => bindActionCreators(groupActionCreators, dispatch)
+    state => {
+        return {
+            group: state.group,
+            statistics: state.statistics
+        }
+    },
+    dispatch => bindActionCreators(Object.assign({}, groupActionCreators, statisticsActionCreators), dispatch)
 )(GroupPage)
