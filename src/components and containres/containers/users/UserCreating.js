@@ -14,15 +14,66 @@ class UserCreating extends Component {
             surname: null,
             patronymic: null,
             email: null,
-            phoneNumber: null
+            phoneNumber: null,
+            nameError: "Это поле обязательно",
+            surnameError: "Это поле обязательно",
+            patronymicError: "Это поле обязательно",
+            phoneNumberError: "Это поле обязательно",
+            emailError: "Это поле обязательно",
         };
         this.onSaveUser = this.onSaveUser.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
+        this.validateName = this.validateName.bind(this);
+        this.validatePhoneNumber = this.validatePhoneNumber.bind(this);
+        this.validateEmail = this.validateEmail.bind(this);
     }
 
     onSaveUser() {
         this.props.createUserSubmit(this.state);
         this.props.history.goBack();
+    }
+
+    validateName(value) {
+        console.log(value);
+        console.log(!RegExp(/[A-Zа-я][a-zа-я]+/).test(value));
+        return !new RegExp(/[A-Zа-я][a-zа-я]+/).test(value) ?
+            "Неверный ввод"
+            : "";
+    }
+
+    validatePhoneNumber(value) {
+        return !new RegExp(/^8[0-9]{10}/).test(value) ?
+            "Неверный ввод"
+            : "";
+    }
+
+    handleBlur(e) {
+        // const usernameError = this.validateUserName();
+        // this.setState({usernameError});
+        switch (e.target.id) {
+            case "userName":
+                this.setState({nameError: this.validateName(this.state.name)});
+                break;
+            case 'userSurname':
+                this.setState({surnameError: this.validateName(this.state.surname)});
+                break;
+            case "userPatronymic":
+                this.setState({patronymicError: this.validateName(this.state.patronymic)});
+                break;
+            case "email-input":
+                this.setState({emailError: this.validateEmail(this.state.email)});
+                break;
+            case "tel-input":
+                this.setState({phoneNumberError: this.validatePhoneNumber(this.state.phoneNumber)});
+                break;
+        }
+    }
+
+    validateEmail(value) {
+        return !new RegExp(/.+@.+\..+/i).test(value) ?
+            "Неверный ввод"
+            : "";
     }
 
     handleChange(e) {
@@ -47,12 +98,20 @@ class UserCreating extends Component {
     }
 
     render() {
-        // console.log(this.state);
+        console.log(this.state);
         return (
             <div>
                 <h4>Создание профиля студента</h4>
                 {/*<UserCreatingForm/>*/}
-                <UserCreatingInputs handler={this.handleChange}/>
+                <UserCreatingInputs changeHandler={this.handleChange} blurHandler={this.handleBlur}
+                                    errors={{
+                                        nameError: this.state.nameError,
+                                        surnameError: this.state.surnameError,
+                                        patronymicError: this.state.patronymicError,
+                                        phoneNumberError: this.state.phoneNumberError,
+                                        emailError: this.state.emailError,
+                                    }}
+                />
                 <div className="container-fluid">
                     <div className="form-group row col-8">
                         <button

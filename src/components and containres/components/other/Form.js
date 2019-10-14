@@ -26,7 +26,6 @@ class Form extends Component {
     //     }
     // }
 
-
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.state.selectedGroupId !== prevState.selectedGroupId && this.state.selectedGroupId !== "Выберите группу") {
             this.props.getSelectedGroupId(this.state.selectedGroupId)
@@ -59,12 +58,6 @@ class Form extends Component {
                 tempMonth: new Date(e.target.value),
                 isWarningOpen: true
             })
-            //
-            // if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
-            //     this.setState({
-            //         selectedMonth: new Date(e.target.value),
-            //     });
-            // }
         } else this.setState({
             selectedMonth: new Date(e.target.value),
         });
@@ -73,11 +66,6 @@ class Form extends Component {
     onSelectGroup(e) {
         let groupId = e.target.value;
         if (this.props.isEdit) {
-            // if (window.confirm("Внимание!!! Предыдущие действия не сохранятся! Вы уверены, что хотите продолжить?")) {
-            //     this.setState({
-            //         selectedGroupId: groupId,
-            //     });
-            // }
             this.setState({
                 tempGroupId: groupId,
                 isWarningOpen: true
