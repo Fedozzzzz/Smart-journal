@@ -36,8 +36,8 @@ class UserCreating extends Component {
 
     validateName(value) {
         console.log(value);
-        console.log(!RegExp(/[A-Zа-я][a-zа-я]+/).test(value));
-        return !new RegExp(/[A-Zа-я][a-zа-я]+/).test(value) ?
+        console.log(!RegExp(/^[A-Zа-я][a-zа-я]+/).test(value));
+        return !new RegExp(/^[A-Zа-я][a-zа-я]+/).test(value) ?
             "Неверный ввод"
             : "";
     }

@@ -28,13 +28,17 @@ class GroupCreating extends Component {
                 cost: null,
                 days: [],
                 startTimes: []
-            }
+            },
+            costError: "Это поле обязательно",
+            durationError: "Это поле обязательно",
+            nameError: "Это поле обязательно",
         };
         this.onSaveGroup = this.onSaveGroup.bind(this);
         this.handleCheckboxesChange = this.handleCheckboxesChange.bind(this);
         this.handleUsersChange = this.handleUsersChange.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleStartTimesInputsChange = this.handleStartTimesInputsChange.bind(this);
+        this.handleInputBlur = this.handleInputBlur.bind(this);
     }
 
     componentDidMount() {
@@ -72,8 +76,26 @@ class GroupCreating extends Component {
         this.setState({checkboxes: this.state.checkboxes.set(e.target.id, e.target.checked)});
     }
 
-    handleInputChange(e) {
+    handleInputBlur(e) {
+        // console.log(e.target);
+        let temp = Object.assign({}, this.state.data);
+        switch (e.target.id) {
+            case 'groupName':
+                // temp.name = e.target.value;
+                // this.setState({nameError: this.validateGroupName(this.state.data.name)})
+                break;
+            case 'cost':
+                temp.cost = e.target.value;
+                // this.setState({surname: e.target.value});
+                break;
+            case 'duration':
+                temp.duration = e.target.value;
+                break;
+        }
+        // this.setState({data: temp});
+    }
 
+    handleInputChange(e) {
         // console.log(e.target);
         let temp = Object.assign({}, this.state.data);
         switch (e.target.id) {
@@ -87,14 +109,7 @@ class GroupCreating extends Component {
                 break;
             case 'duration':
                 temp.duration = e.target.value;
-                // this.setState({patronymic: e.target.value});
                 break;
-            // case "email-input":
-            //     this.setState({email: e.target.value});
-            //     break;
-            // case "tel-input":
-            //     this.setState({phoneNumber: e.target.value});
-            //     break;
         }
         this.setState({data: temp});
     }

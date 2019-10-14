@@ -29,6 +29,8 @@ export const GroupCreatingProfile = (props) => {
                            type="number"
                            placeholder="Цена за занятие"
                            id='cost'
+                           min="0"
+                           max="10000"
                            defaultValue={props.groupById ? props.groupById.cost : null}
                            onChange={props.handleInputChange}
                     />
