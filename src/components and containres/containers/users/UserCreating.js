@@ -116,7 +116,13 @@ class UserCreating extends Component {
                     <div className="form-group row col-8">
                         <button
                             className='btn btn-success'
-                            onClick={this.onSaveUser}>Сохранить
+                            onClick={this.onSaveUser}
+                            disabled={this.state.nameError
+                                || this.state.surnameError
+                                || this.state.patronymicError
+                                || this.state.phoneNumberError
+                                || this.state.emailError}
+                        >Сохранить
                         </button>
                     </div>
                 </div>
