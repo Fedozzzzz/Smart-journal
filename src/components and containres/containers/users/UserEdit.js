@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
-import {UserCreatingInputs} from "../../components/users/UserCreatingInputs";
+import UserCreatingInputs from "../../components/users/UserCreatingInputs";
 
 class UserEdit extends Component {
 
@@ -16,25 +16,26 @@ class UserEdit extends Component {
             phoneNumber: null
         };
         this.onSaveEditUser = this.onSaveEditUser.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.getUserProfileCallback = this.getUserProfileCallback.bind(this);
+        // this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
         this.props.getUserById(this.props.userId);
     }
 
-    componentWillReceiveProps(nextProps, nextContext) {
-        if (nextProps.userById) {
-            this.setState({
-                    name: nextProps.userById.name || null,
-                    surname: nextProps.userById.surname || null,
-                    patronymic: nextProps.userById.patronymic || null,
-                    email: nextProps.userById.email || null,
-                    phoneNumber: nextProps.userById.phoneNumber || null
-                }
-            )
-        }
-    }
+    // componentWillReceiveProps(nextProps, nextContext) {
+    //     if (nextProps.userById) {
+    //         this.setState({
+    //                 name: nextProps.userById.name || null,
+    //                 surname: nextProps.userById.surname || null,
+    //                 patronymic: nextProps.userById.patronymic || null,
+    //                 email: nextProps.userById.email || null,
+    //                 phoneNumber: nextProps.userById.phoneNumber || null
+    //             }
+    //         )
+    //     }
+    // }
 
     onSaveEditUser() {
         console.log("this.state OK!", this.state);
@@ -42,25 +43,41 @@ class UserEdit extends Component {
         this.props.history.goBack();
     }
 
-    handleChange(e) {
-        // console.log(e.target.id);
-        switch (e.target.id) {
-            case 'userName':
-                this.setState({name: e.target.value});
-                break;
-            case 'userSurname':
-                this.setState({surname: e.target.value});
-                break;
-            case 'userPatronymic':
-                this.setState({patronymic: e.target.value});
-                break;
-            case "email-input":
-                this.setState({email: e.target.value});
-                break;
-            case "tel-input":
-                this.setState({phoneNumber: e.target.value});
-                break;
-        }
+    // handleChange(e) {
+    //     // console.log(e.target.id);
+    //     switch (e.target.id) {
+    //         case 'userName':
+    //             this.setState({name: e.target.value});
+    //             break;
+    //         case 'userSurname':
+    //             this.setState({surname: e.target.value});
+    //             break;
+    //         case 'userPatronymic':
+    //             this.setState({patronymic: e.target.value});
+    //             break;
+    //         case "email-input":
+    //             this.setState({email: e.target.value});
+    //             break;
+    //         case "tel-input":
+    //             this.setState({phoneNumber: e.target.value});
+    //             break;
+    //     }
+    // }
+
+
+    getUserProfileCallback(userData) {
+        this.setState({
+            name: userData.name,
+            surname: userData.surname,
+            patronymic: userData.patronymic,
+            email: userData.email,
+            phoneNumber: userData.phoneNumber,
+            // nameError: userData.nameError,
+            // surnameError: userData.surnameError,
+            // patronymicError: userData.patronymicError,
+            // phoneNumberError: userData.phoneNumberError,
+            // emailError: userData.emailError,
+        })
     }
 
     render() {
@@ -72,7 +89,9 @@ class UserEdit extends Component {
                 <div>
                     {/*<UserEditInputs handler={this.handleChange} userById={this.props.userById || null}/>*/}
                     <h4>Редактирование профиля студента</h4>
-                    <UserCreatingInputs handler={this.handleChange} userById={this.props.userById || null}/>
+                    {/*<UserCreatingInputs handler={this.handleChange} userById={this.props.userById || null}/>*/}
+                    <UserCreatingInputs getUserProfileCallback={this.getUserProfileCallback}
+                                        userById={this.props.userById}/>
                     <div className="container">
                         <div className="form-group row col-8">
                             <button className='btn btn-success' onClick={this.onSaveEditUser}>Сохранить</button>
