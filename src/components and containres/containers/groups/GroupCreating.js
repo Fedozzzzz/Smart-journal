@@ -3,10 +3,11 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
-import {GroupCreatingProfile} from "../../components/groups/GroupCreatingProfile";
 import {GroupCreatingWeekSchedule} from "../../components/groups/GroupCreatingWeekSchedule";
 import {GroupAddStudents} from "../../components/groups/GroupAddStudents";
 import Spinner from "../../components/other/Spinner";
+import GroupCreatingProfile from "../../components/groups/GroupCreatingProfile";
+
 
 class GroupCreating extends Component {
 
@@ -36,9 +37,8 @@ class GroupCreating extends Component {
         this.onSaveGroup = this.onSaveGroup.bind(this);
         this.handleCheckboxesChange = this.handleCheckboxesChange.bind(this);
         this.handleUsersChange = this.handleUsersChange.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
         this.handleStartTimesInputsChange = this.handleStartTimesInputsChange.bind(this);
-        this.handleInputBlur = this.handleInputBlur.bind(this);
+        this.groupProfileCallback = this.groupProfileCallback.bind(this);
     }
 
     componentDidMount() {
@@ -47,7 +47,12 @@ class GroupCreating extends Component {
 
     onSaveGroup() {
         let tempArr = [];
-        let data = Object.assign({}, this.state.data);
+        // let data = Object.assign({}, this.state.data);
+        let data = {
+            name: this.state.name,
+            cost: this.state.cost,
+            duration: this.state.duration
+        };
         this.state.checkboxes.forEach((v) => {
             tempArr.push(v);
         });
@@ -57,9 +62,14 @@ class GroupCreating extends Component {
             tempArr.push(v);
         });
         data.startTimes = tempArr;
-        console.log(data);
+        // console.log(data);
         this.props.createGroupSubmit(data);
         this.props.history.goBack();
+    }
+
+    groupProfileCallback(groupInfo) {
+        // console.log(groupInfo);
+        this.setState({name: groupInfo.name, cost: groupInfo.cost, duration: groupInfo.duration})
     }
 
     componentWillUnmount() {
@@ -74,44 +84,6 @@ class GroupCreating extends Component {
 
     handleCheckboxesChange(e) {
         this.setState({checkboxes: this.state.checkboxes.set(e.target.id, e.target.checked)});
-    }
-
-    handleInputBlur(e) {
-        // console.log(e.target);
-        let temp = Object.assign({}, this.state.data);
-        switch (e.target.id) {
-            case 'groupName':
-                // temp.name = e.target.value;
-                // this.setState({nameError: this.validateGroupName(this.state.data.name)})
-                break;
-            case 'cost':
-                temp.cost = e.target.value;
-                // this.setState({surname: e.target.value});
-                break;
-            case 'duration':
-                temp.duration = e.target.value;
-                break;
-        }
-        // this.setState({data: temp});
-    }
-
-    handleInputChange(e) {
-        // console.log(e.target);
-        let temp = Object.assign({}, this.state.data);
-        switch (e.target.id) {
-            case 'groupName':
-                temp.name = e.target.value;
-                // this.setState({data: this.state.})
-                break;
-            case 'cost':
-                temp.cost = e.target.value;
-                // this.setState({surname: e.target.value});
-                break;
-            case 'duration':
-                temp.duration = e.target.value;
-                break;
-        }
-        this.setState({data: temp});
     }
 
     handleStartTimesInputsChange(e) {
@@ -135,10 +107,10 @@ class GroupCreating extends Component {
     }
 
     render() {
-        // console.log("this.state", this.state);
+        console.log("this.state", this.state);
         return (<div className="container-fluid">
                 <h4>Создание группы</h4>
-                <GroupCreatingProfile handleInputChange={this.handleInputChange}/>
+                <GroupCreatingProfile groupProfileCallback={this.groupProfileCallback}/>
                 <label
                     htmlFor="example-text-input"
                     className="col-xs-2 col-form-label"> Расписание :</label>

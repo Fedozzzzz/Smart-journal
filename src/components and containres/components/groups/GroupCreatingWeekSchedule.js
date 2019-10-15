@@ -1,7 +1,7 @@
 import React from "react"
 
 export const GroupCreatingWeekSchedule = (props) => {
-    console.log("week sch props", props);
+    // console.log("week sch props", props);
     return (<div>
         <div className="create-group__schedule-table">
             <table className='table table-striped table-bordered table-responsive-sm'>

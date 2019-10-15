@@ -1,56 +1,166 @@
-import React from "react"
+import React, {Component} from "react"
 import "../../../css/GroupCreatingProfile.css"
 
-export const GroupCreatingProfile = (props) => {
-    console.log("props profile", props);
-    return (<div className="container-fluid">
-        <div className="group-creating__profile">
-            {/*<form className="form-inline">*/}
-            <form>
-                <div className="form-group row">
-                    <label htmlFor="groupName"
-                           className="col-md-3 col-form-label">Название</label>
-                    {/*<div className="col-xs-10">*/}
-                    <input className="form-control col-md-7 m-0"
-                           type="text"
-                           placeholder="Введите название"
-                           id='groupName'
-                           defaultValue={props.groupById ? props.groupById.name : null}
-                           onChange={props.handleInputChange}
-                    />
-                </div>
-                {/*</form>*/}
-                <div className="form-group row">
-                    <label htmlFor="cost"
-                           className="col-md-3 col-form-label">Цена за
-                        занятие</label>
-                    {/*<div className="col-xs-10">*/}
-                    <input className="form-control col-md-7 m-0"
-                           type="number"
-                           placeholder="Цена за занятие"
-                           id='cost'
-                           min="0"
-                           max="10000"
-                           defaultValue={props.groupById ? props.groupById.cost : null}
-                           onChange={props.handleInputChange}
-                    />
-                    {/*</div>*/}
-                </div>
-                <div className="form-group row">
-                    <label htmlFor="duration"
-                           className="col-md-5 col-form-label">Продолжительность
-                        занятия</label>
-                    {/*<div className="col-xs-10">*/}
-                    <input className="form-control col-md-7 m-0"
-                           type="number"
-                           placeholder="Продолжительность (в мин.)"
-                           id='duration'
-                           defaultValue={props.groupById ? props.groupById.duration : null}
-                           onChange={props.handleInputChange}
-                    />
-                    {/*</div>*/}
-                </div>
-            </form>
-        </div>
-    </div>);
-};
+
+class GroupCreatingProfile extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: null,
+            cost: null,
+            duration: null,
+            costError: "Это поле обязательно",
+            durationError: "Это поле обязательно",
+            nameError: "Это поле обязательно",
+        };
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleInputBlur = this.handleInputBlur.bind(this);
+    }
+
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext) { //??? все правильно?
+        console.log("receive props");
+        if (nextProps.groupById !== this.props.groupById) {
+            this.setState({
+                name: nextProps.groupById.name,
+                cost: nextProps.groupById.cost,
+                duration: nextProps.groupById.duration,
+                costError: null,
+                durationError: null,
+                nameError: null,
+            })
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.state.name !== prevState.name
+            || this.state.cost !== prevState.cost
+            || this.state.duration !== prevState.duration) {
+            this.props.groupProfileCallback(Object.assign({}, this.state))
+        }
+    }
+
+
+    validateGroupName(value) {
+        return !new RegExp(/\w+/).test(value) ?
+            "Неверный ввод"
+            : "";
+    }
+
+    validateCost(value) {
+        return Number(value) <= 0 ? "Число должно быть положительным"
+            : Number(value) > 10000 ?
+                "Слишком большое число"
+                : "";
+    }
+
+    validateDuration(value) {
+        return Number(value) <= 0 ? "Число должно быть положительным"
+            : Number(value) > 500 ?
+                "Слишком большое число"
+                : "";
+    }
+
+    handleInputBlur(e) {
+        // console.log(e.target);
+        switch (e.target.id) {
+            case 'groupName':
+                this.setState({nameError: this.validateGroupName(this.state.name)});
+                break;
+            case 'cost':
+                this.setState({costError: this.validateCost(this.state.cost)});
+                break;
+            case 'duration':
+                this.setState({durationError: this.validateDuration(this.state.duration)});
+                break;
+        }
+    }
+
+    handleInputChange(e) {
+        // console.log(e.target);
+        switch (e.target.id) {
+            case 'groupName':
+                this.setState({name: e.target.value});
+                break;
+            case 'cost':
+                this.setState({cost: e.target.value});
+                break;
+            case 'duration':
+                this.setState({duration: e.target.value});
+                break;
+        }
+    }
+
+    generateClassNameByError(err) {
+        return err ? "is-invalid" : "is-valid"
+    }
+
+    render() {
+        console.log("form state", this.state);
+        // console.log("form props", this.props);
+        const {groupById} = this.props;
+        return (<div className="container-fluid">
+            <div className="group-creating__profile">
+                <form>
+                    <div className="form-group row">
+                        <label htmlFor="groupName"
+                               className="col-md-3 col-form-label">Название</label>
+                        <input
+                            className={"form-control col-md-7 m-0 " + this.generateClassNameByError(this.state.nameError)}
+                            type="text"
+                            placeholder="Введите название"
+                            id='groupName'
+                            defaultValue={groupById ? groupById.name : null}
+                            value={this.state.name}
+                            onChange={this.handleInputChange}
+                            onBlur={this.handleInputBlur}
+                        />
+                        <div className="invalid-feedback valid-feedback">
+                            <div>{this.state.nameError}</div>
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <label htmlFor="cost"
+                               className="col-md-3 col-form-label">Цена за
+                            занятие</label>
+                        <input
+                            className={"form-control col-md-7 m-0 " + this.generateClassNameByError(this.state.costError)}
+                            type="number"
+                            placeholder="Цена за занятие"
+                            id='cost'
+                            min="0"
+                            max="10000"
+                            defaultValue={groupById ? groupById.cost : null}
+                            value={this.state.cost}
+                            onChange={this.handleInputChange}
+                            onBlur={this.handleInputBlur}
+                        />
+                        <div className="invalid-feedback valid-feedback">
+                            <div>{this.state.costError}</div>
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <label htmlFor="duration"
+                               className="col-md-5 col-form-label">Продолжительность
+                            занятия</label>
+                        <input
+                            className={"form-control col-md-7 m-0 " + this.generateClassNameByError(this.state.durationError)}
+                            type="number"
+                            placeholder="Продолжительность (в мин.)"
+                            id='duration'
+                            defaultValue={groupById ? groupById.duration : null}
+                            value={this.state.duration}
+                            onChange={this.handleInputChange}
+                            onBlur={this.handleInputBlur}
+                        />
+                        <div className="invalid-feedback valid-feedback">
+                            <div>{this.state.durationError}</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>);
+    }
+}
+
+export default GroupCreatingProfile;

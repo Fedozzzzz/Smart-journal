@@ -5,7 +5,8 @@ import Loading from "../../../rubbish/Loading";
 import {groupActionCreators} from "../../../store/redux/groups/actionCreators";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
 import {GroupAddStudents} from "../../components/groups/GroupAddStudents";
-import {GroupCreatingProfile} from "../../components/groups/GroupCreatingProfile";
+// import {GroupCreatingProfile} from "../../components/groups/GroupCreatingProfile";
+import GroupCreatingProfile from "../../components/groups/GroupCreatingProfile";
 import {GroupCreatingWeekSchedule} from "../../components/groups/GroupCreatingWeekSchedule";
 import {GroupStudentsRemove} from "../../components/groups/GroupStudentsRemove";
 import ModalWarning from "../../components/modals/ModalWarning";
@@ -42,8 +43,9 @@ class GroupEdit extends Component {
         this.warningCallback = this.warningCallback.bind(this);
         this.handleCheckboxesChange = this.handleCheckboxesChange.bind(this);
         this.handleStartTimesInputsChange = this.handleStartTimesInputsChange.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
+        // this.handleInputChange = this.handleInputChange.bind(this);
         this.handleUsersChange = this.handleUsersChange.bind(this);
+        this.groupProfileCallback = this.groupProfileCallback.bind(this);
     }
 
     componentDidMount() {
@@ -77,6 +79,11 @@ class GroupEdit extends Component {
         }
     }
 
+    groupProfileCallback(groupInfo) {
+        // console.log(groupInfo);
+        this.setState({name: groupInfo.name, cost: groupInfo.cost, duration: groupInfo.duration})
+    }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         // console.log("did-update");
         if (!this.props.group.isLoaded) {
@@ -89,7 +96,12 @@ class GroupEdit extends Component {
 
     onSaveEditGroup() {
         let tempArr = [];
-        let data = Object.assign({}, this.state.data);
+        // let data = Object.assign({}, this.state.data);
+        let data = {
+            name: this.state.name,
+            cost: this.state.cost,
+            duration: this.state.duration,
+        };
         this.state.checkboxes.forEach((v) => {
             tempArr.push(v);
         });
@@ -122,22 +134,22 @@ class GroupEdit extends Component {
         this.setState({stInputs: this.state.stInputs.set(e.target.id, e.target.value)});
     }
 
-    handleInputChange(e) {
-        // console.log(e.target);
-        let temp = Object.assign({}, this.state.data);
-        switch (e.target.id) {
-            case 'groupName':
-                temp.name = e.target.value;
-                break;
-            case 'cost':
-                temp.cost = e.target.value;
-                break;
-            case 'duration':
-                temp.duration = e.target.value;
-                break;
-        }
-        this.setState({data: temp});
-    }
+    // handleInputChange(e) {
+    //     // console.log(e.target);
+    //     let temp = Object.assign({}, this.state.data);
+    //     switch (e.target.id) {
+    //         case 'groupName':
+    //             temp.name = e.target.value;
+    //             break;
+    //         case 'cost':
+    //             temp.cost = e.target.value;
+    //             break;
+    //         case 'duration':
+    //             temp.duration = e.target.value;
+    //             break;
+    //     }
+    //     this.setState({data: temp});
+    // }
 
     handleUsersChange(e) {
         let tempMap = new Map(this.state.chosenUsers);
@@ -183,7 +195,9 @@ class GroupEdit extends Component {
                               warningCallback={this.warningCallback}/>
                 <h4>Редактирование группы</h4>
                 <GroupCreatingProfile groupById={this.props.group.groupById}
-                                      handleInputChange={this.handleInputChange}/>
+                    // handleInputChange={this.handleInputChange}
+                                      groupProfileCallback={this.groupProfileCallback}
+                />
                 <h6>Расписание:</h6>
                 <GroupCreatingWeekSchedule props={this.state} groupById={this.props.group.groupById}
                                            handleCheckboxesChange={this.handleCheckboxesChange}
