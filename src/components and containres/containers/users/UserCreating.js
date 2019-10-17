@@ -3,18 +3,21 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {userActionCreators} from "../../../store/redux/users/actionCreators";
 import UserCreatingInputs from "../../components/users/UserCreatingInputs";
-import UserCreatingForm from "../../components/users/UserCreatingForm";
+
+// import UserCreatingForm from "../../components/users/UserCreatingForm";
 
 class UserCreating extends Component {
 
     constructor(props) {
         super(props);
+        let savedUserDataFromLocalStorage = JSON.parse(localStorage.getItem("savedUserData"));
+        console.log(savedUserDataFromLocalStorage);
         this.state = {
-            name: null,
-            surname: null,
-            patronymic: null,
-            email: null,
-            phoneNumber: null,
+            name: savedUserDataFromLocalStorage ? savedUserDataFromLocalStorage.name : null,
+            surname: savedUserDataFromLocalStorage ? savedUserDataFromLocalStorage.surname : null,
+            patronymic: savedUserDataFromLocalStorage ? savedUserDataFromLocalStorage.patronymic : null,
+            email: savedUserDataFromLocalStorage ? savedUserDataFromLocalStorage.email : null,
+            phoneNumber: savedUserDataFromLocalStorage ? savedUserDataFromLocalStorage.phoneNumber : null,
             nameError: null,
             surnameError: null,
             patronymicError: null,
@@ -25,9 +28,34 @@ class UserCreating extends Component {
         this.getUserProfileCallback = this.getUserProfileCallback.bind(this);
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.state.name !== prevState.name
+            || this.state.surname !== prevState.surname
+            || this.state.patronymic !== prevState.patronymic
+            || this.state.email !== prevState.email
+            || this.state.phoneNumber !== prevState.phoneNumber) {
+            // console.log("update body");
+            localStorage.setItem("savedUserData", JSON.stringify({
+                name: this.state.name,
+                surname: this.state.surname,
+                patronymic: this.state.patronymic,
+                email: this.state.email,
+                phoneNumber: this.state.phoneNumber,
+            }))
+        }
+    }
+
+    componentWillUnmount() {
+        // localStorage.removeItem("savedUserData");
+    }
+
     onSaveUser() {
+        // try {
         this.props.createUserSubmit(this.state);
         this.props.history.goBack();
+        // } catch (e) {
+        //     console.log("error", this.props, e);
+        // }
     }
 
     getUserProfileCallback(userData) {
@@ -46,11 +74,20 @@ class UserCreating extends Component {
     }
 
     render() {
-        console.log(this.state);
+        // console.log(this.state);
+        console.log("ls", localStorage.getItem("savedUserData"));
+        console.log("ls", localStorage);
         return (
             <div>
                 <h4>Создание профиля студента</h4>
-                <UserCreatingInputs getUserProfileCallback={this.getUserProfileCallback}/>
+                <UserCreatingInputs getUserProfileCallback={this.getUserProfileCallback} userById={
+                    {
+                        name: this.state.name,
+                        surname: this.state.surname,
+                        patronymic: this.state.patronymic,
+                        email: this.state.email,
+                        phoneNumber: this.state.phoneNumber,
+                    }}/>
                 <div className="container-fluid">
                     <div className="form-group row col-8">
                         <button

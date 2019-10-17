@@ -25,9 +25,9 @@ class GroupCreatingProfile extends Component {
                 name: nextProps.groupById.name,
                 cost: nextProps.groupById.cost,
                 duration: nextProps.groupById.duration,
-                costError: null,
-                durationError: null,
-                nameError: null,
+                costError: this.validateCost(nextProps.groupById.cost),
+                durationError: this.validateDuration(nextProps.groupById.duration),
+                nameError: this.validateGroupName(nextProps.groupById.name),
             })
         }
     }
@@ -42,12 +42,18 @@ class GroupCreatingProfile extends Component {
 
 
     validateGroupName(value) {
-        return !new RegExp(/\w+/).test(value) ?
+        if (!value) {
+            return "Это поле обязательно"
+        }
+        return !new RegExp(/[а-яa-z]+/gi).test(value) ?
             "Неверный ввод"
             : "";
     }
 
     validateCost(value) {
+        if (!value) {
+            return "Это поле обязательно"
+        }
         return Number(value) <= 0 ? "Число должно быть положительным"
             : Number(value) > 10000 ?
                 "Слишком большое число"
@@ -55,6 +61,9 @@ class GroupCreatingProfile extends Component {
     }
 
     validateDuration(value) {
+        if (!value) {
+            return "Это поле обязательно"
+        }
         return Number(value) <= 0 ? "Число должно быть положительным"
             : Number(value) > 500 ?
                 "Слишком большое число"
@@ -97,7 +106,7 @@ class GroupCreatingProfile extends Component {
 
     render() {
         console.log("form state", this.state);
-        // console.log("form props", this.props);
+        console.log("form props", this.props);
         const {groupById} = this.props;
         return (<div className="container-fluid">
             <div className="group-creating__profile">

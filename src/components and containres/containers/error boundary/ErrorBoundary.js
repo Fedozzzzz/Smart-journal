@@ -21,13 +21,15 @@ class ErrorBoundary extends Component {
                 error: nextProps.group.error,
                 // isModalOpen: true
             })
-        } else if (nextProps.user.error) {
+        }
+        else if (nextProps.user.error) {
             this.setState({
                 hasError: true,
                 error: nextProps.user.error,
                 // isModalOpen: true
             })
-        } else if (nextProps.schedule.error) {
+        }
+        else if (nextProps.schedule.error) {
             this.setState({
                 hasError: true,
                 error: nextProps.schedule.error,

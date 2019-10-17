@@ -26,8 +26,8 @@ class UserCreatingInputs extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
-        console.log("receive props");
-        console.log(nextProps);
+        // console.log("receive props");
+        // console.log(nextProps);
         if (nextProps.userById !== this.props.userById) {
             this.setState({
                 name: nextProps.userById.name,
@@ -35,11 +35,11 @@ class UserCreatingInputs extends Component {
                 patronymic: nextProps.userById.patronymic,
                 email: nextProps.userById.email,
                 phoneNumber: nextProps.userById.phoneNumber,
-                nameError: null,
-                surnameError: null,
-                patronymicError: null,
-                phoneNumberError: null,
-                emailError: null,
+                nameError: this.validateName(nextProps.userById.name),
+                surnameError: this.validateName(nextProps.userById.surname),
+                patronymicError: this.validateName(nextProps.userById.patronymic),
+                phoneNumberError: this.validatePhoneNumber(nextProps.userById.phoneNumber),
+                emailError: this.validateEmail(nextProps.userById.email),
             })
         }
     }
