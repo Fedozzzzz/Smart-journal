@@ -5,34 +5,35 @@ export const UserPaymentHistory = (props) => {
     return (
         <div>
             <h5>История платежей студента</h5>
-            <table className="table table-bordered table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th>Дата</th>
-                    <th>Тип операции</th>
-                    <th>Сумма операции</th>
-                    <th>Счет</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {props.payments.reverse().map(payment => (
+            {props.accountHistory.length ?
+                <table className="table table-bordered table-bordered table-hover">
+                    <thead>
                     <tr>
-                        <td>{new Date(payment.performedAt).toString()}</td>
-                        <td>{getTypeOperationString(payment.type)}</td>
-                        <td>{payment.diffAmount}</td>
-                        <td>{payment.newAmount}</td>
-                        <td>
-                            <button className="btn btn-danger"
-                                // onClick={props.onDelete.bind(this, payment.id)}>
-                            >
-                                Удалить
-                            </button>
-                        </td>
+                        <th>Дата</th>
+                        <th>Тип операции</th>
+                        <th>Сумма операции</th>
+                        <th>Счет</th>
+                        <th></th>
                     </tr>
-                ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {props.accountHistory.map(payment => (
+                        <tr>
+                            <td>{new Date(payment.performedAt).toUTCString()}</td>
+                            <td>{getTypeOperationString(payment.type)}</td>
+                            <td>{payment.diffAmount}</td>
+                            <td>{payment.newAmount}</td>
+                            <td>
+                                {props.payments.has(payment.paymentId) ?
+                                    <button className="btn btn-danger"
+                                            onClick={props.onDelete.bind(this, payment.paymentId)}>
+                                        Удалить
+                                    </button> : null}
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table> : <div><p>Здесь будет отображаться история платежей</p></div>}
         </div>
     );
 };
@@ -47,8 +48,8 @@ function getTypeOperationString(type) {
         case 2:
             return "Отмена платежа";
         case 3:
-            return "Увеличение долга в связи с имзменением расписания";
+            return "Увеличение долга в связи с изменением расписания или посещаемости";
         case 4:
-            return "Уменьшение долга в связи с имзменением расписания";
+            return "Уменьшение долга в связи с изменением расписания или посещаемости";
     }
 }

@@ -4,22 +4,40 @@ import {httpRequest} from "../../functions/httpRequest";
 import {url} from "../../constants";
 
 export function* getAccountHistorySaga() {
-    yield all([getAccountHistory()])
+    yield all([getAccountHistoryByStep(), getAccountHistoryByDate()])
 }
 
-function* getAccountHistory() {
-    yield takeLatest(actionTypes.getAccountHistoryType, callGetAccountHistory);
+function* getAccountHistoryByStep() {
+    yield takeLatest(actionTypes.getAccountHistoryByStepType, callGetAccountHistoryByStep);
 }
 
-function* callGetAccountHistory({userId}) {
+function* callGetAccountHistoryByStep({userId, step = 0}) {
     try {
-        console.log('saga-get-AccountHistory');
+        console.log('saga-get-AccountHistory-by-step');
         let headers = new Headers();
         headers.append('Content-Type', "application/json");
-        const response = yield call(httpRequest, "get", url + "/account/history/" + userId, headers);
-        yield put({type: actionTypes.getAccountHistorySucceededType, userAccountHistory: response.data})
+        const response = yield call(httpRequest, "get", url + "/account/history/" + userId + "/" + step, headers);
+        yield put({type: actionTypes.getAccountHistoryByStepSucceededType, userAccountHistory: response.data})
     } catch (error) {
         console.log(error);
-        yield put({type: actionTypes.getAccountHistoryFailedType, error});
+        yield put({type: actionTypes.getAccountHistoryByStepFailedType, error});
+    }
+}
+
+function* getAccountHistoryByDate() {
+    yield takeLatest(actionTypes.getAccountHistoryByDateType, callGetAccountHistoryByDate);
+}
+
+function* callGetAccountHistoryByDate({userId, from, to}) {
+    try {
+        console.log('saga-get-AccountHistory-by-date');
+        let headers = new Headers();
+        headers.append('Content-Type', "application/json");
+        const response = yield call(httpRequest, "get", url + "/account/history/"
+            + userId + "?from=" + from + "&to=" + to, headers);
+        yield put({type: actionTypes.getAccountHistoryByDateSucceededType, userAccountHistory: response.data})
+    } catch (error) {
+        console.log(error);
+        yield put({type: actionTypes.getAccountHistoryByDateFailedType, error});
     }
 }

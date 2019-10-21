@@ -289,7 +289,7 @@ class AttendanceAndPayments extends Component {
                 <ModalAddPayment isOpen={this.state.isPaymentModalOpen}
                                  paymentModalCallback={this.paymentModalCallback}
                                  paymentModalToggle={this.paymentModalToggle}/>
-                <h3>Управление платежами</h3>
+                <h3>Посещаемость</h3>
                 <Form getSelectedGroupId={this.getSelectedGroupId} getSelectedDate={this.getSelectedDate}
                       groups={this.props.group.groups} isEdit={this.props.attendance.isEdit}/>
                 <EditSaveButtons

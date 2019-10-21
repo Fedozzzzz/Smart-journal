@@ -10,13 +10,15 @@ export const accountHistoryReducer = (state, action) => {
 
     state = state || initialState;
     switch (action.type) {
-        case actionTypes.getAccountHistorySucceededType:
+        case actionTypes.getAccountHistoryByDateSucceededType:
+        case actionTypes.getAccountHistoryByStepSucceededType:
             return {
                 ...state,
                 userAccountHistory: action.userAccountHistory,
                 isLoaded: true,
             };
-        case actionTypes.getAccountHistoryFailedType:
+        case actionTypes.getAccountHistoryByDateFailedType:
+        case actionTypes.getAccountHistoryByStepFailedType:
             return {
                 ...state,
                 error: action.error

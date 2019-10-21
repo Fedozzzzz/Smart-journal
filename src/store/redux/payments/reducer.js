@@ -5,8 +5,8 @@ const initialState = {
     isLoaded: false
 };
 
-export const paymentsReducer = (state, action) => {
-    state = state || initialState;
+export const paymentsReducer = (state = initialState, action) => {
+    // state = state || initialState;
     // console.log(action.type);
     switch (action.type) {
         case actionTypes.getPaymentsSucceededType:

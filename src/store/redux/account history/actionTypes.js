@@ -1,5 +1,9 @@
 export const actionTypes = {
-    getAccountHistoryType: 'GET_ACCOUNT_HISTORY',
-    getAccountHistorySucceededType: 'GET_ACCOUNT_HISTORY_SUCCEEDED',
-    getAccountHistoryFailedType: 'GET_ACCOUNT_HISTORY_FAILED',
+    getAccountHistoryByStepType: 'GET_ACCOUNT_HISTORY_BY_STEP',
+    getAccountHistoryByStepSucceededType: 'GET_ACCOUNT_HISTORY_BY_STEP_SUCCEEDED',
+    getAccountHistoryByStepFailedType: 'GET_ACCOUNT_HISTORY_BY_STEP_FAILED',
+
+    getAccountHistoryByDateType: 'GET_ACCOUNT_HISTORY_BY_DATE',
+    getAccountHistoryByDateSucceededType: 'GET_ACCOUNT_HISTORY_BY_DATE_SUCCEEDED',
+    getAccountHistoryByDateFailedType: 'GET_ACCOUNT_HISTORY_BY_DATE_FAILED',
 };

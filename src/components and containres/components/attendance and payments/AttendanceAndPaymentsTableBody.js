@@ -5,7 +5,7 @@ export const AttendanceAndPaymentsTableBody = (props) => {
     console.log(props);
     return (props.usersFromGroup ?
         props.usersFromGroup.map(user => (
-            <tr>
+            <tr key={user.id}>
                 <td>{user.name} {user.surname}</td>
                 {AttendanceAndPaymentsTableBodySchedule(props, user.guid)}
                 {/*<td>{user.dept}</td>*/}

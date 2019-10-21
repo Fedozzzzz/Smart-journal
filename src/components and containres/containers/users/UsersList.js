@@ -30,7 +30,7 @@ class UsersList extends Component {
             <div>
                 <h3>Студенты</h3>
                 <Search/>
-                {this.props.users ?
+                {this.props.isLoaded ?
                     this.props.users.map(user => (
                         <div key={user.guid}>
                             <h5><Link to={`/users/user_${user.guid}`}>{user.name} {user.surname}</Link></h5>

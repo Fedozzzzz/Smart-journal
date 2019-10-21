@@ -34,7 +34,7 @@ class GroupsList extends Component {
             <div>
                 <h3>Группы</h3>
                 <Search/>
-                {this.props.groups ?
+                {this.props.isLoaded ?
                     this.props.groups.map(group => (
                         <div>
                             <h5><Link to={`/groups/group_${group.guid}`}>{group.name}</Link></h5>

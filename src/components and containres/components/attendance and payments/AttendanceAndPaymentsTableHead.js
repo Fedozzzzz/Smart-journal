@@ -1,9 +1,9 @@
 import React from "react"
 
-export const AttendanceAndPaymentsTableHead=(props)=> {
+export const AttendanceAndPaymentsTableHead = (props) => {
     let result = [];
     props.props.scheduleOfGroup.forEach((value, key) => {
-        result.push(<th className="cell" onClick={props.onClickHead.bind(this, key)}>{key}</th>)
+        result.push(<th className="cell" onClick={props.onClickHead.bind(this, key)} key={key}>{key}</th>)
     });
     return (<tr>
         <th className="table__head_student">Студент</th>

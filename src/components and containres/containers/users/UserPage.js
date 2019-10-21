@@ -22,7 +22,8 @@ class UserPage extends Component {
             warningDeleteUser: false,
             warningDeletePayment: false,
             isPaymentModalOpen: false,
-            paymentAction: false
+            paymentAction: false,
+            paymentsOfUser: new Map()
         };
         this.warningToggle = this.warningToggle.bind(this);
         this.warningCallback = this.warningCallback.bind(this);
@@ -34,10 +35,10 @@ class UserPage extends Component {
 
     componentDidMount() {
         this.props.getUserById(this.props.userId);
-        // let beginOfYear = new Date(new Date(new Date().setMonth(0)).setUTCDate(1)).toISOString().slice(0, 10);
-        // let endOfYear = new Date(new Date(new Date().setMonth(11)).setUTCDate(31)).toISOString().slice(0, 10);
-        // this.props.getPayments(this.props.userId, beginOfYear, endOfYear);
-        this.props.getAccountHistory(this.props.userId);
+        let beginOfYear = new Date(new Date(new Date().setMonth(0)).setUTCDate(1)).toISOString().slice(0, 10);
+        let endOfYear = new Date(new Date(new Date().setMonth(11)).setUTCDate(31)).toISOString().slice(0, 10);
+        this.props.getPayments(this.props.userId, beginOfYear, endOfYear);
+        this.props.getAccountHistoryByStep(this.props.userId);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -54,15 +55,26 @@ class UserPage extends Component {
         //     dispatch({type: "GET_PAYMENTS_SUCCEEDED"})
         // }
 
-        if (this.props.payments.newPaymentId !== prevProps.payments.newPaymentId) {
-            this.props.getAccountHistory(this.props.userId);
+        // if (this.props.payments.newPaymentId !== prevProps.payments.newPaymentId) {
+        //     this.props.getAccountHistoryByStep(this.props.userId);
+        // }
+
+        if (this.props.payments !== prevProps.payments) {
+            let tempMap = new Map();
+            this.props.payments.payments.forEach(value => tempMap.set(value.id, {
+                payday: value.payday,
+                amount: value.amount
+            }));
+            this.setState({paymentsOfUser: tempMap});
         }
 
-        // if (!this.props.payments.isLoaded) {
-        //     let beginOfYear = new Date(new Date(new Date().setMonth(0)).setUTCDate(1)).toISOString().slice(0, 10);
-        //     let endOfYear = new Date(new Date(new Date().setMonth(11)).setUTCDate(31)).toISOString().slice(0, 10);
-        //     this.props.getPayments(this.props.userId, beginOfYear, endOfYear);
-        // }
+        console.log("loaded", this.props.payments.isLoaded);
+        if (!this.props.payments.isLoaded && this.props.payments.isLoaded !== prevProps.payments.isLoaded) {
+            let beginOfYear = new Date(new Date(new Date().setMonth(0)).setUTCDate(1)).toISOString().slice(0, 10);
+            let endOfYear = new Date(new Date(new Date().setMonth(11)).setUTCDate(31)).toISOString().slice(0, 10);
+            this.props.getPayments(this.props.userId, beginOfYear, endOfYear);
+            this.props.getAccountHistoryByStep(this.props.userId);
+        }
     }
 
     warningToggle(isOpen) {
@@ -162,7 +174,9 @@ class UserPage extends Component {
                             </button>
                         </div> : <Spinner/>}
                     {this.props.accountHistory.isLoaded ?
-                        <UserPaymentHistory payments={this.props.accountHistory.userAccountHistory}/> : <Spinner/>}
+                        <UserPaymentHistory payments={this.state.paymentsOfUser}
+                                            accountHistory={this.props.accountHistory.userAccountHistory}
+                                            onDelete={this.onDelete.bind(this)}/> : <Spinner/>}
                     {/*{this.props.payments.isLoaded ?*/}
                     {/*    <UserPaymentHistory payments={this.props.payments.payments}*/}
                     {/*                        onDelete={this.onDelete.bind(this)}/>*/}

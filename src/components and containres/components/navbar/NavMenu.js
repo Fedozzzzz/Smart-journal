@@ -50,8 +50,7 @@ export default class NavMenu extends Component {
                             <ul className="navbar-nav flex-grow">
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/payment_management"
-                                             onClick={this.closeNavbar}>Управление
-                                        платежами</NavLink>
+                                             onClick={this.closeNavbar}>Посещаемость</NavLink>
                                 </NavItem>
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/statistics"
