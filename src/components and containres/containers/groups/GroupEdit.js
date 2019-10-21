@@ -116,10 +116,14 @@ class GroupEdit extends Component {
         }
         console.log(data);
         this.props.editGroupSubmit(this.props.groupId, data);
-        data = [];
-        this.state.chosenUsers.forEach((value, key) => {
-            data.push(key);
-        });
+        if (this.state.chosenUsers.length) {
+            data = [];
+            this.state.chosenUsers.forEach((value, key) => {
+                data.push(key);
+            });
+        } else {
+            data = null
+        }
         this.props.addUsersToGroupSubmit(this.props.groupId, data);
         this.props.history.goBack();
     }

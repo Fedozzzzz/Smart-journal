@@ -27,7 +27,7 @@ export const UserPaymentHistory = (props) => {
                                 {props.payments.has(payment.paymentId) ?
                                     <button className="btn btn-danger"
                                             onClick={props.onDelete.bind(this, payment.paymentId)}>
-                                        Удалить
+                                        Отменить
                                     </button> : null}
                             </td>
                         </tr>
