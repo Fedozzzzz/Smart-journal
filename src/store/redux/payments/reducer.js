@@ -1,7 +1,8 @@
 import {actionTypes} from "./actionTypes";
 
 const initialState = {
-    payments: []
+    payments: [],
+    isLoaded: false
 };
 
 export const paymentsReducer = (state, action) => {

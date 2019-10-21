@@ -36,6 +36,7 @@ function* addPayment() {
 function* callAddPayment({userId, data}) {
     try {
         console.log("saga-add-payment");
+        console.log(userId, data);
         let headers = new Headers();
         headers.append('Content-Type', "application/json");
         const response = yield call(httpRequest, "post", url + '/payments/' + userId, headers, data);

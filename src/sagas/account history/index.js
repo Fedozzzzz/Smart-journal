@@ -17,9 +17,9 @@ function* callGetAccountHistory({userId}) {
         let headers = new Headers();
         headers.append('Content-Type', "application/json");
         const response = yield call(httpRequest, "get", url + "/account/history/" + userId, headers);
-        yield put({type: actionTypes.getAttendanceSucceededType, attendance: response.data})
+        yield put({type: actionTypes.getAccountHistorySucceededType, userAccountHistory: response.data})
     } catch (error) {
         console.log(error);
-        yield put({type: actionTypes.getAttendanceFailedType, error});
+        yield put({type: actionTypes.getAccountHistoryFailedType, error});
     }
 }

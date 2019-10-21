@@ -8,8 +8,8 @@ export const AttendanceAndPaymentsTableHead=(props)=> {
     return (<tr>
         <th className="table__head_student">Студент</th>
         {result}
-        <th>Долг</th>
+        {/*<th>Долг</th>*/}
         <th>Счет</th>
-        <th>Действие</th>
+        <th></th>
     </tr>)
 };

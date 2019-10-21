@@ -236,13 +236,6 @@ class AttendanceAndPayments extends Component {
 
     addPayment(userId) {
         this.setState({isPaymentModalOpen: true, userId: userId});
-        // let amount = window.prompt("Введите сумму платежа в рублях");
-        // if (amount) {
-        //     this.props.addPayment(userId, {
-        //         amount: amount,
-        //         payday: new Date().toISOString()
-        //     });
-        // }
     }
 
     clickAttendanceHandler(userId, key, e) {

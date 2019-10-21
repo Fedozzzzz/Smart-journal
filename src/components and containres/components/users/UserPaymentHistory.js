@@ -9,21 +9,26 @@ export const UserPaymentHistory = (props) => {
                 <thead>
                 <tr>
                     <th>Дата</th>
-                    <th>Сумма</th>
-                    <th>Действие</th>
+                    <th>Тип операции</th>
+                    <th>Сумма операции</th>
+                    <th>Счет</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                {props.payments.map(payment => (
+                {props.payments.reverse().map(payment => (
                     <tr>
-                        <td>{new Date(payment.payday).toString()}</td>
-                        <td>{payment.amount}</td>
-                        <div>
+                        <td>{new Date(payment.performedAt).toString()}</td>
+                        <td>{getTypeOperationString(payment.type)}</td>
+                        <td>{payment.diffAmount}</td>
+                        <td>{payment.newAmount}</td>
+                        <td>
                             <button className="btn btn-danger"
-                                    onClick={props.onDelete.bind(this, payment.id)}>
+                                // onClick={props.onDelete.bind(this, payment.id)}>
+                            >
                                 Удалить
                             </button>
-                        </div>
+                        </td>
                     </tr>
                 ))}
                 </tbody>
@@ -31,3 +36,19 @@ export const UserPaymentHistory = (props) => {
         </div>
     );
 };
+
+
+function getTypeOperationString(type) {
+    switch (type) {
+        case 0:
+            return "Unknown";
+        case 1:
+            return "Внесение платежа";
+        case 2:
+            return "Отмена платежа";
+        case 3:
+            return "Увеличение долга в связи с имзменением расписания";
+        case 4:
+            return "Уменьшение долга в связи с имзменением расписания";
+    }
+}

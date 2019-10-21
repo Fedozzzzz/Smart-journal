@@ -1,7 +1,7 @@
 import {actionTypes} from "./actionTypes";
 
 const initialState = {
-    accountHistory: null,
+    userAccountHistory: null,
     isLoaded: false,
     error: null
 };
@@ -13,13 +13,15 @@ export const accountHistoryReducer = (state, action) => {
         case actionTypes.getAccountHistorySucceededType:
             return {
                 ...state,
-                accountHistory: action.accountHistory,
+                userAccountHistory: action.userAccountHistory,
                 isLoaded: true,
             };
         case actionTypes.getAccountHistoryFailedType:
             return {
                 ...state,
                 error: action.error
-            }
+            };
+        default:
+            return state
     }
 };

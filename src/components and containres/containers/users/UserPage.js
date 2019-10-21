@@ -9,6 +9,8 @@ import {UserPageProfile} from "../../components/users/UserPageProfile";
 import ModalWarning from "../../components/modals/ModalWarning";
 import {Link} from "react-router-dom";
 import Spinner from "../../components/other/Spinner";
+import {accountHistoryActionCreators} from "../../../store/redux/account history/actionCreators";
+import ModalAddPayment from "../../components/modals/ModalAddPayment";
 
 class UserPage extends Component {
 
@@ -18,29 +20,49 @@ class UserPage extends Component {
             isWarningOpen: false,
             warningMessage: String(),
             warningDeleteUser: false,
-            warningDeletePayment: false
+            warningDeletePayment: false,
+            isPaymentModalOpen: false,
+            paymentAction: false
         };
         this.warningToggle = this.warningToggle.bind(this);
         this.warningCallback = this.warningCallback.bind(this);
         this.onDeleteUser = this.onDeleteUser.bind(this);
+        this.paymentModalToggle = this.paymentModalToggle.bind(this);
+        this.paymentModalCallback = this.paymentModalCallback.bind(this);
+        this.addPayment = this.addPayment.bind(this);
     }
 
     componentDidMount() {
         this.props.getUserById(this.props.userId);
-        let beginOfYear = new Date(new Date(new Date().setMonth(0)).setUTCDate(1)).toISOString().slice(0, 10);
-        let endOfYear = new Date(new Date(new Date().setMonth(11)).setUTCDate(31)).toISOString().slice(0, 10);
-        this.props.getPayments(this.props.userId, beginOfYear, endOfYear);
+        // let beginOfYear = new Date(new Date(new Date().setMonth(0)).setUTCDate(1)).toISOString().slice(0, 10);
+        // let endOfYear = new Date(new Date(new Date().setMonth(11)).setUTCDate(31)).toISOString().slice(0, 10);
+        // this.props.getPayments(this.props.userId, beginOfYear, endOfYear);
+        this.props.getAccountHistory(this.props.userId);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (!this.props.user.isLoaded) {
             this.props.getUserById(this.props.userId);
         }
-        if (!this.props.payments.isLoaded) {
-            let beginOfYear = new Date(new Date(new Date().setMonth(0)).setUTCDate(1)).toISOString().slice(0, 10);
-            let endOfYear = new Date(new Date(new Date().setMonth(11)).setUTCDate(31)).toISOString().slice(0, 10);
-            this.props.getPayments(this.props.userId, beginOfYear, endOfYear);
+        // if (this.state.paymentAction) {
+        //     this.props.getAccountHistory(this.props.userId);
+        //     this.setState({paymentAction: false})
+        // }
+
+        // if (!this.props.payments.isLoaded) {
+        //     this.props.getAccountHistory(this.props.userId);
+        //     dispatch({type: "GET_PAYMENTS_SUCCEEDED"})
+        // }
+
+        if (this.props.payments.newPaymentId !== prevProps.payments.newPaymentId) {
+            this.props.getAccountHistory(this.props.userId);
         }
+
+        // if (!this.props.payments.isLoaded) {
+        //     let beginOfYear = new Date(new Date(new Date().setMonth(0)).setUTCDate(1)).toISOString().slice(0, 10);
+        //     let endOfYear = new Date(new Date(new Date().setMonth(11)).setUTCDate(31)).toISOString().slice(0, 10);
+        //     this.props.getPayments(this.props.userId, beginOfYear, endOfYear);
+        // }
     }
 
     warningToggle(isOpen) {
@@ -62,6 +84,27 @@ class UserPage extends Component {
                 // this.setState({warningDeleteUser: false})
             }
         }
+    }
+
+    paymentModalToggle(isOpen) {
+        this.setState({isPaymentModalOpen: isOpen});
+    }
+
+    paymentModalCallback(value) {
+        console.log(value);
+        if (value) {
+            this.props.addPayment(this.props.userId, {
+                amount: value,
+                payday: new Date().toISOString()
+            });
+            // if (!this.props.payments.error) {
+            //     this.setState({paymentAction: true})
+            // }
+        }
+    }
+
+    addPayment(userId) {
+        this.setState({isPaymentModalOpen: true, userId: userId});
     }
 
     onDelete(paymentId) {
@@ -95,6 +138,9 @@ class UserPage extends Component {
                 <ModalWarning warningMessage={this.state.warningMessage} isOpen={this.state.isWarningOpen}
                               warningToggle={this.warningToggle}
                               warningCallback={this.warningCallback}/>
+                <ModalAddPayment isOpen={this.state.isPaymentModalOpen}
+                                 paymentModalCallback={this.paymentModalCallback}
+                                 paymentModalToggle={this.paymentModalToggle}/>
                 <div className="user-page__info">
                     <h4>Страница ученика</h4>
                     {this.props.user.userById ?
@@ -109,11 +155,18 @@ class UserPage extends Component {
                             </button>
                             <Link to={`/users/edit_user/user_${this.props.userId}`}
                                   className="btn btn-outline-warning"
-                                  onClick={this.props.onEditUser}>Редактировать</Link></div> : <Spinner/>}
-                    {this.props.payments.isLoaded ?
-                        <UserPaymentHistory payments={this.props.payments.payments}
-                                            onDelete={this.onDelete.bind(this)}/>
-                        : <Spinner/>}
+                                  onClick={this.props.onEditUser}>Редактировать</Link>
+                            <button className="btn btn-outline-info"
+                                    onClick={this.addPayment}>
+                                Внести платеж
+                            </button>
+                        </div> : <Spinner/>}
+                    {this.props.accountHistory.isLoaded ?
+                        <UserPaymentHistory payments={this.props.accountHistory.userAccountHistory}/> : <Spinner/>}
+                    {/*{this.props.payments.isLoaded ?*/}
+                    {/*    <UserPaymentHistory payments={this.props.payments.payments}*/}
+                    {/*                        onDelete={this.onDelete.bind(this)}/>*/}
+                    {/*    : <Spinner/>}*/}
                 </div>
             </div>
         )
@@ -124,10 +177,11 @@ export default connect(
     state => {
         return {
             user: state.user,
-            payments: state.payments
+            payments: state.payments,
+            accountHistory: state.accountHistory
         }
     },
     dispatch => bindActionCreators(
-        Object.assign({}, paymentsActionCreators, userActionCreators),
+        Object.assign({}, paymentsActionCreators, userActionCreators, accountHistoryActionCreators),
         dispatch)
 )(UserPage);
