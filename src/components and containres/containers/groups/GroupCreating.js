@@ -100,7 +100,7 @@ class GroupCreating extends Component {
         if (data.length) {
             this.props.addUsersToGroup(data)
         }
-        // localStorage.removeItem("savedGroupData");
+        localStorage.removeItem("savedGroupData");
 
         // const savedGroupData = {
         //     name: this.state.name,

@@ -8,7 +8,7 @@ export const AttendanceAndPaymentsTableBody = (props) => {
             <tr>
                 <td>{user.name} {user.surname}</td>
                 {AttendanceAndPaymentsTableBodySchedule(props, user.guid)}
-                <td>{user.dept}</td>
+                {/*<td>{user.dept}</td>*/}
                 <td>{user.amount}</td>
                 {/*<div className="table__button-add-payment">*/}
                 <td>

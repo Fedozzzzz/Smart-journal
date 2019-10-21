@@ -46,7 +46,7 @@ class UserCreating extends Component {
     }
 
     componentWillUnmount() {
-        // localStorage.removeItem("savedUserData");
+        localStorage.removeItem("savedUserData");
     }
 
     onSaveUser() {

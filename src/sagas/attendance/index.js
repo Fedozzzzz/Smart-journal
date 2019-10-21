@@ -18,14 +18,6 @@ function* callGetAttendance({groupId, from, to}) {
         console.log('saga-get-Attendance');
         let headers = new Headers();
         headers.append('Content-Type', "application/json");
-        // const attendance = yield call(() => fetch(url + "/attendance/" + groupId
-        //     + "?from=" + from + "&to=" + to,
-        //     {
-        //         method: "GET",
-        //         headers: headers
-        //     })
-        //     .then(res => res.json())
-        //     .catch(err => console.log(err)));
         const response = yield call(httpRequest, "get", url + "/attendance/" + groupId
             + "?from=" + from + "&to=" + to, headers);
         yield put({type: actionTypes.getAttendanceSucceededType, attendance: response.data})

@@ -26,8 +26,9 @@ class UserCreatingInputs extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
-        // console.log("receive props");
-        // console.log(nextProps);
+        console.log("receive props");
+        console.log(nextProps);
+        // console.log(nextProps.userById !== this.props.userById);
         if (nextProps.userById !== this.props.userById) {
             this.setState({
                 name: nextProps.userById.name,
@@ -128,7 +129,7 @@ class UserCreatingInputs extends Component {
                                onChange={this.handleChange}
                                onBlur={this.handleBlur}
                                value={this.state.name}
-                               defaultValue={this.props.userById ? this.props.userById.name : null}
+                               // defaultValue={this.props.userById ? this.props.userById.name : null}
                         />
                         <div className="invalid-feedback valid-feedback">
                             <div>{this.state.nameError}</div>
@@ -144,7 +145,7 @@ class UserCreatingInputs extends Component {
                             onChange={this.handleChange}
                             onBlur={this.handleBlur}
                             value={this.state.surname}
-                            defaultValue={this.props.userById ? this.props.userById.surname : null}
+                            // defaultValue={this.props.userById ? this.props.userById.surname : null}
                         />
                         <div className="invalid-feedback valid-feedback">
                             <div>{this.state.surnameError}</div>
@@ -161,7 +162,7 @@ class UserCreatingInputs extends Component {
                             onChange={this.handleChange}
                             onBlur={this.handleBlur}
                             value={this.state.patronymic}
-                            defaultValue={this.props.userById ? this.props.userById.patronymic : null}
+                            // defaultValue={this.props.userById ? this.props.userById.patronymic : null}
                         />
                         <div className="invalid-feedback valid-feedback">
                             <div>{this.state.patronymicError}</div>
@@ -178,7 +179,7 @@ class UserCreatingInputs extends Component {
                             onChange={this.handleChange}
                             onBlur={this.handleBlur}
                             value={this.state.phoneNumber}
-                            defaultValue={this.props.userById ? this.props.userById.phoneNumber : null}
+                            // defaultValue={this.props.userById ? this.props.userById.phoneNumber : null}
                         />
                         <div className="invalid-feedback valid-feedback">
                             <div>{this.state.phoneNumberError}</div>
@@ -193,7 +194,7 @@ class UserCreatingInputs extends Component {
                                onChange={this.handleChange}
                                onBlur={this.handleBlur}
                                value={this.state.email}
-                               defaultValue={this.props.userById ? this.props.userById.email : null}
+                               // defaultValue={this.props.userById ? this.props.userById.email : null}
                         />
                         <div className="invalid-feedback valid-feedback">
                             <div>{this.state.emailError}</div>
