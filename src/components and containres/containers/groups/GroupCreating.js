@@ -19,8 +19,8 @@ class GroupCreating extends Component {
             tempCbMap.set(i + "cb", false);
             tempStMap.set(i + "stForm", null);
         }
-        const groupDataFromLocalStorage = JSON.parse(localStorage.getItem("savedGroupData"));
-        console.log(groupDataFromLocalStorage);
+        const groupDataFromSessionStorage = JSON.parse(sessionStorage.getItem("savedGroupData"));
+        console.log(groupDataFromSessionStorage);
         this.state = {
             checkboxes: tempCbMap,
             stInputs: tempStMap,
@@ -32,9 +32,9 @@ class GroupCreating extends Component {
                 days: [],
                 startTimes: []
             },
-            name: groupDataFromLocalStorage ? groupDataFromLocalStorage.name : null,
-            duration: groupDataFromLocalStorage ? groupDataFromLocalStorage.duration : null,
-            cost: groupDataFromLocalStorage ? groupDataFromLocalStorage.cost : null,
+            name: groupDataFromSessionStorage ? groupDataFromSessionStorage.name : null,
+            duration: groupDataFromSessionStorage ? groupDataFromSessionStorage.duration : null,
+            cost: groupDataFromSessionStorage ? groupDataFromSessionStorage.cost : null,
             costError: "Это поле обязательно",
             durationError: "Это поле обязательно",
             nameError: "Это поле обязательно",
@@ -60,7 +60,7 @@ class GroupCreating extends Component {
                 cost: this.state.cost,
                 duration: this.state.duration,
             };
-            localStorage.setItem("savedGroupData", JSON.stringify(savedGroupData));
+            sessionStorage.setItem("savedGroupData", JSON.stringify(savedGroupData));
         }
     }
 
@@ -100,14 +100,14 @@ class GroupCreating extends Component {
         if (data.length) {
             this.props.addUsersToGroup(data)
         }
-        localStorage.removeItem("savedGroupData");
+        // sessionStorage.removeItem("savedGroupData");
 
         // const savedGroupData = {
         //     name: this.state.name,
         //     cost: this.state.cost,
         //     duration: this.state.duration,
         // };
-        // localStorage.setItem("savedGroupData", JSON.stringify(savedGroupData));
+        // sessionStorage.setItem("savedGroupData", JSON.stringify(savedGroupData));
         // this.props.addUsersToGroupSubmit(this.props.newGroup.guid, data);
     }
 
@@ -137,7 +137,7 @@ class GroupCreating extends Component {
 
     render() {
         console.log("this.state", this.state);
-        // console.log("ls", localStorage.getItem("savedGroupData"));
+        // console.log("ls", sessionStorage.getItem("savedGroupData"));
         return (<div className="container-fluid">
                 <h4>Создание группы</h4>
                 <GroupCreatingProfile groupProfileCallback={this.groupProfileCallback} groupById={{

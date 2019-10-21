@@ -14,8 +14,9 @@ class GroupCreatingProfile extends Component {
             durationError: "Это поле обязательно",
             nameError: "Это поле обязательно",
         };
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleInputBlur = this.handleInputBlur.bind(this);
+        // this.handleInputChange = this.handleInputChange.bind(this);
+        // this.handleInputBlur = this.handleInputBlur.bind(this);
+        this.handleInput = this.handleInput.bind(this);
     }
 
     UNSAFE_componentWillReceiveProps(nextProps, nextContext) { //??? все правильно?
@@ -40,7 +41,6 @@ class GroupCreatingProfile extends Component {
         }
     }
 
-
     validateGroupName(value) {
         if (!value) {
             return "Это поле обязательно"
@@ -61,6 +61,7 @@ class GroupCreatingProfile extends Component {
     }
 
     validateDuration(value) {
+        console.log(value);
         if (!value) {
             return "Это поле обязательно"
         }
@@ -70,32 +71,16 @@ class GroupCreatingProfile extends Component {
                 : "";
     }
 
-    handleInputBlur(e) {
-        // console.log(e.target);
+    handleInput(e) {
         switch (e.target.id) {
             case 'groupName':
-                this.setState({nameError: this.validateGroupName(this.state.name)});
+                this.setState({name: e.target.value, nameError: this.validateGroupName(e.target.value)});
                 break;
             case 'cost':
-                this.setState({costError: this.validateCost(this.state.cost)});
+                this.setState({cost: e.target.value, costError: this.validateCost(e.target.value)});
                 break;
             case 'duration':
-                this.setState({durationError: this.validateDuration(this.state.duration)});
-                break;
-        }
-    }
-
-    handleInputChange(e) {
-        // console.log(e.target);
-        switch (e.target.id) {
-            case 'groupName':
-                this.setState({name: e.target.value});
-                break;
-            case 'cost':
-                this.setState({cost: e.target.value});
-                break;
-            case 'duration':
-                this.setState({duration: e.target.value});
+                this.setState({duration: e.target.value, durationError: this.validateDuration(e.target.value)});
                 break;
         }
     }
@@ -119,10 +104,12 @@ class GroupCreatingProfile extends Component {
                             type="text"
                             placeholder="Введите название"
                             id='groupName'
-                            defaultValue={groupById ? groupById.name : null}
+                            // defaultValue={groupById ? groupById.name : null}
                             value={this.state.name}
-                            onChange={this.handleInputChange}
-                            onBlur={this.handleInputBlur}
+                            // onChange={this.handleInputChange}
+                            // onBlur={this.handleInputBlur}
+                            // onInput={this.handleInputBlur}
+                            onInput={this.handleInput}
                         />
                         <div className="invalid-feedback valid-feedback">
                             <div>{this.state.nameError}</div>
@@ -139,10 +126,12 @@ class GroupCreatingProfile extends Component {
                             id='cost'
                             min="0"
                             max="10000"
-                            defaultValue={groupById ? groupById.cost : null}
+                            // defaultValue={groupById ? groupById.cost : null}
                             value={this.state.cost}
-                            onChange={this.handleInputChange}
-                            onBlur={this.handleInputBlur}
+                            // onChange={this.handleInputChange}
+                            // onBlur={this.handleInputBlur}
+                            // onInput={this.handleInputBlur}
+                            onInput={this.handleInput}
                         />
                         <div className="invalid-feedback valid-feedback">
                             <div>{this.state.costError}</div>
@@ -157,10 +146,12 @@ class GroupCreatingProfile extends Component {
                             type="number"
                             placeholder="Продолжительность (в мин.)"
                             id='duration'
-                            defaultValue={groupById ? groupById.duration : null}
+                            // defaultValue={groupById ? groupById.duration : null}
                             value={this.state.duration}
-                            onChange={this.handleInputChange}
-                            onBlur={this.handleInputBlur}
+                            // onChange={this.handleInputChange}
+                            // onBlur={this.handleInputBlur}
+                            // onInput={this.handleInputBlur}
+                            onInput={this.handleInput}
                         />
                         <div className="invalid-feedback valid-feedback">
                             <div>{this.state.durationError}</div>

@@ -7,9 +7,7 @@ const initialState = {
 };
 
 
-export const userReducer = (state, action) => {
-    state = state || initialState;
-
+export const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.getUserSucceededType:
             return {

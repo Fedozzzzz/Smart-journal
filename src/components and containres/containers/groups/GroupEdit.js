@@ -67,13 +67,11 @@ class GroupEdit extends Component {
             this.setState({
                     checkboxes: tempCbMap,
                     stInputs: tempStMap,
-                    data: {
-                        name: this.props.group.groupById.name || null,
-                        duration: this.props.group.groupById.duration || null,
-                        cost: this.props.group.groupById.cost || null,
-                        days: this.props.group.groupById.days || [],
-                        startTimes: this.props.group.groupById.startTimes || []
-                    }
+                    name: this.props.group.groupById.name || null,
+                    duration: this.props.group.groupById.duration || null,
+                    cost: this.props.group.groupById.cost || null,
+                    days: this.props.group.groupById.days || [],
+                    startTimes: this.props.group.groupById.startTimes || []
                 }
             )
         }
@@ -134,23 +132,6 @@ class GroupEdit extends Component {
         this.setState({stInputs: this.state.stInputs.set(e.target.id, e.target.value)});
     }
 
-    // handleInputChange(e) {
-    //     // console.log(e.target);
-    //     let temp = Object.assign({}, this.state.data);
-    //     switch (e.target.id) {
-    //         case 'groupName':
-    //             temp.name = e.target.value;
-    //             break;
-    //         case 'cost':
-    //             temp.cost = e.target.value;
-    //             break;
-    //         case 'duration':
-    //             temp.duration = e.target.value;
-    //             break;
-    //     }
-    //     this.setState({data: temp});
-    // }
-
     handleUsersChange(e) {
         let tempMap = new Map(this.state.chosenUsers);
         if (e.target.checked) {
@@ -194,7 +175,11 @@ class GroupEdit extends Component {
                               warningToggle={this.warningToggle}
                               warningCallback={this.warningCallback}/>
                 <h4>Редактирование группы</h4>
-                <GroupCreatingProfile groupById={this.props.group.groupById}
+                <GroupCreatingProfile groupById={{
+                    name: this.state.name,
+                    duration: this.state.duration,
+                    cost: this.state.cost,
+                }}
                     // handleInputChange={this.handleInputChange}
                                       groupProfileCallback={this.groupProfileCallback}
                 />

@@ -21,7 +21,24 @@ class UserEdit extends Component {
     }
 
     componentDidMount() {
+        // console.log(this.props.userId);
         this.props.getUserById(this.props.userId);
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("did update");
+        // console.log(this.props.isLoaded);
+        // console.log(prevProps.isLoaded);
+        // if (this.props.isLoaded !== prevProps.isLoaded) {
+        if (this.props.userById !== prevProps.userById) {
+            this.setState({
+                name: this.props.userById.name,
+                surname: this.props.userById.surname,
+                patronymic: this.props.userById.patronymic,
+                email: this.props.userById.email,
+                phoneNumber: this.props.userById.phoneNumber,
+            })
+        }
     }
 
     onSaveEditUser() {
@@ -46,7 +63,8 @@ class UserEdit extends Component {
     }
 
     render() {
-        // console.log("this.state", this.state);
+        console.log("this.state", this.state);
+        console.log("this.props", this.props);
         return (
             <div
                 // className="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content" role="main"
@@ -54,7 +72,13 @@ class UserEdit extends Component {
                 <div>
                     <h4>Редактирование профиля студента</h4>
                     <UserCreatingInputs getUserProfileCallback={this.getUserProfileCallback}
-                                        userById={this.props.userById}/>
+                                        userById={{
+                                            name: this.state.name,
+                                            surname: this.state.surname,
+                                            patronymic: this.state.patronymic,
+                                            email: this.state.email,
+                                            phoneNumber: this.state.phoneNumber,
+                                        }}/>
                     <div className="container">
                         <div className="form-group row col-8">
                             <button className='btn btn-success' onClick={this.onSaveEditUser}>Сохранить</button>

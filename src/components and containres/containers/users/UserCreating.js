@@ -10,14 +10,14 @@ class UserCreating extends Component {
 
     constructor(props) {
         super(props);
-        let savedUserDataFromLocalStorage = JSON.parse(localStorage.getItem("savedUserData"));
-        console.log(savedUserDataFromLocalStorage);
+        let savedUserDataFromSessionStorage = JSON.parse(sessionStorage.getItem("savedUserData"));
+        console.log(savedUserDataFromSessionStorage);
         this.state = {
-            name: savedUserDataFromLocalStorage ? savedUserDataFromLocalStorage.name : null,
-            surname: savedUserDataFromLocalStorage ? savedUserDataFromLocalStorage.surname : null,
-            patronymic: savedUserDataFromLocalStorage ? savedUserDataFromLocalStorage.patronymic : null,
-            email: savedUserDataFromLocalStorage ? savedUserDataFromLocalStorage.email : null,
-            phoneNumber: savedUserDataFromLocalStorage ? savedUserDataFromLocalStorage.phoneNumber : null,
+            name: savedUserDataFromSessionStorage ? savedUserDataFromSessionStorage.name : null,
+            surname: savedUserDataFromSessionStorage ? savedUserDataFromSessionStorage.surname : null,
+            patronymic: savedUserDataFromSessionStorage ? savedUserDataFromSessionStorage.patronymic : null,
+            email: savedUserDataFromSessionStorage ? savedUserDataFromSessionStorage.email : null,
+            phoneNumber: savedUserDataFromSessionStorage ? savedUserDataFromSessionStorage.phoneNumber : null,
             nameError: null,
             surnameError: null,
             patronymicError: null,
@@ -35,7 +35,7 @@ class UserCreating extends Component {
             || this.state.email !== prevState.email
             || this.state.phoneNumber !== prevState.phoneNumber) {
             // console.log("update body");
-            localStorage.setItem("savedUserData", JSON.stringify({
+            sessionStorage.setItem("savedUserData", JSON.stringify({
                 name: this.state.name,
                 surname: this.state.surname,
                 patronymic: this.state.patronymic,
@@ -43,10 +43,6 @@ class UserCreating extends Component {
                 phoneNumber: this.state.phoneNumber,
             }))
         }
-    }
-
-    componentWillUnmount() {
-        localStorage.removeItem("savedUserData");
     }
 
     onSaveUser() {
@@ -75,8 +71,9 @@ class UserCreating extends Component {
 
     render() {
         // console.log(this.state);
-        console.log("ls", localStorage.getItem("savedUserData"));
-        console.log("ls", localStorage);
+        console.log("ls", sessionStorage.getItem("savedUserData"));
+        // console.log("ls", sessionStorage);
+        console.log("state:", this.state);
         return (
             <div>
                 <h4>Создание профиля студента</h4>
