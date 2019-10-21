@@ -164,17 +164,19 @@ class AttendanceAndPayments extends Component {
                     isAttended = true;
                     break;
                 case "cell_attended":
-                    e.target.className = "cell_absent";
-                    newClassname = "table-secondary";
-                    content = "Н";
-                    isAttended = false;
-                    break;
-                case "cell_absent":
                     e.target.className = "cell";
+                    // newClassname = "table-secondary";
                     newClassname = "table-default";
                     content = null;
-                    isAttended = null;
+                    // content = "Н";
+                    isAttended = false;
                     break;
+                // case "cell_absent":
+                //     e.target.className = "cell";
+                //     newClassname = "table-default";
+                //     content = null;
+                //     isAttended = null;
+                //     break;
             }
             this.props.group.usersFromGroup.forEach(value => {
                 let elem = document.getElementById(value.guid + key + "cell");
@@ -198,24 +200,6 @@ class AttendanceAndPayments extends Component {
                 mapAttendance.set(value.guid, tempNewAttendance);
                 // console.log(mapAttendance);
                 this.setState({newAttendance: mapAttendance});
-                // let elem = document.getElementById(value.guid + key + "cell");
-                // switch (elem.className) {
-                //     case "table-default":
-                //         elem.className = "table-primary";
-                //         elem.innerHTML = "Б";
-                //         attendance.isAttended = true;
-                //         break;
-                //     case "table-primary":
-                //         elem.className = "table-secondary";
-                //         elem.innerHTML = "Н";
-                //         attendance.isAttended = false;
-                //         break;
-                //     case "table-secondary":
-                //         elem.className = "table-default";
-                //         elem.innerHTML = null;
-                //         break;
-                // }
-
             })
         }
     }
@@ -258,19 +242,18 @@ class AttendanceAndPayments extends Component {
             // e.target.userSelect="none";
             console.log(e.target);
             switch (e.target.className) {
+                case "table-secondary":
                 case "table-default":
                     e.target.className = "table-primary";
                     e.target.innerHTML = "Б";
                     attendance.isAttended = true;
                     break;
                 case "table-primary":
-                    e.target.className = "table-secondary";
-                    e.target.innerHTML = "Н";
-                    attendance.isAttended = false;
-                    break;
-                case "table-secondary":
+                    // e.target.className = "table-secondary";
                     e.target.className = "table-default";
                     e.target.innerHTML = null;
+                    // e.target.innerHTML = "Н";
+                    attendance.isAttended = false;
                     break;
             }
             if (tempNewAttendance.indexOf(attendance) === -1) {
@@ -326,5 +309,4 @@ export default connect(
     },
     dispatch => bindActionCreators(Object.assign({}, groupActionCreators,
         scheduleActionCreators, attendanceActionCreators, paymentsActionCreators), dispatch)
-)
-(AttendanceAndPayments)
+)(AttendanceAndPayments)
