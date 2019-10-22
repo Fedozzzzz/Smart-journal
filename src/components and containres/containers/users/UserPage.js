@@ -163,6 +163,7 @@ class UserPage extends Component {
                     <div className="user-page__info">
                         <h4 className="main-container__header">Страница ученика</h4>
                         <hr/>
+                        <h6 className="col-xs-2 col-form-label">Основная информация</h6>
                         {this.props.user.userById ?
                             <div>
                                 <UserPageProfile userById={this.props.user.userById}/>
@@ -172,7 +173,7 @@ class UserPage extends Component {
                                     </button>
                                     <Link to={`/users/edit_user/user_${this.props.userId}`}
                                           className="btn btn-outline-warning"
-                                          onClick={this.props.onEditUser}>Редактировать</Link>
+                                          onClick={this.props.onEditUser}>Изменить</Link>
                                     <button className="btn btn-outline-info"
                                             onClick={this.addPayment}>
                                         Внести платеж
@@ -180,6 +181,7 @@ class UserPage extends Component {
                                 </div>
                             </div> : <Spinner/>}
                         <hr/>
+                        <h6 className="col-xs-2 col-form-label">История платежей студента</h6>
                         {this.props.accountHistory.isLoaded ?
                             <UserPaymentHistory payments={this.state.paymentsOfUser}
                                                 accountHistory={this.props.accountHistory.userAccountHistory}

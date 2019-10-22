@@ -27,13 +27,11 @@ export const UserPageProfile = (props) => {
                 <p className="font-italic ml-2 d-inline-block">{props.userById.phoneNumber}</p>
             </div>
         </div>
-        {/*<p className="col-sm-4">Номер телефона: {props.userById.phoneNumber}</p></div>*/}
         <div className="row">
             <div className="col-sm-4">
                 <p className="d-inline-block font-weight-light">Email:</p>
                 <p className="font-italic ml-2 d-inline-block">{props.userById.email}</p>
             </div>
-            {/*<p className="col-sm-4">Email : {props.userById.email}</p></div>*/}
         </div>
     </div>)
 };

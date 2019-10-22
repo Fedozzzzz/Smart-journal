@@ -1,7 +1,6 @@
 import React from "react"
 
-export const GroupWeekSchedule = (props) => (<div>
-    <div>Расписание:</div>
+export const GroupWeekSchedule = (props) => (<div className="m-2">
     <table className='table table-striped table-bordered'>
         <thead>
         <tr>

@@ -85,37 +85,42 @@ class GroupPage extends Component {
         // console.log("render of group page ", this.props.groupById);//should add redirect
         console.log("props", this.props);
         return (
-            <div className="container">
+            <div className="container-fluid">
                 <ModalWarning warningMessage={this.state.warningMessage} isOpen={this.state.isWarningOpen}
                               warningToggle={this.warningToggle}
                               warningCallback={this.warningCallback}/>
-                <div className="group-page__info">
-                    <h4>Страница группы</h4>
-                    {this.props.group.groupById ? <div>
-                        <div>
-                            <GroupPageProfile groupById={this.props.group.groupById}/>
-                            <GroupWeekSchedule groupById={this.props.group.groupById}/>
-                        </div>
-                        <h5>Студенты этой группы:</h5>
-                        {this.props.group.usersFromGroup ?
-                            <GroupStudents usersFromGroup={this.props.group.usersFromGroup}/> : <Spinner/>}
-                        <div>
-                            <button
-                                className="btn btn-outline-danger"
-                                onClick={this.onDeleteGroup}>Удалить
-                            </button>
-                            <Link to={`/groups/edit_group/group_${this.props.groupId}`}
-                                  className="btn btn-outline-warning"
-                                  onClick={() => this.props.editGroup(this.props.groupId.guid)}>Редактировать</Link>
-                        </div>
-                    </div> : <Spinner/>}
-                    <h6>Статистика за предыдущий месяц</h6>
-                    {this.props.statistics.groupStatistics ?
-                        Object.keys(this.props.statistics.groupStatistics).length ?
-                            <StatisticsTable groups={this.state.groupData}/> : <Spinner/>
-                        : null
-                    }
-
+                <div className="row justify-content-center">
+                    <div className="main-container">
+                        <h4 className="main-container__header">Страница группы</h4>
+                        <hr/>
+                        <h6 className="col-xs-2 col-form-label">Основная информация</h6>
+                        {this.props.group.groupById ? <div>
+                            <div>
+                                <GroupPageProfile groupById={this.props.group.groupById}/>
+                                <h6 className="col-xs-2 col-form-label"> Расписание :</h6>
+                                <GroupWeekSchedule groupById={this.props.group.groupById}/>
+                            </div>
+                            <div>
+                                <button
+                                    className="btn btn-outline-danger"
+                                    onClick={this.onDeleteGroup}>Удалить
+                                </button>
+                                <Link to={`/groups/edit_group/group_${this.props.groupId}`}
+                                      className="btn btn-outline-warning"
+                                      onClick={() => this.props.editGroup(this.props.groupId.guid)}>Редактировать</Link>
+                            </div>
+                            <hr/>
+                            <h6 className="col-xs-2 col-form-label">Студенты этой группы:</h6>
+                            {this.props.group.usersFromGroup ?
+                                <GroupStudents usersFromGroup={this.props.group.usersFromGroup}/> : <Spinner/>}
+                        </div> : <Spinner/>}
+                        <hr/>
+                        <h6>Статистика за предыдущий месяц</h6>
+                        {this.props.statistics.groupStatistics ?
+                            Object.keys(this.props.statistics.groupStatistics).length ?
+                                <StatisticsTable groups={this.state.groupData}/> : <Spinner/>
+                            : null}
+                    </div>
                 </div>
             </div>
         )

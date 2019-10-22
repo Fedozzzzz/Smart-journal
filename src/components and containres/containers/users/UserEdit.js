@@ -66,22 +66,23 @@ class UserEdit extends Component {
         console.log("this.state", this.state);
         console.log("this.props", this.props);
         return (
-            <div
-                // className="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content" role="main"
-            >
-                <div>
-                    <h4>Редактирование профиля студента</h4>
-                    <UserCreatingInputs getUserProfileCallback={this.getUserProfileCallback}
-                                        userById={{
-                                            name: this.state.name,
-                                            surname: this.state.surname,
-                                            patronymic: this.state.patronymic,
-                                            email: this.state.email,
-                                            phoneNumber: this.state.phoneNumber,
-                                        }}/>
-                    <div className="container">
-                        <div className="form-group row col-8">
-                            <button className='btn btn-success' onClick={this.onSaveEditUser}>Сохранить</button>
+            <div className="container-fluid">
+                <div className="row justify-content-sm-between">
+                    <div className="user-creating col-sm-6">
+                        <h4 className="user-creating__header col-sm">Редактирование профиля студента</h4>
+                        <hr/>
+                        <UserCreatingInputs getUserProfileCallback={this.getUserProfileCallback}
+                                            userById={{
+                                                name: this.state.name,
+                                                surname: this.state.surname,
+                                                patronymic: this.state.patronymic,
+                                                email: this.state.email,
+                                                phoneNumber: this.state.phoneNumber,
+                                            }}/>
+                        <div className="container">
+                            <div className="form-group row col-8">
+                                <button className='btn btn-success' onClick={this.onSaveEditUser}>Сохранить</button>
+                            </div>
                         </div>
                     </div>
                 </div>
