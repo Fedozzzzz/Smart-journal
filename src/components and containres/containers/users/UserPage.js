@@ -108,7 +108,7 @@ class UserPage extends Component {
         if (value) {
             this.props.addPayment(this.props.userId, {
                 amount: value,
-                payday: new Date().toUTCString()
+                payday: new Date().toISOString()
             });
             // if (!this.props.payments.error) {
             //     this.setState({paymentAction: true})
@@ -187,10 +187,6 @@ class UserPage extends Component {
                                                 accountHistory={this.props.accountHistory.userAccountHistory}
                                                 onDelete={this.onDelete.bind(this)}
                                                 getMoreHistory={this.getAccountHistory.bind(this)}/> : <Spinner/>}
-                        {/*{this.props.payments.isLoaded ?*/}
-                        {/*    <UserPaymentHistory payments={this.props.payments.payments}*/}
-                        {/*                        onDelete={this.onDelete.bind(this)}/>*/}
-                        {/*    : <Spinner/>}*/}
                     </div>
                 </div>
             </div>

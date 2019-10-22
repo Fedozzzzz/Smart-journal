@@ -107,7 +107,7 @@ class GroupPage extends Component {
                                 </button>
                                 <Link to={`/groups/edit_group/group_${this.props.groupId}`}
                                       className="btn btn-outline-warning"
-                                      onClick={() => this.props.editGroup(this.props.groupId.guid)}>Редактировать</Link>
+                                      onClick={() => this.props.editGroup(this.props.groupId.guid)}>Изменить</Link>
                             </div>
                             <hr/>
                             <h6 className="col-xs-2 col-form-label">Студенты этой группы:</h6>
