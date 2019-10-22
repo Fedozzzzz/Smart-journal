@@ -33,20 +33,25 @@ class GroupsList extends Component {
         console.log('render-group-list-page');
         // console.log("this.props", this.props);
         return (
-            <div>
-                <h3>Группы</h3>
-                <Search/>
-                <hr/>
-                {this.props.isLoaded ?
-                    this.props.groups.map(group => (
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="main-container_large">
+                        <h3>Группы</h3>
+                        <hr/>
+                        <Search/>
+                        <hr/>
+                        {this.props.isLoaded ?
+                            this.props.groups.map(group => (
+                                <div>
+                                    <h5><Link to={`/groups/group_${group.guid}`}>{group.name}</Link></h5>
+                                </div>
+                            )) : <Spinner/>}
                         <div>
-                            <h5><Link to={`/groups/group_${group.guid}`}>{group.name}</Link></h5>
+                            <Link to='/groups/creating_group'
+                                  className='btn btn-primary' onClick={this.props.createGroup}>+Добавить
+                                группу</Link>
                         </div>
-                    )) : <Spinner/>}
-                <div>
-                    <Link to='/groups/creating_group'
-                          className='btn btn-primary' onClick={this.props.createGroup}>+Добавить
-                        группу</Link>
+                    </div>
                 </div>
             </div>
         )

@@ -58,22 +58,10 @@ class Statistics extends Component {
                     expectedIncome: allStatistics[i].expectedIncome,
                 })
             }
-            // this.props.group.groups.forEach(value => {
-            //     tempGroupsMap.set(value.guid, {
-            //         name: value.name,
-            //         days: value.days,
-            //         startTimes: value.startTimes,
-            //         duration: value.duration,
-            //         cost: value.cost,
-            //
-            //     })
-            // });
             this.setState({
                 groupsMap: tempGroupsMap
             })
         }
-        // if (this.state.selectedGroupId !== prevState.selectedGroupId) {
-        // }
     }
 
     getSelectedDate(value) {
@@ -85,23 +73,29 @@ class Statistics extends Component {
     }
 
     render() {
-        console.log("this.props", this.props);
-        console.log("this.state", this.state);
-        return (<div>
-            <h3>Статистика</h3>
-            {/*<Form getSelectedGroupId={this.getSelectedGroupId} getSelectedDate={this.getSelectedDate}*/}
-            {/*      groups={this.props.group.groups} isEdit={false}/>*/}
-            <StatisticsForm getSelectedDate={this.getSelectedDate}/>
-            {this.props.statistics.isLoaded && this.props.group.isLoaded ?
-                // !this.state.selectedGroupId
-                // && this.props.statistics.allStatistics.length
-                // ?
-                this.props.statistics.allStatistics.length ?
-                    <StatisticsTable groups={this.state.groupsMap}
-                                     statistics={this.props.statistics.groupStatistics}/>
-                    //{/*<StatisticsTable groups={new Map(this.state.groupsMap.get(this.state.selectedGroupId))}*/}
-                    // statistics={this.props.statistics.groupStatistics}/>
-                    : <Spinner/> : <div><p>Данных о статистике за выбранный месяц еще нет.</p></div>}
+        // console.log("this.props", this.props);
+        // console.log("this.state", this.state);
+        return (<div className="container-fluid">
+            <div className="row">
+                <div className="main-container_large">
+                    <h3>Статистика</h3>
+                    <hr/>
+                    {/*<Form getSelectedGroupId={this.getSelectedGroupId} getSelectedDate={this.getSelectedDate}*/}
+                    {/*      groups={this.props.group.groups} isEdit={false}/>*/}
+                    <StatisticsForm getSelectedDate={this.getSelectedDate}/>
+                    <hr/>
+                    {this.props.statistics.isLoaded && this.props.group.isLoaded ?
+                        // !this.state.selectedGroupId
+                        // && this.props.statistics.allStatistics.length
+                        // ?
+                        this.props.statistics.allStatistics.length ?
+                            <StatisticsTable groups={this.state.groupsMap}
+                                             statistics={this.props.statistics.groupStatistics}/>
+                            //{/*<StatisticsTable groups={new Map(this.state.groupsMap.get(this.state.selectedGroupId))}*/}
+                            // statistics={this.props.statistics.groupStatistics}/>
+                            : <Spinner/> : <div><p>Данных о статистике за выбранный месяц еще нет.</p></div>}
+                </div>
+            </div>
         </div>)
     }
 }

@@ -97,11 +97,10 @@ class GroupCreatingProfile extends Component {
             <div className="group-creating__profile">
                 <form>
                     <div className="form-group row">
-                        {/*<div className="col-sm-10">*/}
                         <label htmlFor="groupName"
-                               className="col-md-3 col-form-label">Название</label>
+                               className="col-sm-6 col-form-label">Название</label>
                         <input
-                            className={"form-control col-md-7 m-0 " + this.generateClassNameByError(this.state.nameError)}
+                            className={"form-control col-sm-6 " + this.generateClassNameByError(this.state.nameError)}
                             type="text"
                             placeholder="Введите название"
                             id='groupName'
@@ -112,14 +111,13 @@ class GroupCreatingProfile extends Component {
                         <div className="invalid-feedback flex">
                             <div className="text-right">{this.state.nameError}</div>
                         </div>
-                        {/*</div>*/}
                     </div>
                     <div className="form-group row">
                         <label htmlFor="cost"
-                               className="col-md-3 col-form-label">Цена за
+                               className="col-sm-6 col-form-label">Цена за
                             занятие</label>
                         <input
-                            className={"form-control col-md-7 m-0 " + this.generateClassNameByError(this.state.costError)}
+                            className={"form-control col-sm-6 " + this.generateClassNameByError(this.state.costError)}
                             type="number"
                             placeholder="Цена за занятие"
                             id='cost'
@@ -135,10 +133,10 @@ class GroupCreatingProfile extends Component {
                     </div>
                     <div className="form-group row">
                         <label htmlFor="duration"
-                               className="col-md-5 col-form-label">Продолжительность
+                               className="col-sm-6 col-form-label">Продолжительность
                             занятия</label>
                         <input
-                            className={"form-control col-md-7 m-0 " + this.generateClassNameByError(this.state.durationError)}
+                            className={"form-control col-sm-6 " + this.generateClassNameByError(this.state.durationError)}
                             type="number"
                             placeholder="Продолжительность (в мин.)"
                             id='duration'

@@ -143,6 +143,7 @@ class GroupCreating extends Component {
                     <div className="main-container">
                         <h4 className="main-container__header">Создание группы</h4>
                         <hr/>
+                        <h6 className="col-xs-2 col-form-label">Основная информация :</h6>
                         <GroupCreatingProfile groupProfileCallback={this.groupProfileCallback} groupById={{
                             name: this.state.name,
                             duration: this.state.duration,
@@ -157,8 +158,9 @@ class GroupCreating extends Component {
                         <div>
                             {this.props.user.users ? <div>
                                 <h6>Добавьте студентов в группу:</h6>
-                                <GroupAddStudents users={this.props.user.users}
-                                                  handleUsersChange={this.handleUsersChange}/>
+                                <div className="ml-4">
+                                    <GroupAddStudents users={this.props.user.users}
+                                                      handleUsersChange={this.handleUsersChange}/></div>
                             </div> : <Spinner/>}
                         </div>
                         <div className="ml-0 m-3">
