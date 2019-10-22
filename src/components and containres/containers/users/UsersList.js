@@ -30,6 +30,7 @@ class UsersList extends Component {
             <div>
                 <h3>Студенты</h3>
                 <Search/>
+                <hr></hr>
                 {this.props.isLoaded ?
                     this.props.users.map(user => (
                         <div key={user.guid}>

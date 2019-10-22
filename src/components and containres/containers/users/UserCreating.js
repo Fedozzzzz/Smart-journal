@@ -98,30 +98,33 @@ class UserCreating extends Component {
         // console.log("ls", sessionStorage);
         // console.log("state:", this.state);
         return (
-            <div>
-                <h4>Создание профиля студента</h4>
-                <UserCreatingInputs getUserProfileCallback={this.getUserProfileCallback} userById={
-                    {
-                        name: this.state.name,
-                        surname: this.state.surname,
-                        patronymic: this.state.patronymic,
-                        email: this.state.email,
-                        phoneNumber: this.state.phoneNumber,
-                    }}/>
-                <AlertError isOpen={this.state.isAlertOpen} error={this.props.error}
-                            alertCallback={this.alertCallback}/>
-                <div className="container-fluid">
-                    <div className="form-group row col-8">
-                        <button
-                            className='btn btn-success'
-                            onClick={this.onSaveUser}
-                            // disabled={this.state.nameError
-                            // || this.state.surnameError
-                            // || this.state.patronymicError
-                            // || this.state.phoneNumberError
-                            // || this.state.emailError}
-                        >Сохранить
-                        </button>
+            <div className="container-fluid">
+                <div className="row justify-content-center">
+                    <div className="user-creating col-sm-6">
+                        <h4>Создание профиля студента</h4>
+                        <UserCreatingInputs getUserProfileCallback={this.getUserProfileCallback} userById={{
+                            name: this.state.name,
+                            surname: this.state.surname,
+                            patronymic: this.state.patronymic,
+                            email: this.state.email,
+                            phoneNumber: this.state.phoneNumber,
+                        }}/>
+                        <AlertError isOpen={this.state.isAlertOpen} error={this.props.error}
+                                    alertCallback={this.alertCallback}/>
+                        <div className="container-fluid">
+                            <div className="form-group row col-8">
+                                <button
+                                    className='btn btn-success'
+                                    onClick={this.onSaveUser}
+                                    // disabled={this.state.nameError
+                                    // || this.state.surnameError
+                                    // || this.state.patronymicError
+                                    // || this.state.phoneNumberError
+                                    // || this.state.emailError}
+                                >Сохранить
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
