@@ -79,6 +79,7 @@ class UserEdit extends Component {
                                                 email: this.state.email,
                                                 phoneNumber: this.state.phoneNumber,
                                             }}/>
+                        <hr/>
                         <div className="container">
                             <div className="form-group row col-8">
                                 <button className='btn btn-success' onClick={this.onSaveEditUser}>Сохранить</button>

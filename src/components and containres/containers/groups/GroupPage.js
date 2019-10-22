@@ -112,13 +112,16 @@ class GroupPage extends Component {
                             <hr/>
                             <h6 className="col-xs-2 col-form-label">Студенты этой группы:</h6>
                             {this.props.group.usersFromGroup ?
-                                <GroupStudents usersFromGroup={this.props.group.usersFromGroup}/> : <Spinner/>}
+                                <div className="m-2">
+                                    <GroupStudents usersFromGroup={this.props.group.usersFromGroup}/></div> :
+                                <Spinner/>}
                         </div> : <Spinner/>}
                         <hr/>
                         <h6>Статистика за предыдущий месяц</h6>
                         {this.props.statistics.groupStatistics ?
                             Object.keys(this.props.statistics.groupStatistics).length ?
-                                <StatisticsTable groups={this.state.groupData}/> : <Spinner/>
+                                <div className="m-2">
+                                    <StatisticsTable groups={this.state.groupData}/></div> : <Spinner/>
                             : null}
                     </div>
                 </div>

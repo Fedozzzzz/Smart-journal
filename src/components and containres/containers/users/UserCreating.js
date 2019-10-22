@@ -112,6 +112,7 @@ class UserCreating extends Component {
                         }}/>
                         <AlertError isOpen={this.state.isAlertOpen} error={this.props.error}
                                     alertCallback={this.alertCallback}/>
+                        <hr/>
                         <div className="container-fluid">
                             <div className="form-group row col-8">
                                 <button
