@@ -140,8 +140,9 @@ class GroupCreating extends Component {
         // console.log("ls", sessionStorage.getItem("savedGroupData"));
         return (<div className="container-fluid">
                 <div className="row justify-content-center">
-                    <div className="group-creating">
-                        <h4 className="group-creating__header">Создание группы</h4>
+                    <div className="main-container">
+                        <h4 className="main-container__header">Создание группы</h4>
+                        <hr/>
                         <GroupCreatingProfile groupProfileCallback={this.groupProfileCallback} groupById={{
                             name: this.state.name,
                             duration: this.state.duration,
