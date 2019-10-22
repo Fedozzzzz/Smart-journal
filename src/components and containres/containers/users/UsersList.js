@@ -43,7 +43,7 @@ class UsersList extends Component {
                         <Link to='/users/creating_user'
                               className='btn btn-primary'
                               onClick={this.addUser}>
-                            +Добавить ученика</Link>
+                            <span className="oi oi-plus"/>Добавить ученика</Link>
                     </div>
                 </div>
             </div>

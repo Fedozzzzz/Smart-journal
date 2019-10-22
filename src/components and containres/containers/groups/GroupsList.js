@@ -48,7 +48,8 @@ class GroupsList extends Component {
                             )) : <Spinner/>}
                         <div>
                             <Link to='/groups/creating_group'
-                                  className='btn btn-primary' onClick={this.props.createGroup}>+Добавить
+                                  className='btn btn-primary' onClick={this.props.createGroup}><span
+                                className="oi oi-plus"/>Добавить
                                 группу</Link>
                         </div>
                     </div>

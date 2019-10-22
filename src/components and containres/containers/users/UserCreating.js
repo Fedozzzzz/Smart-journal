@@ -123,7 +123,9 @@ class UserCreating extends Component {
                                     // || this.state.patronymicError
                                     // || this.state.phoneNumberError
                                     // || this.state.emailError}
-                                >Сохранить
+                                >
+                                    {/*<span className="oi oi-file"/>*/}
+                                    Сохранить
                                 </button>
                             </div>
                         </div>

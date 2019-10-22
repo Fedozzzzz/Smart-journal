@@ -268,7 +268,8 @@ class AttendanceAndPayments extends Component {
     render() {
         console.log("this.state", this.state);
         // console.log("this.props", this.props);
-        return (<div className="container-fluid">
+        return (
+            <div className="container-fluid">
                 <div className="row">
                     <ModalAddPayment isOpen={this.state.isPaymentModalOpen}
                                      paymentModalCallback={this.paymentModalCallback}

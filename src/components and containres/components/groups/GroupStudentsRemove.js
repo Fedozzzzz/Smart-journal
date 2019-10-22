@@ -12,7 +12,7 @@ export const GroupStudentsRemove = props => (
             </div>
             <div className="d-inline-block">
                 <button className="btn btn-danger btn-sm ml-3" onClick={props.onDeleteUserFromGroup}
-                        id={user.guid}>Удалить
+                        id={user.guid}><span className="oi oi-x"/>
                 </button>
             </div>
         </div>

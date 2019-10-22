@@ -103,11 +103,14 @@ class GroupPage extends Component {
                             <div>
                                 <button
                                     className="btn btn-outline-danger"
-                                    onClick={this.onDeleteGroup}>Удалить
+                                    onClick={this.onDeleteGroup}>
+                                    <span className="oi oi-trash"/>
                                 </button>
                                 <Link to={`/groups/edit_group/group_${this.props.groupId}`}
                                       className="btn btn-outline-warning"
-                                      onClick={() => this.props.editGroup(this.props.groupId.guid)}>Изменить</Link>
+                                      onClick={() => this.props.editGroup(this.props.groupId.guid)}>
+                                    <span className="oi oi-pencil"/>
+                                </Link>
                             </div>
                             <hr/>
                             <h6 className="col-xs-2 col-form-label">Студенты этой группы:</h6>

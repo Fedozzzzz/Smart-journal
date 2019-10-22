@@ -82,7 +82,10 @@ class UserEdit extends Component {
                         <hr/>
                         <div className="container">
                             <div className="form-group row col-8">
-                                <button className='btn btn-success' onClick={this.onSaveEditUser}>Сохранить</button>
+                                <button className='btn btn-success' onClick={this.onSaveEditUser}>
+                                    {/*<span className="oi oi-file"/>*/}
+                                    Сохранить
+                                </button>
                             </div>
                         </div>
                     </div>

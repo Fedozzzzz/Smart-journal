@@ -169,14 +169,16 @@ class UserPage extends Component {
                                 <UserPageProfile userById={this.props.user.userById}/>
                                 <div>
                                     <button className="btn btn-outline-danger"
-                                            onClick={this.onDeleteUser}>Удалить
+                                            onClick={this.onDeleteUser}>
+                                        <span className="oi oi-trash"/>
                                     </button>
                                     <Link to={`/users/edit_user/user_${this.props.userId}`}
                                           className="btn btn-outline-warning"
-                                          onClick={this.props.onEditUser}>Изменить</Link>
+                                          onClick={this.props.onEditUser}><span className="oi oi-pencil"/></Link>
                                     <button className="btn btn-outline-info"
                                             onClick={this.addPayment}>
-                                        Внести платеж
+                                        <span className="oi oi-dollar"/>
+                                        Внести платёж
                                     </button>
                                 </div>
                             </div> : <Spinner/>}
