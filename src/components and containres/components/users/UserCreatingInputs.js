@@ -38,7 +38,7 @@ class UserCreatingInputs extends Component {
 
     UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
         console.log("receive props");
-        console.log(nextProps);
+        // console.log(nextProps);
         // console.log(nextProps.userById !== this.props.userById);
         if (nextProps.userById !== this.props.userById) {
             this.setState({

@@ -3,7 +3,8 @@ import {actionTypes} from "./actionTypes";
 const initialState = {
     users: [],
     usersFromGroup: [],
-    isLoaded: false
+    isLoaded: false,
+    error: null,
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -47,7 +48,7 @@ export const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 // users: temp1
-                // newUser: action.user
+                newUser: action.user,
                 isLoaded: false
             };
         case actionTypes.getAllUsersSucceededType:
@@ -82,6 +83,7 @@ export const userReducer = (state = initialState, action) => {
         case actionTypes.getUserFailedType:
         case actionTypes.deleteUserFailedType:
         case actionTypes.editUserFailedType:
+            console.log(action);
             return {
                 ...state,
                 error: action.error

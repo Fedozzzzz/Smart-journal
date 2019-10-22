@@ -8,7 +8,7 @@ export const UserPaymentHistory = (props) => {
             <h5>История платежей студента</h5>
             {props.accountHistory.length ?
                 <div>
-                    <table className="table table-bordered table-bordered table-hover">
+                    <table className="table table-bordered table-bordered table-hover table-responsive-sm">
                         <thead>
                         <tr>
                             <th>Дата</th>
@@ -37,7 +37,7 @@ export const UserPaymentHistory = (props) => {
                         </tbody>
                     </table>
                     <div className="row justify-content-center m-3">
-                        <button className="btn btn-outline-dark col-4" onClick={props.getMoreHistory.bind(this)}>
+                        <button className="btn btn-outline-dark col-sm-4" onClick={props.getMoreHistory.bind(this)}>
                             Загрузить больше
                         </button>
                     </div>
