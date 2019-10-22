@@ -7,8 +7,8 @@ const initialState = {
     groupStatistics: null
 };
 
-export const statisticsReducer = (state, action) => {
-    state = state || initialState;
+export const statisticsReducer = (state = initialState, action) => {
+    // state = state || initialState;
     console.log(action.type);
     switch (action.type) {
         case actionTypes.getAllStatisticsType:

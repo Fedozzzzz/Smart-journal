@@ -1,4 +1,5 @@
 import React from 'react';
+import * as functions from "../../../functions/index"
 
 export const UserPaymentHistory = (props) => {
     console.log(props);
@@ -6,34 +7,41 @@ export const UserPaymentHistory = (props) => {
         <div>
             <h5>История платежей студента</h5>
             {props.accountHistory.length ?
-                <table className="table table-bordered table-bordered table-hover">
-                    <thead>
-                    <tr>
-                        <th>Дата</th>
-                        <th>Тип операции</th>
-                        <th>Сумма операции</th>
-                        <th>Счет</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {props.accountHistory.map(payment => (
+                <div>
+                    <table className="table table-bordered table-bordered table-hover">
+                        <thead>
                         <tr>
-                            <td>{new Date(payment.performedAt).toUTCString()}</td>
-                            <td>{getTypeOperationString(payment.type)}</td>
-                            <td>{payment.diffAmount}</td>
-                            <td>{payment.newAmount}</td>
-                            <td>
-                                {props.payments.has(payment.paymentId) ?
-                                    <button className="btn btn-danger"
-                                            onClick={props.onDelete.bind(this, payment.paymentId)}>
-                                        Отменить
-                                    </button> : null}
-                            </td>
+                            <th>Дата</th>
+                            <th>Тип операции</th>
+                            <th>Сумма операции</th>
+                            <th>Счет</th>
+                            <th></th>
                         </tr>
-                    ))}
-                    </tbody>
-                </table> : <div><p>Здесь будет отображаться история платежей</p></div>}
+                        </thead>
+                        <tbody>
+                        {props.accountHistory.map(payment => (
+                            <tr>
+                                <td>{new Date(payment.performedAt).toUTCString()}</td>
+                                <td>{getTypeOperationString(payment.type)}</td>
+                                <td>{payment.diffAmount}</td>
+                                <td>{payment.newAmount}</td>
+                                <td>
+                                    {props.payments.has(payment.paymentId) ?
+                                        <button className="btn btn-outline-danger"
+                                                onClick={props.onDelete.bind(this, payment.paymentId)}>
+                                            Отменить
+                                        </button> : null}
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                    <div className="row justify-content-center m-3">
+                        <button className="btn btn-outline-dark col-4" onClick={props.getMoreHistory.bind(this)}>
+                            Загрузить больше
+                        </button>
+                    </div>
+                </div> : <div><p>Здесь будет отображаться история платежей</p></div>}
         </div>
     );
 };

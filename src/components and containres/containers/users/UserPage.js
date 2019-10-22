@@ -23,7 +23,8 @@ class UserPage extends Component {
             warningDeletePayment: false,
             isPaymentModalOpen: false,
             paymentAction: false,
-            paymentsOfUser: new Map()
+            paymentsOfUser: new Map(),
+            accountHistoryStep: 1
         };
         this.warningToggle = this.warningToggle.bind(this);
         this.warningCallback = this.warningCallback.bind(this);
@@ -107,7 +108,7 @@ class UserPage extends Component {
         if (value) {
             this.props.addPayment(this.props.userId, {
                 amount: value,
-                payday: new Date().toISOString()
+                payday: new Date().toUTCString()
             });
             // if (!this.props.payments.error) {
             //     this.setState({paymentAction: true})
@@ -117,6 +118,11 @@ class UserPage extends Component {
 
     addPayment(userId) {
         this.setState({isPaymentModalOpen: true, userId: userId});
+    }
+
+    getAccountHistory() {
+        this.props.getAccountHistoryByStep(this.props.userId, this.state.accountHistoryStep);
+        this.setState({accountHistoryStep: this.state.accountHistoryStep + 1})
     }
 
     onDelete(paymentId) {
@@ -176,7 +182,8 @@ class UserPage extends Component {
                     {this.props.accountHistory.isLoaded ?
                         <UserPaymentHistory payments={this.state.paymentsOfUser}
                                             accountHistory={this.props.accountHistory.userAccountHistory}
-                                            onDelete={this.onDelete.bind(this)}/> : <Spinner/>}
+                                            onDelete={this.onDelete.bind(this)}
+                                            getMoreHistory={this.getAccountHistory.bind(this)}/> : <Spinner/>}
                     {/*{this.props.payments.isLoaded ?*/}
                     {/*    <UserPaymentHistory payments={this.props.payments.payments}*/}
                     {/*                        onDelete={this.onDelete.bind(this)}/>*/}

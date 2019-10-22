@@ -18,7 +18,6 @@ export const paymentsReducer = (state = initialState, action) => {
         case actionTypes.getPaymentsFailedType:
             return {
                 ...state,
-                // isLoaded: false,
                 error: action.error
             };
         case actionTypes.addPaymentSucceededType:

@@ -1,20 +1,19 @@
 import {actionTypes} from "./actionTypes";
 
 const initialState = {
-    userAccountHistory: null,
+    userAccountHistory: [],
     isLoaded: false,
     error: null
 };
 
-export const accountHistoryReducer = (state, action) => {
+export const accountHistoryReducer = (state = initialState, action) => {
 
-    state = state || initialState;
     switch (action.type) {
         case actionTypes.getAccountHistoryByDateSucceededType:
         case actionTypes.getAccountHistoryByStepSucceededType:
             return {
                 ...state,
-                userAccountHistory: action.userAccountHistory,
+                userAccountHistory: state.userAccountHistory.concat(action.userAccountHistory),
                 isLoaded: true,
             };
         case actionTypes.getAccountHistoryByDateFailedType:
