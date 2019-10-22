@@ -58,7 +58,7 @@ function renderStartTimeInputs(props) {
     for (let i = 0; i < 7; i++) {
         result.push(<td>
             <input
-                className="form-control cell"
+                className="form-control m-0"
                 type="time"
                 id={i + "stForm"}
                 name="startTimes"

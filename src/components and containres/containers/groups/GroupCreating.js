@@ -7,7 +7,7 @@ import {GroupCreatingWeekSchedule} from "../../components/groups/GroupCreatingWe
 import {GroupAddStudents} from "../../components/groups/GroupAddStudents";
 import Spinner from "../../components/other/Spinner";
 import GroupCreatingProfile from "../../components/groups/GroupCreatingProfile";
-
+import "../../../css/GroupCreating.css"
 
 class GroupCreating extends Component {
 
@@ -139,28 +139,33 @@ class GroupCreating extends Component {
         console.log("this.state", this.state);
         // console.log("ls", sessionStorage.getItem("savedGroupData"));
         return (<div className="container-fluid">
-                <h4>Создание группы</h4>
-                <GroupCreatingProfile groupProfileCallback={this.groupProfileCallback} groupById={{
-                    name: this.state.name,
-                    duration: this.state.duration,
-                    cost: this.state.cost
-                }}/>
-                <label
-                    htmlFor="example-text-input"
-                    className="col-xs-2 col-form-label"> Расписание :</label>
-                <GroupCreatingWeekSchedule props={this.state} handleCheckboxesChange={this.handleCheckboxesChange}
-                                           handleStartTimesInputsChange={this.handleStartTimesInputsChange}/>
-                <div>
-                    {this.props.user.users ? <div>
-                        <h5>Добавьте студентов в группу:</h5>
-                        <GroupAddStudents users={this.props.user.users}
-                                          handleUsersChange={this.handleUsersChange}/>
-                    </div> : <Spinner/>}
-                </div>
-                <div>
-                    <button className='btn btn-success'
-                            onClick={this.onSaveGroup}>Сохранить
-                    </button>
+                <div className="row justify-content-center">
+                    <div className="group-creating">
+                        <h4 className="group-creating__header">Создание группы</h4>
+                        <GroupCreatingProfile groupProfileCallback={this.groupProfileCallback} groupById={{
+                            name: this.state.name,
+                            duration: this.state.duration,
+                            cost: this.state.cost
+                        }}/>
+                        <hr/>
+                        <h6 className="col-xs-2 col-form-label"> Расписание :</h6>
+                        <GroupCreatingWeekSchedule props={this.state}
+                                                   handleCheckboxesChange={this.handleCheckboxesChange}
+                                                   handleStartTimesInputsChange={this.handleStartTimesInputsChange}/>
+                        <hr/>
+                        <div>
+                            {this.props.user.users ? <div>
+                                <h6>Добавьте студентов в группу:</h6>
+                                <GroupAddStudents users={this.props.user.users}
+                                                  handleUsersChange={this.handleUsersChange}/>
+                            </div> : <Spinner/>}
+                        </div>
+                        <div className="ml-0 m-3">
+                            <button className='btn btn-success'
+                                    onClick={this.onSaveGroup}>Сохранить
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         )

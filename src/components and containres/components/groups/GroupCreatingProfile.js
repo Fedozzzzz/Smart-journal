@@ -97,6 +97,7 @@ class GroupCreatingProfile extends Component {
             <div className="group-creating__profile">
                 <form>
                     <div className="form-group row">
+                        {/*<div className="col-sm-10">*/}
                         <label htmlFor="groupName"
                                className="col-md-3 col-form-label">Название</label>
                         <input
@@ -106,14 +107,12 @@ class GroupCreatingProfile extends Component {
                             id='groupName'
                             // defaultValue={groupById ? groupById.name : null}
                             value={this.state.name}
-                            // onChange={this.handleInputChange}
-                            // onBlur={this.handleInputBlur}
-                            // onInput={this.handleInputBlur}
                             onInput={this.handleInput}
                         />
-                        <div className="invalid-feedback valid-feedback">
-                            <div>{this.state.nameError}</div>
+                        <div className="invalid-feedback flex">
+                            <div className="text-right">{this.state.nameError}</div>
                         </div>
+                        {/*</div>*/}
                     </div>
                     <div className="form-group row">
                         <label htmlFor="cost"
@@ -128,13 +127,10 @@ class GroupCreatingProfile extends Component {
                             max="10000"
                             // defaultValue={groupById ? groupById.cost : null}
                             value={this.state.cost}
-                            // onChange={this.handleInputChange}
-                            // onBlur={this.handleInputBlur}
-                            // onInput={this.handleInputBlur}
                             onInput={this.handleInput}
                         />
-                        <div className="invalid-feedback valid-feedback">
-                            <div>{this.state.costError}</div>
+                        <div className="invalid-feedback">
+                            <div className="text-right">{this.state.costError}</div>
                         </div>
                     </div>
                     <div className="form-group row">
@@ -148,13 +144,10 @@ class GroupCreatingProfile extends Component {
                             id='duration'
                             // defaultValue={groupById ? groupById.duration : null}
                             value={this.state.duration}
-                            // onChange={this.handleInputChange}
-                            // onBlur={this.handleInputBlur}
-                            // onInput={this.handleInputBlur}
                             onInput={this.handleInput}
                         />
-                        <div className="invalid-feedback valid-feedback">
-                            <div>{this.state.durationError}</div>
+                        <div className="invalid-feedback">
+                            <div className="text-right">{this.state.durationError}</div>
                         </div>
                     </div>
                 </form>

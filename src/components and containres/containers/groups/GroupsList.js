@@ -22,7 +22,9 @@ class GroupsList extends Component {
         if (this.props.newGroup !== prevProps.newGroup) {
             // if (!this.props.isUsersAddedToGroup) {
             console.log("addUserToGroup");
-            this.props.addUsersToGroupSubmit(this.props.newGroup.guid, this.props.usersToGroup);
+            if (this.props.usersToGroup) {
+                this.props.addUsersToGroupSubmit(this.props.newGroup.guid, this.props.usersToGroup);
+            }
             // }
         }
     }
@@ -34,7 +36,7 @@ class GroupsList extends Component {
             <div>
                 <h3>Группы</h3>
                 <Search/>
-                <hr></hr>
+                <hr/>
                 {this.props.isLoaded ?
                     this.props.groups.map(group => (
                         <div>
