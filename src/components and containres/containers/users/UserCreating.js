@@ -101,7 +101,7 @@ class UserCreating extends Component {
             <div className="container-fluid">
                 <div className="row justify-content-center">
                     <div className="user-creating col-sm-6">
-                        <h4>Создание профиля студента</h4>
+                        <h4 className="user-creating__header col-sm">Создание профиля студента</h4>
                         <UserCreatingInputs getUserProfileCallback={this.getUserProfileCallback} userById={{
                             name: this.state.name,
                             surname: this.state.surname,
