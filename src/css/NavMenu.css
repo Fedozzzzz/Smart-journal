@@ -1,4 +1,6 @@
-﻿a.navbar-brand {
+﻿/*@import "~@material/animation/_functions.scss";*/
+
+a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
@@ -18,8 +20,29 @@ html {
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
-
 .navbar {
     background-color: white;
+    /*transition: all 1s;*/
 }
 
+/*.nav-header {*/
+/*    transition: all 1s;*/
+/*}*/
+
+/*.nav-header {*/
+/*    position: fixed;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    right: 0;*/
+/*    height: 64px;*/
+
+/*    transform: translate3d(0, 0, 0);*/
+/*    transition: mdc-animation-exit-temporary(transform, 250ms);*/
+/*    will-change: transform;*/
+
+/*    &.hidden {*/
+/*    transform: translate3d(0, -100%, 0);*/
+/*    transition: mdc-animation-enter(transform, 200ms);*/
+/*}*/
+
+/*}*/
