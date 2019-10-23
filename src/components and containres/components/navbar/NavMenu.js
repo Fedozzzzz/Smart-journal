@@ -48,8 +48,11 @@ export default class NavMenu extends Component {
         const currentScrollPos = window.pageYOffset;
         const visible = prevScrollY > currentScrollPos;
 
+        console.log("pageY", window.pageYOffset);
+        console.log(prevScrollY);
+
         this.setState({
-            prevScrollY: currentScrollPos,
+            prevScrollY: currentScrollPos + 0.6,
             visible
         });
     };
@@ -68,12 +71,11 @@ export default class NavMenu extends Component {
 
     render() {
         // const opacity = Math.min(100 / this.state.currentScrollHeight, 1)
-        // console.log(this.state.visible);
+        const clsName = this.state.visible ? "active" : "hidden";
         return (
-            <header className="nav-header">
+            <header className="">
                 <Navbar fixed="top"
-                        hidden={!this.state.visible}
-                        className="navbar-expand-md navbar-toggleable-md border-bottom box-shadow"
+                        className={"navbar-expand-md navbar-toggleable-md border-bottom box-shadow " + clsName}
                         light>
                     <Container>
                         <NavbarBrand tag={Link} to="/">SMART JOURNAL</NavbarBrand>

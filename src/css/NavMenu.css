@@ -22,9 +22,22 @@ html {
 
 .navbar {
     background-color: white;
+    transition: top 0.2s ease-in-out;
     /*animation: linear 1s;*/
-    transition: top 1s;
+    /*transition: top 1s;*/
 }
+
+.active {
+    visibility: visible;
+    transition: all 200ms ease-in;
+}
+
+.hidden {
+    visibility: hidden;
+    transition: all 200ms ease-out;
+    transform: translate(0, -100%);
+}
+
 
 /*.nav-header {*/
 /*    transition: all 1s;*/
