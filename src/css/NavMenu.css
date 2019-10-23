@@ -22,7 +22,8 @@ html {
 
 .navbar {
     background-color: white;
-    /*transition: all 1s;*/
+    /*animation: linear 1s;*/
+    transition: top 1s;
 }
 
 /*.nav-header {*/

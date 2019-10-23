@@ -157,14 +157,14 @@ class AttendanceAndPayments extends Component {
             let content;
             let isAttended;
             switch (e.target.className) {
-                case "cell":
+                case "att_cell":
                     e.target.className = "cell_attended";
                     newClassname = "table-primary";
                     content = "Б";
                     isAttended = true;
                     break;
                 case "cell_attended":
-                    e.target.className = "cell";
+                    e.target.className = "att_cell";
                     // newClassname = "table-secondary";
                     newClassname = "table-default";
                     content = null;
@@ -287,10 +287,12 @@ class AttendanceAndPayments extends Component {
                                 <hr/>
                             </div> : null}
                         </div>
-                        <EditSaveButtons
-                            isLoaded={this.props.attendance.isLoaded && this.props.schedule.isLoaded && this.state.selectedGroupId && this.state.selectedMonth}
-                            isEdit={this.props.attendance.isEdit}
-                            onEdit={this.onEdit} onSave={this.onSave}/>
+                        <div className="mb-2">
+                            <EditSaveButtons
+                                isLoaded={this.props.attendance.isLoaded && this.props.schedule.isLoaded && this.state.selectedGroupId && this.state.selectedMonth}
+                                isEdit={this.props.attendance.isEdit}
+                                onEdit={this.onEdit} onSave={this.onSave}/>
+                        </div>
                         {this.props.attendance.isLoaded && this.props.schedule.isLoaded && this.state.selectedGroupId && this.state.selectedMonth ?
                             <AttendanceAndPaymentsTable props={this.state}
                                                         onClickHead={this.clickAttendanceHeadHandler}

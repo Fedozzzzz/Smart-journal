@@ -70,10 +70,11 @@ export default class NavMenu extends Component {
         // const opacity = Math.min(100 / this.state.currentScrollHeight, 1)
         // console.log(this.state.visible);
         return (
-            <header className="nav-header" hidden={!this.state.visible}>
+            <header className="nav-header">
                 <Navbar fixed="top"
-                    className="navbar-expand-md navbar-toggleable-md border-bottom box-shadow"
-                    light>
+                        hidden={!this.state.visible}
+                        className="navbar-expand-md navbar-toggleable-md border-bottom box-shadow"
+                        light>
                     <Container>
                         <NavbarBrand tag={Link} to="/">SMART JOURNAL</NavbarBrand>
                         <NavbarToggler onClick={this.toggle} className="mr-2"/>

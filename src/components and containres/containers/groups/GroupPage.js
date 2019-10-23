@@ -98,7 +98,9 @@ class GroupPage extends Component {
                             <div>
                                 <GroupPageProfile groupById={this.props.group.groupById}/>
                                 <h6 className="col-xs-2 col-form-label"> Расписание :</h6>
-                                <GroupWeekSchedule groupById={this.props.group.groupById}/>
+                                <div className="col">
+                                    <GroupWeekSchedule groupById={this.props.group.groupById}/>
+                                </div>
                             </div>
                             <div>
                                 <button
@@ -114,10 +116,12 @@ class GroupPage extends Component {
                             </div>
                             <hr/>
                             <h6 className="col-xs-2 col-form-label">Студенты этой группы:</h6>
-                            {this.props.group.usersFromGroup ?
-                                <div className="m-2">
-                                    <GroupStudents usersFromGroup={this.props.group.usersFromGroup}/></div> :
-                                <Spinner/>}
+                            <div className="col">
+                                {this.props.group.usersFromGroup ?
+                                    <div className="m-2">
+                                        <GroupStudents usersFromGroup={this.props.group.usersFromGroup}/></div> :
+                                    <Spinner/>}
+                            </div>
                         </div> : <Spinner/>}
                         <hr/>
                         <h6>Статистика за предыдущий месяц</h6>

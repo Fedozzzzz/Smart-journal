@@ -116,14 +116,14 @@ class GroupEdit extends Component {
         }
         console.log(data);
         this.props.editGroupSubmit(this.props.groupId, data);
-        if (this.state.chosenUsers.length) {
-            data = [];
-            this.state.chosenUsers.forEach((value, key) => {
-                data.push(key);
-            });
-        } else {
-            data = null
-        }
+        // if (this.state.chosenUsers.length) {
+        data = [];
+        this.state.chosenUsers.forEach((value, key) => {
+            data.push(key);
+        });
+        // } else {
+        //     data = null
+        // }
         this.props.addUsersToGroupSubmit(this.props.groupId, data);
         this.props.history.goBack();
     }
@@ -189,8 +189,7 @@ class GroupEdit extends Component {
                             cost: this.state.cost,
                         }}
                             // handleInputChange={this.handleInputChange}
-                                              groupProfileCallback={this.groupProfileCallback}
-                        />
+                                              groupProfileCallback={this.groupProfileCallback}/>
                         <hr/>
                         <h5 className="col-xs-2 col-form-label">Расписание:</h5>
                         <GroupCreatingWeekSchedule props={this.state} groupById={this.props.group.groupById}
@@ -198,11 +197,10 @@ class GroupEdit extends Component {
                                                    handleStartTimesInputsChange={this.handleStartTimesInputsChange}/>
                         <hr/>
                         <div>
-                            <h5 className="col-xs-2 col-form-label">Студенты этой группы:</h5>{
-                            this.props.group.usersFromGroup ?
+                            <h5 className="col-xs-2 col-form-label">Студенты этой группы:</h5>
+                            {this.props.group.usersFromGroup ?
                                 <GroupStudentsRemove usersFromGroup={this.props.group.usersFromGroup}
-                                                     onDeleteUserFromGroup={this.onDeleteUserFromGroup}/> : <Spinner/>
-                        }
+                                                     onDeleteUserFromGroup={this.onDeleteUserFromGroup}/> : <Spinner/>}
                         </div>
                         <hr/>
                         <h5 className="col-xs-2 col-form-label">Добавьте студентов в группу: </h5>
