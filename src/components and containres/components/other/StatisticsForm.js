@@ -1,22 +1,15 @@
 // import ModalWarning from "../modals/ModalWarning";
 import React, {Component} from "react";
 
-
 class StatisticsForm extends Component {
 
     constructor(props, ctx) {
         super(props, ctx);
         this.state = {
-            // selectedGroupId: null,
             selectedMonth: new Date(),
-            // isWarningOpen: false,
-            // warningMessage: "Текущие изменения не сохранятся!"
         };
         this.renderForm = this.renderForm.bind(this);
         this.onDateChange = this.onDateChange.bind(this);
-        // this.onSelectGroup = this.onSelectGroup.bind(this);
-        // this.warningToggle = this.warningToggle.bind(this);
-        // this.warningCallback = this.warningCallback.bind(this);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -25,32 +18,12 @@ class StatisticsForm extends Component {
         }
     }
 
-    // warningToggle(isOpen) {
-    //     this.setState({
-    //         isWarningOpen: isOpen
-    //     })
-    // }
-
-
-    // warningCallback(value) {
-    //     if (value) {
-    //         this.setState({
-    //             selectedMonth: this.state.tempMonth || this.state.selectedMonth,
-    //             selectedGroupId: this.state.tempGroupId || this.state.selectedGroupId,
-    //         });
-    //     }
-    // }
-
-
     onDateChange(e) {
         // if (this.props.isEdit) {
-            this.setState({
-                selectedMonth: new Date(e.target.value),
-                // isWarningOpen: true
-            })
-        // } else this.setState({
-        //     selectedMonth: new Date(e.target.value),
-        // });
+        this.setState({
+            selectedMonth: new Date(e.target.value),
+            // isWarningOpen: true
+        })
     }
 
     renderForm() {
@@ -59,20 +32,22 @@ class StatisticsForm extends Component {
             <div className="container">
                 {/*<ModalWarning isOpen={this.state.isWarningOpen} warningCallback={this.warningCallback}*/}
                 {/*              warningToggle={this.warningToggle} warningMessage={this.state.warningMessage}/>*/}
-                <div className="form">
-                    <div className="main-form">
+                <div className="">
+                    <div className="">
                         <form>
                             <div className="form-group row">
-                                <label htmlFor="exampleMonth" className="label_month col-md-2">Месяц</label>
-                                <input
-                                    type="month"
-                                    className="form-control col-md-7"
-                                    id="exampleMonth"
-                                    aria-describedby="monthHelp"
-                                    placeholder="Введите месяц"
-                                    value={this.state.selectedMonth.toISOString().slice(0, 7)}
-                                    onChange={this.onDateChange}
-                                />
+                                <label htmlFor="exampleMonth" className="col-form-label col-sm-4">Месяц</label>
+                                <div className="col-sm-8">
+                                    <input
+                                        type="month"
+                                        className="form-control"
+                                        id="exampleMonth"
+                                        aria-describedby="monthHelp"
+                                        placeholder="Введите месяц"
+                                        value={this.state.selectedMonth.toISOString().slice(0, 7)}
+                                        onChange={this.onDateChange}
+                                    />
+                                </div>
                             </div>
                         </form>
                     </div>

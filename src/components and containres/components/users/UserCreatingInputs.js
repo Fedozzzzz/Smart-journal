@@ -38,7 +38,7 @@ class UserCreatingInputs extends Component {
 
     UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
         console.log("receive props");
-        console.log(nextProps);
+        // console.log(nextProps);
         // console.log(nextProps.userById !== this.props.userById);
         if (nextProps.userById !== this.props.userById) {
             this.setState({
@@ -123,7 +123,7 @@ class UserCreatingInputs extends Component {
         return (<div className="container-fluid">
             <div className="create-user">
                 <form>
-                    <div className="form-group row col-md-8">
+                    <div className="form-group row col">
                         <label htmlFor='userName' className="col-xs-2 col-form-label">Имя</label>
                         <input className={"form-control col-xs-10 m-0 " + getClassNameByError(this.state.nameError)}
                                type="text"
@@ -136,7 +136,7 @@ class UserCreatingInputs extends Component {
                             <div>{this.state.nameError}</div>
                         </div>
                     </div>
-                    <div className="form-group row col-md-8">
+                    <div className="form-group row col">
                         <label htmlFor='userSurname' className="col-xs-2 col-form-label">Фамилия</label>
                         <input
                             className={"form-control col-xs-10 m-0 " + getClassNameByError(this.state.surnameError)}
@@ -150,7 +150,7 @@ class UserCreatingInputs extends Component {
                             <div>{this.state.surnameError}</div>
                         </div>
                     </div>
-                    <div className="form-group row col-md-8">
+                    <div className="form-group row col">
                         <label htmlFor='userPatronymic' className="col-xs-2 col-form-label">Отчество</label>
                         <input
                             className={"form-control col-xs-10 m-0 " + getClassNameByError(this.state.patronymicError)}
@@ -164,7 +164,7 @@ class UserCreatingInputs extends Component {
                             <div>{this.state.patronymicError}</div>
                         </div>
                     </div>
-                    <div className="form-group row col-md-8">
+                    <div className="form-group row col">
                         <label htmlFor="tel-input" className="col-xs-2 col-form-label ">Номер
                             телефона</label>
                         <input
@@ -179,7 +179,7 @@ class UserCreatingInputs extends Component {
                             <div>{this.state.phoneNumberError}</div>
                         </div>
                     </div>
-                    <div className="form-group row col-md-8">
+                    <div className="form-group row col">
                         <label htmlFor="email-input" className="col-xs-2 col-form-label">Email</label>
                         <input className={"form-control col-xs-10 m-0 " + getClassNameByError(this.state.emailError)}
                                type="email"

@@ -116,14 +116,14 @@ class GroupEdit extends Component {
         }
         console.log(data);
         this.props.editGroupSubmit(this.props.groupId, data);
-        if (this.state.chosenUsers.length) {
-            data = [];
-            this.state.chosenUsers.forEach((value, key) => {
-                data.push(key);
-            });
-        } else {
-            data = null
-        }
+        // if (this.state.chosenUsers.length) {
+        data = [];
+        this.state.chosenUsers.forEach((value, key) => {
+            data.push(key);
+        });
+        // } else {
+        //     data = null
+        // }
         this.props.addUsersToGroupSubmit(this.props.groupId, data);
         this.props.history.goBack();
     }
@@ -174,42 +174,51 @@ class GroupEdit extends Component {
         // console.log(id);
         // console.log("this.props", this.props.group.usersFromGroup);
         return (
-            <div>
-                <ModalWarning warningMessage={this.state.warningMessage} isOpen={this.state.isWarningOpen}
-                              warningToggle={this.warningToggle}
-                              warningCallback={this.warningCallback}/>
-                <h4>Редактирование группы</h4>
-                <GroupCreatingProfile groupById={{
-                    name: this.state.name,
-                    duration: this.state.duration,
-                    cost: this.state.cost,
-                }}
-                    // handleInputChange={this.handleInputChange}
-                                      groupProfileCallback={this.groupProfileCallback}
-                />
-                <h6>Расписание:</h6>
-                <GroupCreatingWeekSchedule props={this.state} groupById={this.props.group.groupById}
-                                           handleCheckboxesChange={this.handleCheckboxesChange}
-                                           handleStartTimesInputsChange={this.handleStartTimesInputsChange}/>
-                <div>
-                    <h5>Студенты этой группы:</h5>{
-                    this.props.group.usersFromGroup ?
-                        <GroupStudentsRemove usersFromGroup={this.props.group.usersFromGroup}
-                                             onDeleteUserFromGroup={this.onDeleteUserFromGroup}/> : <Spinner/>
-                }
-                </div>
-                {this.props.user.users ?
-                    <div>
-                        <h5>Добавьте студентов в группу: </h5>
-                        <p>Веберите студентов из списка, чтобы добавить их в группу</p>
-                        <GroupAddStudents users={this.props.user.users} handleUsersChange={this.handleUsersChange}/>
-                    </div> : <Spinner/>}
-                <div>
-                    <button
-                        // to='/groups/group_list'
-                        className='btn btn-success'
-                        onClick={this.onSaveEditGroup}>Сохранить
-                    </button>
+            <div className="container-fluid">
+                <div className="row justify-content-sm-between">
+                    <div className="main-container">
+                        <ModalWarning warningMessage={this.state.warningMessage} isOpen={this.state.isWarningOpen}
+                                      warningToggle={this.warningToggle}
+                                      warningCallback={this.warningCallback}/>
+                        <h4 className="main-container__header col-sm-6">Редактирование группы</h4>
+                        <hr/>
+                        <h5 className="col-xs-2 col-form-label">Основная информация</h5>
+                        <GroupCreatingProfile groupById={{
+                            name: this.state.name,
+                            duration: this.state.duration,
+                            cost: this.state.cost,
+                        }}
+                            // handleInputChange={this.handleInputChange}
+                                              groupProfileCallback={this.groupProfileCallback}/>
+                        <hr/>
+                        <h5 className="col-xs-2 col-form-label">Расписание:</h5>
+                        <GroupCreatingWeekSchedule props={this.state} groupById={this.props.group.groupById}
+                                                   handleCheckboxesChange={this.handleCheckboxesChange}
+                                                   handleStartTimesInputsChange={this.handleStartTimesInputsChange}/>
+                        <hr/>
+                        <div>
+                            <h5 className="col-xs-2 col-form-label">Студенты этой группы:</h5>
+                            {this.props.group.usersFromGroup ?
+                                <GroupStudentsRemove usersFromGroup={this.props.group.usersFromGroup}
+                                                     onDeleteUserFromGroup={this.onDeleteUserFromGroup}/> : <Spinner/>}
+                        </div>
+                        <hr/>
+                        <h5 className="col-xs-2 col-form-label">Добавьте студентов в группу: </h5>
+                        {this.props.user.users ?
+                            <div className="m-2">
+                                <small>Веберите студентов из списка, чтобы добавить их в группу</small>
+                                <GroupAddStudents users={this.props.user.users}
+                                                  handleUsersChange={this.handleUsersChange}/>
+                            </div> : <Spinner/>}
+                        <hr/>
+                        <div className="mt-3">
+                            <button
+                                // to='/groups/group_list'
+                                className='btn btn-success'
+                                onClick={this.onSaveEditGroup}>Сохранить
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         )

@@ -12,7 +12,9 @@ export const AttendanceAndPaymentsTableBody = (props) => {
                 <td>{user.amount}</td>
                 {/*<div className="table__button-add-payment">*/}
                 <td>
-                    <button className="btn btn-success btn-sm table__button-add-payment" onClick={props.onAddPayment.bind(this, user.guid)}>
+                    <button className="btn btn-success btn-sm table__button-add-payment"
+                            onClick={props.onAddPayment.bind(this, user.guid)}>
+                        <span className="oi oi-dollar"/>
                         Пополнить счет
                     </button>
                 </td>

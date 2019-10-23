@@ -98,29 +98,26 @@ class GroupCreatingProfile extends Component {
                 <form>
                     <div className="form-group row">
                         <label htmlFor="groupName"
-                               className="col-md-3 col-form-label">Название</label>
+                               className="col-sm-6 col-form-label">Название</label>
                         <input
-                            className={"form-control col-md-7 m-0 " + this.generateClassNameByError(this.state.nameError)}
+                            className={"form-control col-sm-6 " + this.generateClassNameByError(this.state.nameError)}
                             type="text"
                             placeholder="Введите название"
                             id='groupName'
                             // defaultValue={groupById ? groupById.name : null}
                             value={this.state.name}
-                            // onChange={this.handleInputChange}
-                            // onBlur={this.handleInputBlur}
-                            // onInput={this.handleInputBlur}
                             onInput={this.handleInput}
                         />
-                        <div className="invalid-feedback valid-feedback">
-                            <div>{this.state.nameError}</div>
+                        <div className="invalid-feedback flex">
+                            <div className="text-right">{this.state.nameError}</div>
                         </div>
                     </div>
                     <div className="form-group row">
                         <label htmlFor="cost"
-                               className="col-md-3 col-form-label">Цена за
+                               className="col-sm-6 col-form-label">Цена за
                             занятие</label>
                         <input
-                            className={"form-control col-md-7 m-0 " + this.generateClassNameByError(this.state.costError)}
+                            className={"form-control col-sm-6 " + this.generateClassNameByError(this.state.costError)}
                             type="number"
                             placeholder="Цена за занятие"
                             id='cost'
@@ -128,33 +125,27 @@ class GroupCreatingProfile extends Component {
                             max="10000"
                             // defaultValue={groupById ? groupById.cost : null}
                             value={this.state.cost}
-                            // onChange={this.handleInputChange}
-                            // onBlur={this.handleInputBlur}
-                            // onInput={this.handleInputBlur}
                             onInput={this.handleInput}
                         />
-                        <div className="invalid-feedback valid-feedback">
-                            <div>{this.state.costError}</div>
+                        <div className="invalid-feedback">
+                            <div className="text-right">{this.state.costError}</div>
                         </div>
                     </div>
                     <div className="form-group row">
                         <label htmlFor="duration"
-                               className="col-md-5 col-form-label">Продолжительность
+                               className="col-sm-6 col-form-label">Продолжительность
                             занятия</label>
                         <input
-                            className={"form-control col-md-7 m-0 " + this.generateClassNameByError(this.state.durationError)}
+                            className={"form-control col-sm-6 " + this.generateClassNameByError(this.state.durationError)}
                             type="number"
                             placeholder="Продолжительность (в мин.)"
                             id='duration'
                             // defaultValue={groupById ? groupById.duration : null}
                             value={this.state.duration}
-                            // onChange={this.handleInputChange}
-                            // onBlur={this.handleInputBlur}
-                            // onInput={this.handleInputBlur}
                             onInput={this.handleInput}
                         />
-                        <div className="invalid-feedback valid-feedback">
-                            <div>{this.state.durationError}</div>
+                        <div className="invalid-feedback">
+                            <div className="text-right">{this.state.durationError}</div>
                         </div>
                     </div>
                 </form>
