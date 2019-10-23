@@ -48,8 +48,8 @@ export default class NavMenu extends Component {
         const currentScrollPos = window.pageYOffset;
         const visible = prevScrollY > currentScrollPos;
 
-        console.log("pageY", window.pageYOffset);
-        console.log(prevScrollY);
+        // console.log("pageY", window.pageYOffset);
+        // console.log(prevScrollY);
 
         this.setState({
             prevScrollY: currentScrollPos + 0.6,

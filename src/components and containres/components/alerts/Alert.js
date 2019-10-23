@@ -46,7 +46,7 @@ class AlertError extends Component {
     render() {
         return (
             <Alert color="danger" isOpen={this.state.isOpen} toggle={this.toggle}>
-                {this.state.errorMsg}
+                <p>{this.state.errorMsg}</p>
             </Alert>
         )
     }
